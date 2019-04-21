@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/uk/co/bedroomcoders/cLogicToy">
+    <file preprocess="xml-stripblanks">res/ui.glade</file>
+    <!--
+    <file>img/And.png</file>
+    <file>img/In.png</file>
+    <file>img/Or.png</file>
+    <file>img/Xor.png</file>
+    <file>img/inwire.png</file>
+    <file>img/on.png</file>
+    <file>img/Cross.png</file>
+    <file>img/Not.png</file>
+    <file>img/Out.png</file>
+    <file>img/bg.png</file>
+    <file>img/lon.png</file>
+    <file>img/outwire.png</file>
+    -->
+  </gresource>
+</gresources>
