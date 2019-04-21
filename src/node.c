@@ -73,23 +73,23 @@ node_t* addNode(enum nodeType tp, double x, double y)
 
     if (tp == n_and || tp == n_or || tp == n_xor) {
         n->maxInputs = 4;
-        n->maxOutputs = 1;
+        n->maxOutputs = 4;
     }
     if (tp == n_in) {
         n->maxInputs = 0;
-        n->maxOutputs = 1;
+        n->maxOutputs = 4;
     }
     if (tp == n_not) {
         n->maxInputs = 1;
-        n->maxOutputs = 1;
+        n->maxOutputs = 4;
     }
     if (tp == n_split) {
         n->maxInputs = 1;
         n->maxOutputs = 4;
     }
     if (tp == n_out) {
-        n->maxOutputs = 0;
         n->maxInputs = 1;
+        n->maxOutputs = 0;
     }
 
     nodeList = g_slist_append(nodeList, n);

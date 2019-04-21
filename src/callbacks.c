@@ -116,6 +116,11 @@ gboolean on_open_activate(GtkWidget *widget, gpointer data)
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         filename = gtk_file_chooser_get_filename (chooser);
         loadCircuit(filename);
+        char title[1024];
+        char* f = g_strrstr(filename,"/");
+        f++;
+        sprintf(title,"cLogicFun - %s", f);
+        gtk_window_set_title((GtkWindow*)data, title);
         g_free (filename);
     }
 
