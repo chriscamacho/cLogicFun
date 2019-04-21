@@ -1,6 +1,8 @@
 cLogicFun
 =========
 
+![adder 3+6=9](screenshot.png) 3+6=9
+
 This application allows you to create logic circuits.
 
 Move the workspace or a node by dragging the mouse.
