@@ -33,7 +33,7 @@ typedef struct input_s {
     void* wire;
 } input_t;
 
-// each node has max 4 outputs
+// each node has max 4 in/outputs
 typedef struct node_s {
     int id;
     vec2_t pos;

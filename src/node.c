@@ -83,12 +83,10 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->maxInputs = 1;
         n->maxOutputs = 1;
     }
-
     if (tp == n_split) {
         n->maxInputs = 1;
         n->maxOutputs = 4;
     }
-
     if (tp == n_out) {
         n->maxOutputs = 0;
         n->maxInputs = 1;
@@ -153,7 +151,6 @@ void vText(cairo_t *cr, const char* str)
         fc[0] = str[i];
         cairo_show_text (cr, fc);
         cairo_rel_move_to(cr, -w, w * 1.4);
-
     }
     cairo_set_font_matrix(cr, &save);
 }
@@ -170,8 +167,7 @@ void drawNode(cairo_t *cr, node_t* n)
     drawBox(cr, nodeWidth, nodeHeight, n->state);
     cairo_set_matrix(cr, &local);
 
-    if (n->invert) 
-    {
+    if (n->invert) {
         vText(cr, invTypeNames[n->type]);
     } else {
         vText(cr, typeNames[n->type]);
@@ -179,15 +175,13 @@ void drawNode(cairo_t *cr, node_t* n)
     cairo_stroke (cr);
 
     cairo_set_line_width(cr, 1);
-    for (int i = 0; i < 4; i++) 
-    {
+    for (int i = 0; i < 4; i++) {
         if (i < n->maxOutputs) {
             if (n->outputs[i].highlight) {
                 cairo_set_source_rgb(cr, 1, 1, 0);
             } else {
                 cairo_set_source_rgb(cr, 0, 0, 0);
             }
-            //cairo_arc(cr, nodeWidth/2.0 - 4, -nodeHeight/2.0 + (nodeHeight/4.0)*(i+0.5), 4, 0, 2 * PI);
             cairo_arc(cr, ioPoints[i].x, ioPoints[i].y, 4, 0, 2 * PI);
             cairo_stroke(cr);
         }
@@ -198,7 +192,6 @@ void drawNode(cairo_t *cr, node_t* n)
             } else {
                 cairo_set_source_rgb(cr, 0, 0, 0);
             }
-            //cairo_arc(cr, -nodeWidth/2.0 + 4, -nodeHeight/2.0 + (nodeHeight/4.0)*(i+0.5), 4, 0, 2 * PI);
             cairo_arc(cr, ioPoints[i + 4].x, ioPoints[i + 4].y, 4, 0, 2 * PI);
             cairo_stroke(cr);
         }
@@ -250,89 +243,70 @@ int pointInIo(double x, double y, node_t* n)
 
 void clearCircuit()
 {
-    while (wireList) 
-    {
+    while (wireList) {
         wire_t* w = (wire_t*)wireList->data;
         deleteWire(w);
     }
 
-    while (nodeList) 
-    {
+    while (nodeList) {
         node_t* n = (node_t*)nodeList->data;
         freeNode(n);
     }
     currentID = 0;
 }
 
-void updateLogic() 
+void updateLogic()
 {
     GSList* it;
-    for (it = nodeList; it; it = it->next) 
-    {
-        node_t* n = (node_t*)it->data;    
+    for (it = nodeList; it; it = it->next) {
+        node_t* n = (node_t*)it->data;
         gboolean states[4];
         int stateCount = 0;
-        for (int i=0;i<4;i++) 
-        {
-            if (n->inputs[i].wire)
-            {
+        for (int i = 0; i < 4; i++) {
+            if (n->inputs[i].wire) {
                 states[stateCount] = n->inputStates[i];
                 stateCount++;
             }
         }
-        
-        if (n->type == n_not)
-        {
+
+        if (n->type == n_not) {
             n->state = !states[0];
         }
-        
-        if (n->type == n_out)
-        {
+
+        if (n->type == n_out) {
             n->state = states[0];
         }
-        
-        if (stateCount == 2)
-        {
-            if (n->type == n_and)
-            {
+
+        if (stateCount == 2) {
+            if (n->type == n_and) {
                 n->state = states[0] & states[1];
             }
-            if (n->type == n_or)
-            {
+            if (n->type == n_or) {
                 n->state = states[0] | states[1];
             }
-            if (n->type == n_xor)
-            {
+            if (n->type == n_xor) {
                 n->state = states[0] ^ states[1];
             }
         }
-        if (stateCount == 3)
-        {
-            if (n->type == n_and)
-            {
+        if (stateCount == 3) {
+            if (n->type == n_and) {
                 n->state = states[0] & states[1] & states[2];
             }
-            if (n->type == n_or)
-            {
+            if (n->type == n_or) {
                 n->state = states[0] | states[1] | states[2];
             }
-            if (n->type == n_xor)
-            {
+            if (n->type == n_xor) {
                 n->state = states[0] ^ states[1] ^ states[2];
             }
         }
-        if (stateCount == 4)
-        {
-            if (n->type == n_and)
-            {
+        if (stateCount == 4) {
+            if (n->type == n_and) {
                 n->state = states[0] & states[1] & states[2] & states[3];
             }
-            if (n->type == n_or)
-            {
+            if (n->type == n_or) {
                 n->state = states[0] | states[1] | states[2] | states[3];
             }
-            if (n->type == n_xor)
-            {
+            if (n->type == n_xor) {
                 n->state = states[0] ^ states[1] ^ states[2] ^ states[3];
             }
         }

@@ -13,10 +13,10 @@ GtkWidget *drawArea;
 gboolean timeOut(gpointer data)
 {
     (void)data;
-    
+
     propagateWires();
     updateLogic();
-    
+
     gtk_widget_queue_draw(drawArea);
 
     return TRUE;
@@ -26,12 +26,8 @@ gboolean timeOut(gpointer data)
 
 int main(int argc, char *argv[])
 {
-    //srand(time(NULL)); // for wire colours
-
     GtkBuilder      *builder;
-
     GtkWidget       *window;
-    
 
     calcIoPoints();
     gtk_init(&argc, &argv);
@@ -45,7 +41,6 @@ int main(int argc, char *argv[])
     initNodeWin(builder);
     (void)drawArea;
     gtk_builder_connect_signals(builder, NULL);
-    
 
     g_object_unref(builder);
     gtk_widget_show(window);
@@ -53,13 +48,7 @@ int main(int argc, char *argv[])
     setOffset( gtk_widget_get_allocated_width (drawArea) / 2.0,
                gtk_widget_get_allocated_height (drawArea) / 2.0);
 
-    
-    
-
-
-
     g_timeout_add (250, timeOut, NULL);
-
     gtk_main();
 
     return 0;

@@ -16,17 +16,14 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
     (void)widget;
     (void)data;
 
-    for (int i=0; i<4; i++)
-    {
-        if (currentNode->inputs[i].wire)
-        {
+    for (int i = 0; i < 4; i++) {
+        if (currentNode->inputs[i].wire) {
             deleteWire(currentNode->inputs[i].wire);
         }
-        if (currentNode->outputs[i].wire)
-        {
+        if (currentNode->outputs[i].wire) {
             deleteWire(currentNode->outputs[i].wire);
         }
-        
+
     }
     freeNode(currentNode);
 
@@ -55,7 +52,7 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     return FALSE;
 }
 
-void initNodeWin(GtkBuilder *builder) 
+void initNodeWin(GtkBuilder *builder)
 {
     nodeWindow = GTK_WIDGET(gtk_builder_get_object(builder, "nodeWindow"));
     nodeWinType = GTK_WIDGET(gtk_builder_get_object(builder, "nodeWinType"));
@@ -69,8 +66,8 @@ void showNodeWindow(node_t* n)
     char degStr[80];
     currentNode = n;
     gtk_label_set_text((GtkLabel*)nodeWinType, typeNames[n->type]);
-    gtk_toggle_button_set_active((GtkToggleButton*)nodeWinInvert,n->invert);
-    sprintf(degStr,"%f",n->rotation * R2D);
-    gtk_entry_set_text((GtkEntry*)nodeWinRotation,degStr);
+    gtk_toggle_button_set_active((GtkToggleButton*)nodeWinInvert, n->invert);
+    sprintf(degStr, "%f", n->rotation * R2D);
+    gtk_entry_set_text((GtkEntry*)nodeWinRotation, degStr);
     gtk_widget_show(nodeWindow);
 }

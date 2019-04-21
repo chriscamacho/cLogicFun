@@ -11,17 +11,20 @@ double zoom = 1.0;
 vec2_t ds = { 0.0, 0.0 }; // pan delta
 gboolean panning = FALSE;
 vec2_t offset = { 0.0, 0.0 };
-node_t* panNode = NULL; // in NULL pan whole scene
+node_t* panNode = NULL; // if NULL, pan whole scene
 gboolean wireDragMode = FALSE;
 wire_t dragWire;
+
 // because panNode moved gets reset by redraw
-gboolean wasMoved=FALSE;
+gboolean wasMoved = FALSE;
 
 
 vec2_t centrePos(GtkWidget* w)
 {
-    return (vec2_t){(-offset.x + gtk_widget_get_allocated_width(w) / 2.0) / zoom,
-                    (-offset.y + gtk_widget_get_allocated_height(w)/ 2.0) / zoom };
+    return (vec2_t) {
+        (-offset.x + gtk_widget_get_allocated_width(w) / 2.0) / zoom,
+        (-offset.y + gtk_widget_get_allocated_height(w) / 2.0) / zoom
+    };
 }
 
 // node adders, want better userdata provision from glade!
@@ -117,9 +120,6 @@ gboolean on_open_activate(GtkWidget *widget, gpointer data)
     }
 
     gtk_widget_destroy (dialog);
-
-
-
     return FALSE;
 }
 
@@ -152,13 +152,10 @@ gboolean onSave(GtkWidget *widget, gpointer data)
     res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT) {
         char *filename;
-
         filename = gtk_file_chooser_get_filename (chooser);
-
         FILE * fp;
 
         fp = fopen (filename, "w");
-
         fprintf(fp, "<circuit>\n\n");
 
         GSList* it;
@@ -171,6 +168,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
             fprintf(fp, "</node>\n\n");
         }
         fprintf(fp, "\n\n");
+
         for (it = wireList; it; it = it->next) {
             wire_t* w = (wire_t*)it->data;
             fprintf(fp, "<wire wireID=\"%i\">\n", w->id);
@@ -185,9 +183,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
 
         g_free (filename);
     }
-
     gtk_widget_destroy (dialog);
-
     return FALSE;
 }
 
@@ -203,12 +199,15 @@ gboolean eventBox_scroll_event_cb(GtkWidget *widget, GdkEvent  *event, gpointer 
 
     double oldZoom = zoom;
     zoom -= (((GdkEventScroll*)event)->delta_y / 10.0);
+
     if (zoom < 0.1) {
         zoom = 0.1;
     }
+
     if (zoom > 6) {
         zoom = 6;
     }
+
     if (zoom != oldZoom) {
         // TODO needs more work, attempting to zoom at the mouse pointer
         /*
@@ -263,7 +262,6 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
             w->inIndex = dragWire.inIndex;
             w->parent->outputs[w->outIndex].wire = w;
             w->target->inputs[w->inIndex].wire = w;
-            //printf("new wire pid%i tid%i inI%i outI%i\n",w->parent->id,w->firstTarget->id,w->inIndex,w->outIndex);
         }
     }
     // finished dragging so reset stuff
@@ -282,7 +280,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
     return TRUE;
 }
 
-gboolean eventBox_button_press_event_cb( GtkWidget *widget, GdkEventButton *event )
+gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event)
 {
     (void)widget;
     ds = (vec2_t) {
@@ -323,16 +321,11 @@ gboolean eventBox_button_press_event_cb( GtkWidget *widget, GdkEventButton *even
                 if (i != -1) {
                     if ((wire_t*)n->outputs[i].wire) {
                         wire_t* w = (wire_t*)n->outputs[i].wire;
-                        //w->firstTarget->inputs[w->inIndex].wire=NULL;
-                        //n->outputs[i].wire = NULL;
                         deleteWire(w);
                     }
                 }
-                //wire_t *w = findWire(n, i);
-                //if (w) {
-                //    deleteWire(w);
-                //}
             }
+
             if (!wireDragMode) {
                 panNode = n;
                 break;
@@ -340,6 +333,7 @@ gboolean eventBox_button_press_event_cb( GtkWidget *widget, GdkEventButton *even
 
         }
     }
+
     // if not dragging then do panning
     if (!wireDragMode) {
         panning = TRUE;
@@ -382,7 +376,6 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
             oldv[i] = n->outputs[i].highlight;
             if (i < 4) {
                 n->outputs[i].highlight = FALSE;
-
             } else {
                 n->inputs[i - 4].highlight = FALSE;
             }
@@ -456,7 +449,6 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
             (event->x - offset.x) / zoom,
             (event->y - offset.y) / zoom
         };
-
     }
 
 
@@ -511,7 +503,7 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     }
 
     drawWires(cr, zoom);
-    
+
     if (wireDragMode) {
         cairo_set_source_rgb(cr, 0, 0, 0);
         cairo_set_line_width(cr, 4.0 / zoom);

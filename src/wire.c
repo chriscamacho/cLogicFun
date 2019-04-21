@@ -107,8 +107,7 @@ void deleteWire(wire_t* w)
 void propagateWire(wire_t* w, gboolean state)
 {
     if (w->target->type == n_split) {
-        for (int i=0; i<4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             if (w->target->outputs[i].wire) {
                 propagateWire(w->target->outputs[i].wire, state);
             }
@@ -118,16 +117,16 @@ void propagateWire(wire_t* w, gboolean state)
     w->state = state;
 }
 
-void propagateWires() 
+void propagateWires()
 {
-        GSList* it;
+    GSList* it;
 
     for (it = wireList; it; it = it->next) {
         wire_t* w = (wire_t*)it->data;
         gboolean state = w->parent->state;
         // recursion will propagate through the splits
         if (w->parent->type != n_split) {
-            propagateWire(w,state);
+            propagateWire(w, state);
         }
     }
 }

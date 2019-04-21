@@ -29,13 +29,6 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
     (void)el;
 
     for (i = 0; attr[i]; i += 2) {
-        //printf("    %s, %s\n",attr[i], attr[i+1]);
-        /*
-         el=node     nodeID, 3
-         el=pos      x, 50.000000    y, 0.000000    rot, 0.000000
-         el=logic    type, 6    inv, 0
-         el=io       maxIn, 1    maxOut, 0
-        */
         if (strcasecmp("node", el) == 0) {
             if (strcasecmp("nodeID", attr[i]) == 0) {
                 newNode.id = atoi(attr[i + 1]);
@@ -68,12 +61,7 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
                 newNode.maxOutputs = atoi(attr[i + 1]);
             }
         }
-        /*
-        el=wire     wireID, 4
-        el=parent   pid, 0    pindex, 0
-        el=target   tid, 2    tindex, 0
-        el=colour   r, 0.796875    g, 0.785156    b, 0.597656
-        */
+
         if (strcasecmp("wire", el) == 0) {
             if (strcasecmp("wireID", attr[i]) == 0) {
                 newWire.id = atoi(attr[i + 1]);
@@ -140,7 +128,7 @@ end(void *data, const XML_Char *el)
         w->colourR = newWire.colourR;
         w->colourG = newWire.colourG;
         w->colourB = newWire.colourB;
-        
+
         w->parent->outputs[w->outIndex].wire = w;
         w->target->inputs[w->inIndex].wire = w;
     }
@@ -190,7 +178,6 @@ void loadCircuit(const char* fileName)
             break;
         }
     }
-    
 
     XML_ParserFree(p);
     g_hash_table_destroy(hash);
