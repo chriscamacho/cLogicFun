@@ -269,50 +269,86 @@ void updateLogic()
             }
         }
 
-        if (n->type == n_not) {
-            n->state = !states[0];
-        }
-
         if (n->type == n_out) {
             n->state = states[0];
         }
+        
+        if (n->type == n_not) {
+            if (n->invert) {
+                n->state = states[0];
+            } else {
+                n->state = !states[0];
+            }
+        }
 
         if (stateCount == 2) {
-            if (n->type == n_and) {
-                n->state = states[0] & states[1];
-            }
-            if (n->type == n_or) {
-                n->state = states[0] | states[1];
-            }
-            if (n->type == n_xor) {
-                n->state = states[0] ^ states[1];
+            if (n->invert) {
+                if (n->type == n_and) {
+                    n->state = !(states[0] & states[1]);
+                }
+                if (n->type == n_or) {
+                    n->state = !(states[0] | states[1]);
+                }
+                if (n->type == n_xor) {
+                    n->state = !(states[0] ^ states[1]);
+                }
+            } else {
+                if (n->type == n_and) {
+                    n->state = states[0] & states[1];
+                }
+                if (n->type == n_or) {
+                    n->state = states[0] | states[1];
+                }
+                if (n->type == n_xor) {
+                    n->state = states[0] ^ states[1];
+                }
             }
         }
         if (stateCount == 3) {
-            if (n->type == n_and) {
-                n->state = states[0] & states[1] & states[2];
-            }
-            if (n->type == n_or) {
-                n->state = states[0] | states[1] | states[2];
-            }
-            if (n->type == n_xor) {
-                n->state = states[0] ^ states[1] ^ states[2];
+            if (n->invert) {
+                if (n->type == n_and) {
+                    n->state = !(states[0] & states[1] & states[2]);
+                }
+                if (n->type == n_or) {
+                    n->state = !(states[0] | states[1] | states[2]);
+                }
+                if (n->type == n_xor) {
+                    n->state = !(states[0] ^ states[1] ^ states[2]);
+                }
+            } else {
+                if (n->type == n_and) {
+                    n->state = states[0] & states[1] & states[2];
+                }
+                if (n->type == n_or) {
+                    n->state = states[0] | states[1] | states[2];
+                }
+                if (n->type == n_xor) {
+                    n->state = states[0] ^ states[1] ^ states[2];
+                }
             }
         }
         if (stateCount == 4) {
-            if (n->type == n_and) {
-                n->state = states[0] & states[1] & states[2] & states[3];
+            if (n->invert) {
+                if (n->type == n_and) {
+                    n->state = !(states[0] & states[1] & states[2] & states[3]);
+                }
+                if (n->type == n_or) {
+                    n->state = !(states[0] | states[1] | states[2] | states[3]);
+                }
+                if (n->type == n_xor) {
+                    n->state = !(states[0] ^ states[1] ^ states[2] ^ states[3]);
+                }
+            } else {
+                if (n->type == n_and) {
+                    n->state = states[0] & states[1] & states[2] & states[3];
+                }
+                if (n->type == n_or) {
+                    n->state = states[0] | states[1] | states[2] | states[3];
+                }
+                if (n->type == n_xor) {
+                    n->state = states[0] ^ states[1] ^ states[2] ^ states[3];
+                }
             }
-            if (n->type == n_or) {
-                n->state = states[0] | states[1] | states[2] | states[3];
-            }
-            if (n->type == n_xor) {
-                n->state = states[0] ^ states[1] ^ states[2] ^ states[3];
-            }
-        }
-
-        if (n->invert) {
-            n->state = !n->state;
         }
     }
 }

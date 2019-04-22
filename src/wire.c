@@ -76,8 +76,8 @@ void updateWire(wire_t* w)
     w->sp.x += w->parent->pos.x;
     w->sp.y += w->parent->pos.y;
 
-    w->cp1.x = (as * (ioPoints[w->outIndex].x + 40.0 - (w->outIndex * 5.0)) - ac * ioPoints[w->outIndex].y);
-    w->cp1.y = (ac * (ioPoints[w->outIndex].x + 40.0 - (w->outIndex * 5.0)) + as * ioPoints[w->outIndex].y);
+    w->cp1.x = (as * (ioPoints[w->outIndex].x + 60.0 - (w->outIndex * 5.0)) - ac * ioPoints[w->outIndex].y);
+    w->cp1.y = (ac * (ioPoints[w->outIndex].x + 60.0 - (w->outIndex * 5.0)) + as * ioPoints[w->outIndex].y);
     w->cp1.x += w->parent->pos.x;
     w->cp1.y += w->parent->pos.y;
 
@@ -90,8 +90,8 @@ void updateWire(wire_t* w)
     w->ep.x += w->target->pos.x;
     w->ep.y += w->target->pos.y;
 
-    w->cp2.x = (as * (ioPoints[w->inIndex + 4].x - 30.0 + (w->inIndex * 5.0)) - ac * ioPoints[w->inIndex + 4].y);
-    w->cp2.y = (ac * (ioPoints[w->inIndex + 4].x - 30.0 + (w->inIndex * 5.0)) + as * ioPoints[w->inIndex + 4].y);
+    w->cp2.x = (as * (ioPoints[w->inIndex + 4].x - 60.0 + (w->inIndex * 5.0)) - ac * ioPoints[w->inIndex + 4].y);
+    w->cp2.y = (ac * (ioPoints[w->inIndex + 4].x - 60.0 + (w->inIndex * 5.0)) + as * ioPoints[w->inIndex + 4].y);
     w->cp2.x += w->target->pos.x;
     w->cp2.y += w->target->pos.y;
 }
