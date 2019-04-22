@@ -9,9 +9,11 @@ int currentID = 0;
 
 GSList* nodeList = NULL;
 
-#define nodeWidth 25
-#define nodeHeight 50
+#define nodeWidth 64
+#define nodeHeight 64
 
+GdkPixbuf* typeImg[7];
+GdkPixbuf* invTypeImg[7];
 
 char typeNames[7][8] = {
     "SPLIT",
@@ -131,6 +133,7 @@ void drawBox(cairo_t *cr, double width, double height, gboolean active)
 // TODO this is horrible and doesn't work properly
 // tried many different things.... (give up for now loads more to do!)
 // would pango really be any better ?
+/*
 void vText(cairo_t *cr, const char* str)
 {
     cairo_text_extents_t ex;
@@ -154,7 +157,7 @@ void vText(cairo_t *cr, const char* str)
     }
     cairo_set_font_matrix(cr, &save);
 }
-
+*/
 void drawNode(cairo_t *cr, node_t* n)
 {
     cairo_matrix_t before, local;
@@ -163,17 +166,17 @@ void drawNode(cairo_t *cr, node_t* n)
     cairo_translate(cr, n->pos.x, n->pos.y);
     cairo_rotate(cr, n->rotation);
     cairo_get_matrix(cr, &local);
-
+    
     drawBox(cr, nodeWidth, nodeHeight, n->state);
     cairo_set_matrix(cr, &local);
-
+/*
     if (n->invert) {
         vText(cr, invTypeNames[n->type]);
     } else {
         vText(cr, typeNames[n->type]);
     }
     cairo_stroke (cr);
-
+*/
     cairo_set_line_width(cr, 1);
     for (int i = 0; i < 4; i++) {
         if (i < n->maxOutputs) {
@@ -196,6 +199,14 @@ void drawNode(cairo_t *cr, node_t* n)
             cairo_stroke(cr);
         }
     }
+    
+    if (n->invert) {    
+        gdk_cairo_set_source_pixbuf (cr, invTypeImg[n->type], -24, -24);
+    } else {
+        gdk_cairo_set_source_pixbuf (cr, typeImg[n->type], -24, -24);
+    }
+    cairo_paint(cr);
+    
     cairo_set_matrix(cr, &before);
 }
 

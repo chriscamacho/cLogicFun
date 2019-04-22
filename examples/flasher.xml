@@ -1,67 +1,67 @@
 <circuit>
 
 <node nodeID="7">
-  <pos x="-270.000000" y="28.000000" rot="1.570796"/>
+  <pos x="102.945251" y="39.621124" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="8">
-  <pos x="-322.741211" y="69.654968" rot="1.570796"/>
+  <pos x="34.246094" y="148.206512" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="14">
-  <pos x="-196.000000" y="-45.000000" rot="0.000000"/>
+  <pos x="153.766907" y="-158.466400" rot="0.000000"/>
   <logic type="2" inv="0" />
   <io maxIn="4" maxOut="1" />
 </node>
 
 <node nodeID="17">
-  <pos x="-451.000000" y="130.000000" rot="4.712389"/>
+  <pos x="-291.570709" y="298.731750" rot="4.712389"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="18">
-  <pos x="-395.706726" y="19.706726" rot="4.712389"/>
+  <pos x="-51.727844" y="12.297272" rot="4.712389"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="22">
-  <pos x="-51.000000" y="-44.000000" rot="0.000000"/>
+  <pos x="272.660095" y="-138.534607" rot="0.000000"/>
   <logic type="6" inv="0" />
   <io maxIn="1" maxOut="0" />
 </node>
 
 <node nodeID="25">
-  <pos x="-418.591278" y="75.591309" rot="4.712389"/>
+  <pos x="-192.071136" y="127.026245" rot="4.712389"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="31">
-  <pos x="-359.000000" y="107.000000" rot="1.570796"/>
+  <pos x="-51.261597" y="257.831055" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="32">
-  <pos x="-391.000000" y="149.000000" rot="1.570796"/>
+  <pos x="-143.067627" y="369.541443" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
 </node>
 
 <node nodeID="27">
-  <pos x="-324.000000" y="-113.000000" rot="0.000000"/>
+  <pos x="38.927063" y="-252.754791" rot="0.000000"/>
   <logic type="1" inv="0" />
   <io maxIn="1" maxOut="4" />
 </node>
 
 <node nodeID="30">
-  <pos x="-327.000000" y="-18.000000" rot="0.000000"/>
+  <pos x="60.998291" y="-73.497162" rot="0.000000"/>
   <logic type="1" inv="0" />
   <io maxIn="1" maxOut="4" />
 </node>
@@ -110,12 +110,6 @@
   <colour r="0.449219" g="0.402344" b="0.222656" />
 </wire>
 
-<wire wireID="28">
-  <parent pid="27" pindex="3" />
-  <target tid="27" tindex="0" />
-  <colour r="0.535156" g="0.421875" b="0.847656" />
-</wire>
-
 <wire wireID="29">
   <parent pid="27" pindex="0" />
   <target tid="14" tindex="0" />
@@ -138,6 +132,12 @@
   <parent pid="30" pindex="0" />
   <target tid="14" tindex="3" />
   <colour r="0.757812" g="0.000000" b="0.945312" />
+</wire>
+
+<wire wireID="48">
+  <parent pid="27" pindex="1" />
+  <target tid="27" tindex="0" />
+  <colour r="0.000000" g="0.320312" b="0.398438" />
 </wire>
 
 

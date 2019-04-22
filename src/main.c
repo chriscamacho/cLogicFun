@@ -6,7 +6,7 @@
 #include "callbacks.h"
 #include "nodeWin.h"
 
-#define PREFIX "/uk/co/bedroomcoders/cLogicToy/"
+#define PREFIX "/uk/co/bedroomcoders/cLogicFun/"
 
 GtkWidget *drawArea;
 
@@ -22,7 +22,18 @@ gboolean timeOut(gpointer data)
     return TRUE;
 }
 
+GdkPixbuf* loadPb(const char* fn)
+{
+    GError *gerror = NULL;
+    GdkPixbuf* pb = gdk_pixbuf_new_from_resource (fn, &gerror);
 
+    if (!pb) {
+        printf("error message: %s\n", gerror->message);
+        g_error_free(gerror);
+    }
+
+    return pb;
+}
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +42,23 @@ int main(int argc, char *argv[])
 
     calcIoPoints();
     gtk_init(&argc, &argv);
+
+    typeImg[0] = loadPb(PREFIX"res/blank.png");
+    typeImg[1] = loadPb(PREFIX"res/not.png");
+    typeImg[2] = loadPb(PREFIX"res/and.png");
+    typeImg[3] = loadPb(PREFIX"res/or.png");
+    typeImg[4] = loadPb(PREFIX"res/xor.png");
+    typeImg[5] = loadPb(PREFIX"res/input.png");
+    typeImg[6] = loadPb(PREFIX"res/output.png");
+    
+    invTypeImg[0] = typeImg[0];
+    invTypeImg[1] = loadPb(PREFIX"res/thru.png");
+    invTypeImg[2] = loadPb(PREFIX"res/nand.png");
+    invTypeImg[3] = loadPb(PREFIX"res/nor.png");
+    invTypeImg[4] = loadPb(PREFIX"res/xnor.png");
+    invTypeImg[5] = typeImg[5];
+    invTypeImg[6] = typeImg[6];
+    
 
     builder = gtk_builder_new();
 

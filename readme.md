@@ -17,3 +17,4 @@ delete a wire by starting to drag from the start of the wire.
 
 There are a number of examples to get you started...
 
+Note a wire splitter node (SPLIT) has no delay, an inverted not gate (THRU) has latency

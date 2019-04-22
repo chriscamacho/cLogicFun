@@ -378,10 +378,11 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
         gboolean oldv[8];
         // find the state of all the node in/outputs
         for (int i = 0; i < 8; i++) {
-            oldv[i] = n->outputs[i].highlight;
             if (i < 4) {
+                oldv[i] = n->outputs[i].highlight;
                 n->outputs[i].highlight = FALSE;
             } else {
+                oldv[i] = n->inputs[i - 4].highlight;
                 n->inputs[i - 4].highlight = FALSE;
             }
         }
@@ -442,7 +443,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
                 dragWire.parent = n;
                 dragWire.outIndex = i;
                 redraw = TRUE;
-            } else if (oldv[i] != n->inputs[i].highlight) {
+            } else if (i > 3 && oldv[i] != n->inputs[i-4].highlight) {
                 redraw = TRUE;
             }
         }
@@ -454,6 +455,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
             (event->x - offset.x) / zoom,
             (event->y - offset.y) / zoom
         };
+        redraw = TRUE;
     }
 
 
@@ -497,9 +499,6 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     cairo_line_to(cr, 0, 400);
     cairo_move_to(cr, 0, 0);
     cairo_stroke(cr);
-
-//    gdk_cairo_set_source_pixbuf (cr, cellImages[c_BG], -32, -32);
-//    cairo_paint(cr);
 
     GSList* it;
     for (it = nodeList; it; it = it->next) {

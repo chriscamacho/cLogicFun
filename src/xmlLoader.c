@@ -32,6 +32,9 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("node", el) == 0) {
             if (strcasecmp("nodeID", attr[i]) == 0) {
                 newNode.id = atoi(attr[i + 1]);
+                if (newNode.id > currentID) {
+                    currentID = newNode.id + 1;
+                }
             }
         }
         if (strcasecmp("pos", el) == 0) {
@@ -65,6 +68,9 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("wire", el) == 0) {
             if (strcasecmp("wireID", attr[i]) == 0) {
                 newWire.id = atoi(attr[i + 1]);
+                if (newWire.id > currentID) {
+                    currentID = newWire.id + 1;
+                }
             }
         }
         if (strcasecmp("parent", el) == 0) {

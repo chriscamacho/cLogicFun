@@ -3,7 +3,7 @@ LDFLAGS:=`pkg-config gtk+-3.0 --libs` -rdynamic -lexpat -lm
 
 CFLAGS:=`pkg-config gtk+-3.0 --cflags`
 CFLAGS+= -Wfatal-errors -pedantic -Wall -Wextra -Werror
-CFLAGS+= -std=c99 -Iinclude -g
+CFLAGS+= -std=c99 -Iinclude
 # because glib-compile-resources don't play nice...
 CFLAGS+=  -Wno-overlength-strings
 
@@ -23,8 +23,15 @@ $(OBJ): obj/%.o : src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # this one file needs a special case as it has many specific dependencies
-src/resources.c: res/resource.xml res/ui.glade
+src/resources.c: res/resource.xml res/ui.glade res/*.png
 	$(GCR) res/resource.xml --generate-source --target=src/resources.c --generate
+
+
+.PHONY: debug release
+debug: CFLAGS+= -g
+release: CFLAGS+= -O3
+
+debug release: clean cLogicFun
 
 .PHONY:	clean 
 clean:

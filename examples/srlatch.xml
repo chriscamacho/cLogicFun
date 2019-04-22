@@ -1,31 +1,31 @@
 <circuit>
 
 <node nodeID="12">
-  <pos x="-132.165466" y="-33.692139" rot="0.000000"/>
+  <pos x="-221.247284" y="-74.619568" rot="0.000000"/>
   <logic type="5" inv="0" />
   <io maxIn="0" maxOut="4" />
 </node>
 
 <node nodeID="13">
-  <pos x="-132.267822" y="97.602722" rot="0.000000"/>
+  <pos x="-211.512329" y="212.978775" rot="0.000000"/>
   <logic type="5" inv="0" />
   <io maxIn="0" maxOut="4" />
 </node>
 
 <node nodeID="14">
-  <pos x="11.440186" y="-33.716461" rot="0.000000"/>
+  <pos x="11.000000" y="-33.000000" rot="0.000000"/>
   <logic type="3" inv="1" />
   <io maxIn="4" maxOut="4" />
 </node>
 
 <node nodeID="15">
-  <pos x="-56.532776" y="39.722748" rot="4.712389"/>
+  <pos x="-74.750000" y="85.250000" rot="4.712389"/>
   <logic type="3" inv="1" />
   <io maxIn="4" maxOut="4" />
 </node>
 
 <node nodeID="16">
-  <pos x="92.885925" y="34.665527" rot="0.000000"/>
+  <pos x="151.826508" y="64.898743" rot="0.000000"/>
   <logic type="6" inv="0" />
   <io maxIn="1" maxOut="0" />
 </node>

@@ -8,6 +8,8 @@ extern GSList* nodeList;
 extern char typeNames[7][8];
 extern char invTypeNames[7][8];
 
+extern GdkPixbuf* typeImg[7];
+extern GdkPixbuf* invTypeImg[7];
 
 // each node can optionally invert its output
 enum nodeType {
