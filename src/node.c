@@ -36,18 +36,18 @@ char invTypeNames[7][8] = {
     "OUT"
 };
 
-vec2_t ioPoints[8];
+vec2_t ioPoints[16];
 
 void calcIoPoints()
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         ioPoints[i] = (vec2_t) {
             nodeWidth / 2.0 - 4.0,
-                      (nodeHeight / 4.0)*(i + 0.5) - (nodeHeight / 2.0)
+                      (nodeHeight / 8.0)*(i + 0.5) - (nodeHeight / 2.0)
         };
-        ioPoints[i + 4] = (vec2_t) {
+        ioPoints[i + 8] = (vec2_t) {
             -nodeWidth / 2.0 + 4.0,
-                (nodeHeight / 4.0)*(i + 0.5) - (nodeHeight / 2.0)
+                (nodeHeight / 8.0)*(i + 0.5) - (nodeHeight / 2.0)
             };
     }
 }
@@ -64,7 +64,7 @@ node_t* addNode(enum nodeType tp, double x, double y)
     n->invert = FALSE;
     n->state = FALSE;
     n->text[0] = 0;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         n->outputs[i].index = i;
         n->outputs[i].wire = NULL;
         n->outputs[i].highlight = FALSE;
@@ -75,20 +75,20 @@ node_t* addNode(enum nodeType tp, double x, double y)
     }
 
     if (tp == n_and || tp == n_or || tp == n_xor) {
-        n->maxInputs = 4;
-        n->maxOutputs = 4;
+        n->maxInputs = 8;
+        n->maxOutputs = 8;
     }
     if (tp == n_in) {
         n->maxInputs = 0;
-        n->maxOutputs = 4;
+        n->maxOutputs = 8;
     }
     if (tp == n_not) {
         n->maxInputs = 1;
-        n->maxOutputs = 4;
+        n->maxOutputs = 8;
     }
     if (tp == n_split) {
         n->maxInputs = 1;
-        n->maxOutputs = 4;
+        n->maxOutputs = 8;
     }
     if (tp == n_out) {
         n->maxInputs = 1;
@@ -109,7 +109,7 @@ void freeNode(node_t* n)
 // presumably as no licence its public domain...
 void drawBox(cairo_t *cr, double width, double height, gboolean active)
 {
-#define radius 8
+#define radius 4
     vec2_t d = { width / 2.0, height / 2.0 };
     cairo_new_sub_path (cr);
     cairo_arc (cr, d.x - radius, radius - d.y, radius, -90 * D2R, 0 * D2R);
@@ -178,7 +178,7 @@ void drawNode(cairo_t *cr, node_t* n)
     cairo_stroke (cr);
 */
     cairo_set_line_width(cr, 1);
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         if (i < n->maxOutputs) {
             if (n->outputs[i].highlight) {
                 cairo_set_source_rgb(cr, 1, 1, 0);
@@ -195,7 +195,7 @@ void drawNode(cairo_t *cr, node_t* n)
             } else {
                 cairo_set_source_rgb(cr, 0, 0, 0);
             }
-            cairo_arc(cr, ioPoints[i + 4].x, ioPoints[i + 4].y, 4, 0, 2 * PI);
+            cairo_arc(cr, ioPoints[i + 8].x, ioPoints[i + 8].y, 4, 0, 2 * PI);
             cairo_stroke(cr);
         }
     }
@@ -241,7 +241,7 @@ int pointInIo(double x, double y, node_t* n)
     double as = sin(-n->rotation);
     vec2_t l = { ac * r.x - as * r.y, as * r.x + ac * r.y };
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         if (i < n->maxOutputs) {
             if (fabs(ioPoints[i].x - l.x) < 4.0 &&
                     fabs(ioPoints[i].y - l.y) < 4.0) {
@@ -250,9 +250,9 @@ int pointInIo(double x, double y, node_t* n)
         }
 
         if (i < n->maxInputs) {
-            if (fabs(ioPoints[i + 4].x - l.x) < 4.0 &&
-                    fabs(ioPoints[i + 4].y - l.y) < 4.0) {
-                return i + 4;
+            if (fabs(ioPoints[i + 8].x - l.x) < 4.0 &&
+                    fabs(ioPoints[i + 8].y - l.y) < 4.0) {
+                return i + 8;
             }
         }
     }
@@ -278,17 +278,22 @@ void updateLogic()
     GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
-        gboolean states[4];
+        gboolean states[] = {0,0,0,0,0,0,0,0};
         int stateCount = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             if (n->inputs[i].wire) {
                 states[stateCount] = n->inputStates[i];
                 stateCount++;
             }
         }
+        
+        if (n->type == n_in) {
+            continue;
+        }
 
         if (n->type == n_out) {
             n->state = states[0];
+            continue;
         }
         
         if (n->type == n_not) {
@@ -297,8 +302,26 @@ void updateLogic()
             } else {
                 n->state = !states[0];
             }
+            continue;
         }
+        int newState = states[0];
 
+        for (int i=1; i<stateCount; i++) {
+            if (n->type == n_and) {
+                newState = newState & states[i];
+            }
+            if (n->type == n_or) {
+                newState = newState | states[i];
+            }
+            if (n->type == n_xor) {
+                newState = newState ^ states[i];
+            }
+        }
+        if (n->invert) {
+            newState = !newState;
+        }
+        n->state = newState;
+/*
         if (stateCount == 2) {
             if (n->invert) {
                 if (n->type == n_and) {
@@ -368,5 +391,32 @@ void updateLogic()
                 }
             }
         }
+        if (stateCount == 5) {
+            if (n->invert) {
+                if (n->type == n_and) {
+                    n->state = !(states[0] & states[1] & states[2] & states[3] &
+                    states[4]);
+                }
+                if (n->type == n_or) {
+                    n->state = !(states[0] | states[1] | states[2] | states[3] &
+                    states[4]);
+                }
+                if (n->type == n_xor) {
+                    n->state = !(states[0] ^ states[1] ^ states[2] ^ states[3]);
+                }
+            } else {
+                if (n->type == n_and) {
+                    n->state = states[0] & states[1] & states[2] & states[3];
+                }
+                if (n->type == n_or) {
+                    n->state = states[0] | states[1] | states[2] | states[3];
+                }
+                if (n->type == n_xor) {
+                    n->state = states[0] ^ states[1] ^ states[2] ^ states[3];
+                }
+            }
+        }
+    */
+        
     }
 }

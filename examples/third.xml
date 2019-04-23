@@ -3,37 +3,37 @@
 <node nodeID="4">
   <pos x="216.166341" y="-112.008545" rot="0.785398"/>
   <logic type="4" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="13">
   <pos x="149.693034" y="-43.618001" rot="0.785398"/>
   <logic type="4" inv="1" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="16">
   <pos x="75.308390" y="28.571086" rot="0.785398"/>
   <logic type="2" inv="1" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="19">
   <pos x="-23.517293" y="128.758341" rot="0.785398"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="31">
   <pos x="-30.039810" y="-220.758542" rot="0.785398"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="4" />
+  <io maxIn="0" maxOut="8" />
 </node>
 
 <node nodeID="36">
   <pos x="-134.275024" y="-110.021220" rot="0.785398"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="4" />
+  <io maxIn="0" maxOut="8" />
 </node>
 
 

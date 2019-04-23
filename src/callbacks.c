@@ -303,15 +303,20 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                         (event->y - offset.y) / zoom, n)) {
             // if dragging in a node with highlighted output
             // delete the existing wire and start dragging the wire
-            if (n->outputs[0].highlight ||
-                    n->outputs[1].highlight ||
-                    n->outputs[2].highlight ||
-                    n->outputs[3].highlight ) {
+            int hi = -1;
+            for (int i = 0; i<8; i++) {
+                if (n->outputs[i].highlight) {
+                    hi = i;
+                    break;
+                }  
+            }
+            if (hi != -1 ) {
                 wireDragMode = TRUE;
                 dragWire.cp2 = (vec2_t) {
                     (event->x - offset.x) / zoom,
                     (event->y - offset.y) / zoom
                 };
+                /*
                 int i = -1;
                 if (n->outputs[0].highlight) {
                     i = 0;
@@ -325,12 +330,13 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                 if (n->outputs[3].highlight) {
                     i = 3;
                 }
-                if (i != -1) {
-                    if ((wire_t*)n->outputs[i].wire) {
-                        wire_t* w = (wire_t*)n->outputs[i].wire;
+                
+                if (i != -1) { */
+                    if ((wire_t*)n->outputs[hi].wire) {
+                        wire_t* w = (wire_t*)n->outputs[hi].wire;
                         deleteWire(w);
                     }
-                }
+                //}
             }
 
             if (!wireDragMode) {
@@ -377,15 +383,15 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
     gboolean redraw = FALSE;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
-        gboolean oldv[8];
+        gboolean oldv[16];
         // find the state of all the node in/outputs
-        for (int i = 0; i < 8; i++) {
-            if (i < 4) {
+        for (int i = 0; i < 16; i++) {
+            if (i < 8) {
                 oldv[i] = n->outputs[i].highlight;
                 n->outputs[i].highlight = FALSE;
             } else {
-                oldv[i] = n->inputs[i - 4].highlight;
-                n->inputs[i - 4].highlight = FALSE;
+                oldv[i] = n->inputs[i - 8].highlight;
+                n->inputs[i - 8].highlight = FALSE;
             }
         }
         // if inside this node
@@ -393,7 +399,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
             // if inside a node check output to
             // see if the mouse is over it
             int ni = pointInIo(x, y, n);
-            if (ni != -1 && ni < 4 && !wireDragMode) {
+            if (ni != -1 && ni < 8 && !wireDragMode) {
                 // if its an output reposition dragwire start point
                 n->outputs[ni].highlight = TRUE;
                 dragWire.outIndex = ni;
@@ -416,20 +422,20 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
                 dragWire.cp1 = p;
             }
 
-            if (ni > 3) {
+            if (ni > 7) {
                 // if its an input set the end of the dragwire
-                n->inputs[ni - 4].highlight = TRUE;
+                n->inputs[ni - 8].highlight = TRUE;
                 if (wireDragMode) {
                     dragWire.target = n;
-                    dragWire.inIndex = ni - 4;
+                    dragWire.inIndex = ni - 8;
                     dragWire.cp2 = (vec2_t) {
                         (event->x - offset.x) / zoom,
                         (event->y - offset.y) / zoom
                     };
                     double ac = cos(-dragWire.target->rotation + 90.0 * D2R);
                     double as = sin(-dragWire.target->rotation + 90.0 * D2R);
-                    dragWire.cp2.x += (as * (ioPoints[ni - 4].x - 40.0) - ac * ioPoints[ni - 4].y);
-                    dragWire.cp2.y += (ac * (ioPoints[ni - 4].x - 40.0) + as * ioPoints[ni - 4].y);
+                    dragWire.cp2.x += (as * (ioPoints[ni - 8].x - 40.0) - ac * ioPoints[ni - 8].y);
+                    dragWire.cp2.y += (ac * (ioPoints[ni - 8].x - 40.0) + as * ioPoints[ni - 8].y);
                 }
             } else {
                 // move the end control point if dragging
@@ -440,12 +446,12 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
         }
         // check for changes redraw only if needed
         // (mouse leaving output in inferred)
-        for (int i = 0; i < 8; i++) {
-            if (i < 4 && oldv[i] != n->outputs[i].highlight) {
+        for (int i = 0; i < 16; i++) {
+            if (i < 8 && oldv[i] != n->outputs[i].highlight) {
                 dragWire.parent = n;
                 dragWire.outIndex = i;
                 redraw = TRUE;
-            } else if (i > 3 && oldv[i] != n->inputs[i-4].highlight) {
+            } else if (i > 7 && oldv[i] != n->inputs[i-8].highlight) {
                 redraw = TRUE;
             }
         }

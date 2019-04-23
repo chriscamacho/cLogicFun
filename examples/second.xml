@@ -3,19 +3,19 @@
 <node nodeID="4">
   <pos x="-20.750000" y="-109.000000" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="5">
   <pos x="-19.500000" y="11.250000" rot="0.000000"/>
   <logic type="3" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="6">
   <pos x="-15.750000" y="134.500000" rot="0.000000"/>
   <logic type="4" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="7">
@@ -39,13 +39,13 @@
 <node nodeID="21">
   <pos x="-205.750000" y="-83.750000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="4" />
+  <io maxIn="0" maxOut="8" />
 </node>
 
 <node nodeID="25">
   <pos x="-205.000000" y="105.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="4" />
+  <io maxIn="0" maxOut="8" />
 </node>
 
 

@@ -18,7 +18,7 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
     (void)widget;
     (void)data;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         if (currentNode->inputs[i].wire) {
             deleteWire(currentNode->inputs[i].wire);
         }

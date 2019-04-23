@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-extern vec2_t ioPoints[8];
+extern vec2_t ioPoints[16];
 extern int currentID;
 extern GList* nodeList;
 
@@ -45,9 +45,9 @@ typedef struct node_s {
     int maxOutputs;
     gboolean invert;
     gboolean state;
-    output_t outputs[4];
-    gboolean inputStates[4];
-    input_t inputs[4];
+    output_t outputs[8];
+    gboolean inputStates[8];
+    input_t inputs[8];
     char text[80];
 } node_t;
 

@@ -197,7 +197,11 @@ void loadCircuit(const char* fileName)
     XML_ParserFree(p);
     g_hash_table_destroy(hash);
     
+    
     // fudge to help some feedback circuits like latches settle
+    propagateWires();
+    updateLogic();
+    
     GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
@@ -206,6 +210,6 @@ void loadCircuit(const char* fileName)
         }
         propagateWires();
         updateLogic();
-    }        
+    } 
 }
 

@@ -3,70 +3,70 @@
 <node nodeID="0">
   <pos x="-194.000000" y="98.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
-  <io maxIn="1" maxOut="4" />
+  <io maxIn="1" maxOut="8" />
   <label text="source" />
 </node>
 
 <node nodeID="4">
   <pos x="-272.000000" y="-263.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="4" />
+  <io maxIn="0" maxOut="8" />
   <label text="output select 1" />
 </node>
 
 <node nodeID="5">
   <pos x="-272.000000" y="-83.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="4" />
+  <io maxIn="0" maxOut="8" />
   <label text="output select 2" />
 </node>
 
 <node nodeID="6">
   <pos x="173.000000" y="137.000000" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="4" />
+  <io maxIn="8" maxOut="8" />
   <label text="output 3" />
 </node>
 
 <node nodeID="7">
   <pos x="176.000000" y="-55.000031" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="4" />
+  <io maxIn="8" maxOut="8" />
   <label text="output 1" />
 </node>
 
 <node nodeID="8">
   <pos x="176.000000" y="36.000000" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="4" />
+  <io maxIn="8" maxOut="8" />
   <label text="output 2" />
 </node>
 
 <node nodeID="9">
   <pos x="175.000000" y="-148.000000" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="4" />
+  <io maxIn="8" maxOut="8" />
   <label text="output 0" />
 </node>
 
 <node nodeID="10">
   <pos x="25.000000" y="-222.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
-  <io maxIn="1" maxOut="4" />
+  <io maxIn="1" maxOut="8" />
   <label text="" />
 </node>
 
 <node nodeID="11">
   <pos x="-153.000000" y="-99.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
-  <io maxIn="1" maxOut="4" />
+  <io maxIn="1" maxOut="8" />
   <label text="" />
 </node>
 
 <node nodeID="31">
   <pos x="-37.000000" y="103.000000" rot="0.000000"/>
   <logic type="0" inv="0" />
-  <io maxIn="1" maxOut="4" />
+  <io maxIn="1" maxOut="8" />
   <label text="" />
 </node>
 

@@ -17,7 +17,7 @@
 <node nodeID="14">
   <pos x="153.000000" y="-158.000000" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
@@ -66,14 +66,14 @@
 <node nodeID="27">
   <pos x="38.000000" y="-252.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
-  <io maxIn="1" maxOut="4" />
+  <io maxIn="1" maxOut="8" />
   <label text="short pulse" />
 </node>
 
 <node nodeID="30">
   <pos x="60.000000" y="-73.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
-  <io maxIn="1" maxOut="4" />
+  <io maxIn="1" maxOut="8" />
   <label text="long pulse" />
 </node>
 

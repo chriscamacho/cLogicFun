@@ -84,14 +84,14 @@ void updateWire(wire_t* w)
     ac = cos(-w->target->rotation + 90.0 * D2R);
     as = sin(-w->target->rotation + 90.0 * D2R);
     w->ep = (vec2_t) {
-        as * ioPoints[w->inIndex + 4].x - ac * ioPoints[w->inIndex + 4].y,
-        ac * ioPoints[w->inIndex + 4].x + as * ioPoints[w->inIndex + 4].y
+        as * ioPoints[w->inIndex + 8].x - ac * ioPoints[w->inIndex + 8].y,
+        ac * ioPoints[w->inIndex + 8].x + as * ioPoints[w->inIndex + 8].y
     };
     w->ep.x += w->target->pos.x;
     w->ep.y += w->target->pos.y;
 
-    w->cp2.x = (as * (ioPoints[w->inIndex + 4].x - 60.0 + (w->inIndex * 5.0)) - ac * ioPoints[w->inIndex + 4].y);
-    w->cp2.y = (ac * (ioPoints[w->inIndex + 4].x - 60.0 + (w->inIndex * 5.0)) + as * ioPoints[w->inIndex + 4].y);
+    w->cp2.x = (as * (ioPoints[w->inIndex + 8].x - 60.0 + (w->inIndex * 5.0)) - ac * ioPoints[w->inIndex + 8].y);
+    w->cp2.y = (ac * (ioPoints[w->inIndex + 8].x - 60.0 + (w->inIndex * 5.0)) + as * ioPoints[w->inIndex + 8].y);
     w->cp2.x += w->target->pos.x;
     w->cp2.y += w->target->pos.y;
 }
@@ -107,7 +107,7 @@ void deleteWire(wire_t* w)
 void propagateWire(wire_t* w, gboolean state)
 {
     if (w->target->type == n_split) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             if (w->target->outputs[i].wire) {
                 propagateWire(w->target->outputs[i].wire, state);
             }

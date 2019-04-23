@@ -15,7 +15,7 @@
 <node nodeID="2">
   <pos x="8.394165" y="0.910095" rot="0.000000"/>
   <logic type="2" inv="0" />
-  <io maxIn="4" maxOut="1" />
+  <io maxIn="8" maxOut="1" />
 </node>
 
 <node nodeID="3">
