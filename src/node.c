@@ -7,7 +7,7 @@
 
 int currentID = 0;
 
-GSList* nodeList = NULL;
+GList* nodeList = NULL;
 
 #define nodeWidth 64
 #define nodeHeight 64
@@ -63,6 +63,7 @@ node_t* addNode(enum nodeType tp, double x, double y)
     n->rotation = 0;
     n->invert = FALSE;
     n->state = FALSE;
+    n->text[0] = 0;
     for (int i = 0; i < 4; i++) {
         n->outputs[i].index = i;
         n->outputs[i].wire = NULL;
@@ -94,14 +95,13 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->maxOutputs = 0;
     }
 
-    nodeList = g_slist_append(nodeList, n);
+    nodeList = g_list_append(nodeList, n);
     return n;
 }
 
 void freeNode(node_t* n)
 {
-    // TODO delete all wires connected to a node
-    nodeList = g_slist_remove(nodeList, n);
+    nodeList = g_list_remove(nodeList, n);
     free(n);
 }
 
@@ -207,6 +207,13 @@ void drawNode(cairo_t *cr, node_t* n)
     }
     cairo_paint(cr);
     
+    
+    cairo_text_extents_t ex;
+    cairo_set_source_rgb(cr, 0, 0, 0);
+    cairo_text_extents(cr, n->text, &ex);
+    cairo_move_to(cr, -ex.width*.5, -nodeHeight*.6);
+    cairo_show_text (cr, n->text);
+    
     cairo_set_matrix(cr, &before);
 }
 
@@ -268,7 +275,7 @@ void clearCircuit()
 
 void updateLogic()
 {
-    GSList* it;
+    GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         gboolean states[4];

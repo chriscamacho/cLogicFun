@@ -1,7 +1,7 @@
 #ifndef WIRE_H
 #define WIRE_H
 
-extern GSList* wireList;
+extern GList* wireList;
 
 typedef struct wire_s {
     int id;

@@ -163,13 +163,15 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         fp = fopen (filename, "w");
         fprintf(fp, "<circuit>\n\n");
 
-        GSList* it;
+        GList* it;
         for (it = nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
             fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n", n->pos.x, n->pos.y, n->rotation);
             fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" />\n", n->type, n->invert);
             fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", n->maxInputs, n->maxOutputs);
+            // TODO probably need to escape this string...
+            fprintf(fp, "  <label text=\"%s\" />\n", n->text);
             fprintf(fp, "</node>\n\n");
         }
         fprintf(fp, "\n\n");
@@ -294,7 +296,7 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
     panNode = NULL;
     dragWire.target = NULL;
     dragWire.parent = NULL;
-    GSList* it;
+    GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (pointInNode((event->x - offset.x) / zoom,
@@ -351,7 +353,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
 {
     (void)widget;
 
-    if(panning) {
+    if(panning && event->state == GDK_BUTTON1_MASK) {
         // change view offset when panning
         double x = (event->x - ds.x); // /zoom;
         double y = (event->y - ds.y); // /zoom;
@@ -371,7 +373,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
 
     double x = (event->x - offset.x) / zoom;
     double y = (event->y - offset.y) / zoom;
-    GSList* it;
+    GList* it;
     gboolean redraw = FALSE;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
@@ -500,7 +502,7 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     cairo_move_to(cr, 0, 0);
     cairo_stroke(cr);
 
-    GSList* it;
+    GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         drawNode(cr, n);

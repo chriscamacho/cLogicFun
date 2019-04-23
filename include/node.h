@@ -3,7 +3,7 @@
 
 extern vec2_t ioPoints[8];
 extern int currentID;
-extern GSList* nodeList;
+extern GList* nodeList;
 
 extern char typeNames[7][8];
 extern char invTypeNames[7][8];
@@ -48,6 +48,7 @@ typedef struct node_s {
     output_t outputs[4];
     gboolean inputStates[4];
     input_t inputs[4];
+    char text[80];
 } node_t;
 
 node_t* addNode(enum nodeType tp, double x, double y);

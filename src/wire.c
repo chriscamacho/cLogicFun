@@ -4,7 +4,7 @@
 #include "node.h"
 #include "wire.h"
 
-GSList* wireList = NULL;
+GList* wireList = NULL;
 
 // TODO some consecutives are too close (dark), pick a better list of colours!
 double wireColours[43][3] = {
@@ -41,13 +41,13 @@ wire_t* addWire()
     w->colourB = wireColours[r][2] / 256.0;
     w->parent = NULL;
     w->target = NULL;
-    wireList = g_slist_append(wireList, w);
+    wireList = g_list_append(wireList, w);
     return w;
 }
 
 void drawWires(cairo_t* cr, double zoom)
 {
-    GSList* it;
+    GList* it;
     (void)zoom;
 
     for (it = wireList; it; it = it->next) {
@@ -98,7 +98,7 @@ void updateWire(wire_t* w)
 
 void deleteWire(wire_t* w)
 {
-    wireList = g_slist_remove (wireList, w);
+    wireList = g_list_remove (wireList, w);
     w->parent->outputs[w->outIndex].wire = NULL;
     w->target->inputs[w->inIndex].wire = NULL;
     free(w);
@@ -119,7 +119,7 @@ void propagateWire(wire_t* w, gboolean state)
 
 void propagateWires()
 {
-    GSList* it;
+    GList* it;
 
     for (it = wireList; it; it = it->next) {
         wire_t* w = (wire_t*)it->data;

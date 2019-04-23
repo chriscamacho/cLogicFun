@@ -1,69 +1,80 @@
 <circuit>
 
 <node nodeID="7">
-  <pos x="102.945251" y="39.621124" rot="1.570796"/>
+  <pos x="102.000000" y="39.000000" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="8">
-  <pos x="34.246094" y="148.206512" rot="1.570796"/>
+  <pos x="34.000000" y="148.000000" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="14">
-  <pos x="153.766907" y="-158.466400" rot="0.000000"/>
+  <pos x="153.000000" y="-158.000000" rot="0.000000"/>
   <logic type="2" inv="0" />
   <io maxIn="4" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="17">
-  <pos x="-291.570709" y="298.731750" rot="4.712389"/>
+  <pos x="-291.000000" y="298.000000" rot="4.712389"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="18">
-  <pos x="-51.727844" y="12.297272" rot="4.712389"/>
+  <pos x="-51.000000" y="12.000000" rot="4.712389"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="22">
-  <pos x="272.660095" y="-138.534607" rot="0.000000"/>
+  <pos x="272.000000" y="-138.000000" rot="0.000000"/>
   <logic type="6" inv="0" />
   <io maxIn="1" maxOut="0" />
+  <label text="" />
 </node>
 
 <node nodeID="25">
-  <pos x="-192.071136" y="127.026245" rot="4.712389"/>
+  <pos x="-192.000000" y="127.000000" rot="4.712389"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="31">
-  <pos x="-51.261597" y="257.831055" rot="1.570796"/>
+  <pos x="-51.000000" y="257.000000" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="32">
-  <pos x="-143.067627" y="369.541443" rot="1.570796"/>
+  <pos x="-143.000000" y="369.000000" rot="1.570796"/>
   <logic type="1" inv="1" />
   <io maxIn="1" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="27">
-  <pos x="38.927063" y="-252.754791" rot="0.000000"/>
+  <pos x="38.000000" y="-252.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
   <io maxIn="1" maxOut="4" />
+  <label text="short pulse" />
 </node>
 
 <node nodeID="30">
-  <pos x="60.998291" y="-73.497162" rot="0.000000"/>
+  <pos x="60.000000" y="-73.000000" rot="0.000000"/>
   <logic type="1" inv="0" />
   <io maxIn="1" maxOut="4" />
+  <label text="long pulse" />
 </node>
 
 

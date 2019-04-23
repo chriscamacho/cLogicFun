@@ -100,7 +100,11 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
                 newWire.colourB = atof(attr[i + 1]);
             }
         }
-
+        if (strcasecmp("label", el) == 0) {
+            if (strcasecmp("text", attr[i]) == 0) {
+                strcpy(newNode.text, attr[i + 1]);
+            }
+        }
     }
 
 }
@@ -122,6 +126,7 @@ end(void *data, const XML_Char *el)
         n->invert = newNode.invert;
         n->maxInputs = newNode.maxInputs;
         n->maxOutputs = newNode.maxOutputs;
+        strcpy(n->text, newNode.text);
         if (n->type == n_in) {
             // fudge to help some feedback circuits like latches settle
             n->state = TRUE;
@@ -193,7 +198,7 @@ void loadCircuit(const char* fileName)
     g_hash_table_destroy(hash);
     
     // fudge to help some feedback circuits like latches settle
-    GSList* it;
+    GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_in) {
