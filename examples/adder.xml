@@ -1,7 +1,7 @@
 <circuit>
 
 <node nodeID="4">
-  <pos x="367.000000" y="-102.000000" rot="0.000000"/>
+  <pos x="382.000000" y="-105.000000" rot="0.000000"/>
   <logic type="6" inv="0" />
   <io maxIn="1" maxOut="0" />
   <label text="result ONE" />
@@ -29,7 +29,7 @@
 </node>
 
 <node nodeID="39">
-  <pos x="316.000000" y="232.000000" rot="3.141593"/>
+  <pos x="251.795715" y="254.339844" rot="3.141593"/>
   <logic type="2" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
@@ -43,42 +43,42 @@
 </node>
 
 <node nodeID="52">
-  <pos x="77.000000" y="18.000000" rot="4.712389"/>
+  <pos x="64.000000" y="16.000000" rot="4.712389"/>
   <logic type="4" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="56">
-  <pos x="-9.000000" y="14.000000" rot="1.570796"/>
+  <pos x="-27.000000" y="15.000000" rot="1.570796"/>
   <logic type="2" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="64">
-  <pos x="138.000000" y="18.000000" rot="1.570796"/>
+  <pos x="130.260437" y="16.808350" rot="1.570796"/>
   <logic type="2" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="72">
-  <pos x="62.000000" y="232.000000" rot="3.141593"/>
+  <pos x="-9.202393" y="254.094849" rot="3.141593"/>
   <logic type="2" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="80">
-  <pos x="-240.000000" y="111.000000" rot="4.712389"/>
+  <pos x="-246.000000" y="227.000000" rot="3.141593"/>
   <logic type="2" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="81">
-  <pos x="-181.000000" y="16.000000" rot="4.712389"/>
+  <pos x="-250.234436" y="15.000000" rot="4.712389"/>
   <logic type="3" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
@@ -92,121 +92,121 @@
 </node>
 
 <node nodeID="83">
-  <pos x="-157.204767" y="-102.817194" rot="0.000000"/>
+  <pos x="-157.000000" y="-102.000000" rot="0.000000"/>
   <logic type="6" inv="0" />
   <io maxIn="1" maxOut="0" />
   <label text="OVERFLOW" />
 </node>
 
 <node nodeID="96">
-  <pos x="-71.000000" y="14.000000" rot="4.712389"/>
+  <pos x="-96.000000" y="15.000000" rot="4.712389"/>
   <logic type="4" inv="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="97">
-  <pos x="366.333333" y="-296.666667" rot="0.000000"/>
+  <pos x="381.000000" y="-296.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op1 ONE" />
 </node>
 
 <node nodeID="100">
-  <pos x="365.333333" y="-202.666667" rot="0.000000"/>
+  <pos x="383.000000" y="-197.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op2 ONE" />
 </node>
 
 <node nodeID="103">
-  <pos x="229.666667" y="-296.333333" rot="0.000000"/>
+  <pos x="229.000000" y="-296.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op1 TWO" />
 </node>
 
 <node nodeID="106">
   <pos x="230.000000" y="-203.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op2 TWO" />
 </node>
 
 <node nodeID="109">
-  <pos x="498.000000" y="16.000000" rot="1.570796"/>
+  <pos x="413.417236" y="244.138367" rot="3.141593"/>
   <logic type="2" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="115">
-  <pos x="346.000000" y="131.000000" rot="1.570796"/>
+  <pos x="328.776390" y="168.964706" rot="3.141593"/>
   <logic type="4" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="120">
-  <pos x="192.000000" y="232.000000" rot="3.141593"/>
+  <pos x="131.272705" y="253.000000" rot="3.141593"/>
   <logic type="3" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="125">
-  <pos x="100.333333" y="-296.666667" rot="0.000000"/>
+  <pos x="100.000000" y="-296.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op1 FOUR" />
 </node>
 
 <node nodeID="128">
-  <pos x="98.333333" y="-203.666667" rot="0.000000"/>
+  <pos x="98.000000" y="-203.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op2 FOUR" />
 </node>
 
 <node nodeID="132">
-  <pos x="185.000000" y="114.000000" rot="1.570796"/>
+  <pos x="122.692383" y="161.000000" rot="3.141593"/>
   <logic type="4" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="137">
-  <pos x="-41.333333" y="-296.666667" rot="0.000000"/>
+  <pos x="-43.000000" y="-300.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op1 EIGHT" />
 </node>
 
 <node nodeID="140">
-  <pos x="-42.666667" y="-203.013957" rot="0.000000"/>
+  <pos x="-42.000000" y="-203.000000" rot="0.000000"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
   <label text="op2 EIGHT" />
 </node>
 
 <node nodeID="143">
-  <pos x="31.000000" y="112.000000" rot="1.570796"/>
+  <pos x="-42.234375" y="157.000000" rot="3.141593"/>
   <logic type="4" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="149">
-  <pos x="-64.000000" y="230.000000" rot="3.141593"/>
+  <pos x="-126.000000" y="262.000000" rot="3.141593"/>
   <logic type="3" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="87">
-  <pos x="408.000000" y="-12.000000" rot="3.141593"/>
+  <pos x="424.000000" y="21.000000" rot="3.141593"/>
   <logic type="4" inv="0" />
-  <io maxIn="8" maxOut="8" />
+  <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
@@ -230,12 +230,6 @@
   <colour r="0.996094" g="0.250000" b="0.746094" />
 </wire>
 
-<wire wireID="100">
-  <parent pid="80" pindex="0" />
-  <target tid="81" tindex="0" />
-  <colour r="0.648438" g="0.355469" b="0.160156" />
-</wire>
-
 <wire wireID="103">
   <parent pid="81" pindex="0" />
   <target tid="83" tindex="0" />
@@ -246,24 +240,6 @@
   <parent pid="109" pindex="0" />
   <target tid="39" tindex="0" />
   <colour r="0.296875" g="0.398438" b="0.101562" />
-</wire>
-
-<wire wireID="113">
-  <parent pid="109" pindex="3" />
-  <target tid="27" tindex="2" />
-  <colour r="0.000000" g="0.105469" b="0.199219" />
-</wire>
-
-<wire wireID="118">
-  <parent pid="115" pindex="3" />
-  <target tid="27" tindex="1" />
-  <colour r="0.187500" g="0.484375" b="0.746094" />
-</wire>
-
-<wire wireID="119">
-  <parent pid="115" pindex="0" />
-  <target tid="39" tindex="3" />
-  <colour r="0.500000" g="0.250000" b="0.445312" />
 </wire>
 
 <wire wireID="121">
@@ -278,46 +254,10 @@
   <colour r="0.000000" g="0.945312" b="0.125000" />
 </wire>
 
-<wire wireID="123">
-  <parent pid="120" pindex="3" />
-  <target tid="52" tindex="1" />
-  <colour r="0.000000" g="0.179688" b="0.449219" />
-</wire>
-
 <wire wireID="124">
   <parent pid="120" pindex="0" />
   <target tid="72" tindex="0" />
   <colour r="0.996094" g="0.250000" b="0.746094" />
-</wire>
-
-<wire wireID="126">
-  <parent pid="125" pindex="3" />
-  <target tid="64" tindex="0" />
-  <colour r="0.648438" g="0.355469" b="0.160156" />
-</wire>
-
-<wire wireID="135">
-  <parent pid="132" pindex="0" />
-  <target tid="52" tindex="0" />
-  <colour r="0.597656" g="0.000000" b="0.238281" />
-</wire>
-
-<wire wireID="136">
-  <parent pid="132" pindex="3" />
-  <target tid="72" tindex="3" />
-  <colour r="0.945312" g="0.503906" b="0.000000" />
-</wire>
-
-<wire wireID="147">
-  <parent pid="143" pindex="3" />
-  <target tid="96" tindex="3" />
-  <colour r="0.695312" g="0.558594" b="0.000000" />
-</wire>
-
-<wire wireID="148">
-  <parent pid="143" pindex="0" />
-  <target tid="80" tindex="3" />
-  <colour r="0.472656" g="0.914062" b="0.945312" />
 </wire>
 
 <wire wireID="150">
@@ -326,46 +266,10 @@
   <colour r="0.351562" g="0.335938" b="0.449219" />
 </wire>
 
-<wire wireID="151">
-  <parent pid="64" pindex="0" />
-  <target tid="149" tindex="3" />
-  <colour r="0.449219" g="0.222656" b="0.253906" />
-</wire>
-
-<wire wireID="152">
-  <parent pid="149" pindex="3" />
-  <target tid="96" tindex="0" />
-  <colour r="0.449219" g="0.402344" b="0.222656" />
-</wire>
-
 <wire wireID="153">
   <parent pid="149" pindex="0" />
   <target tid="80" tindex="0" />
   <colour r="0.000000" g="0.558594" b="0.699219" />
-</wire>
-
-<wire wireID="154">
-  <parent pid="97" pindex="0" />
-  <target tid="109" tindex="0" />
-  <colour r="0.535156" g="0.421875" b="0.847656" />
-</wire>
-
-<wire wireID="155">
-  <parent pid="128" pindex="3" />
-  <target tid="132" tindex="1" />
-  <colour r="0.796875" g="0.597656" b="0.625000" />
-</wire>
-
-<wire wireID="156">
-  <parent pid="125" pindex="0" />
-  <target tid="132" tindex="2" />
-  <colour r="0.945312" g="0.882812" b="0.000000" />
-</wire>
-
-<wire wireID="72">
-  <parent pid="140" pindex="0" />
-  <target tid="56" tindex="2" />
-  <colour r="0.546875" g="0.000000" b="0.000000" />
 </wire>
 
 <wire wireID="76">
@@ -374,76 +278,172 @@
   <colour r="0.199219" g="0.000000" b="0.000000" />
 </wire>
 
-<wire wireID="81">
-  <parent pid="106" pindex="3" />
-  <target tid="115" tindex="1" />
-  <colour r="0.375000" g="0.746094" b="0.375000" />
-</wire>
-
-<wire wireID="88">
-  <parent pid="97" pindex="3" />
-  <target tid="87" tindex="0" />
-  <colour r="0.996094" g="0.250000" b="0.746094" />
-</wire>
-
-<wire wireID="89">
-  <parent pid="100" pindex="3" />
-  <target tid="87" tindex="3" />
-  <colour r="0.648438" g="0.355469" b="0.160156" />
-</wire>
-
-<wire wireID="90">
-  <parent pid="87" pindex="3" />
-  <target tid="4" tindex="0" />
-  <colour r="0.449219" g="0.597656" b="0.488281" />
-</wire>
-
 <wire wireID="92">
   <parent pid="100" pindex="0" />
   <target tid="109" tindex="1" />
   <colour r="0.199219" g="0.148438" b="0.183594" />
 </wire>
 
-<wire wireID="191">
-  <parent pid="137" pindex="3" />
-  <target tid="56" tindex="0" />
-  <colour r="0.945312" g="0.882812" b="0.000000" />
+<wire wireID="212">
+  <parent pid="97" pindex="0" />
+  <target tid="109" tindex="0" />
+  <colour r="0.546875" g="0.000000" b="0.000000" />
 </wire>
 
-<wire wireID="192">
-  <parent pid="137" pindex="0" />
-  <target tid="143" tindex="1" />
-  <colour r="0.000000" g="0.320312" b="0.398438" />
+<wire wireID="213">
+  <parent pid="100" pindex="0" />
+  <target tid="87" tindex="0" />
+  <colour r="0.796875" g="0.785156" b="0.597656" />
 </wire>
 
-<wire wireID="193">
-  <parent pid="140" pindex="3" />
-  <target tid="143" tindex="2" />
-  <colour r="0.757812" g="0.000000" b="0.945312" />
-</wire>
-
-<wire wireID="196">
-  <parent pid="128" pindex="2" />
-  <target tid="64" tindex="1" />
+<wire wireID="214">
+  <parent pid="97" pindex="0" />
+  <target tid="87" tindex="6" />
   <colour r="0.484375" g="0.593750" b="0.648438" />
 </wire>
 
-<wire wireID="198">
-  <parent pid="106" pindex="1" />
-  <target tid="21" tindex="3" />
+<wire wireID="219">
+  <parent pid="103" pindex="0" />
+  <target tid="115" tindex="2" />
+  <colour r="0.250000" g="0.500000" b="0.199219" />
+</wire>
+
+<wire wireID="220">
+  <parent pid="143" pindex="0" />
+  <target tid="80" tindex="7" />
+  <colour r="0.945312" g="0.597656" b="0.472656" />
+</wire>
+
+<wire wireID="221">
+  <parent pid="143" pindex="0" />
+  <target tid="96" tindex="3" />
+  <colour r="0.375000" g="0.746094" b="0.375000" />
+</wire>
+
+<wire wireID="222">
+  <parent pid="149" pindex="0" />
+  <target tid="96" tindex="0" />
+  <colour r="0.187500" g="0.484375" b="0.746094" />
+</wire>
+
+<wire wireID="223">
+  <parent pid="80" pindex="0" />
+  <target tid="81" tindex="0" />
+  <colour r="0.500000" g="0.250000" b="0.445312" />
+</wire>
+
+<wire wireID="224">
+  <parent pid="137" pindex="0" />
+  <target tid="143" tindex="1" />
+  <colour r="0.648438" g="0.527344" b="0.484375" />
+</wire>
+
+<wire wireID="226">
+  <parent pid="137" pindex="0" />
+  <target tid="56" tindex="0" />
+  <colour r="0.000000" g="0.179688" b="0.449219" />
+</wire>
+
+<wire wireID="227">
+  <parent pid="140" pindex="0" />
+  <target tid="56" tindex="2" />
+  <colour r="0.996094" g="0.250000" b="0.746094" />
+</wire>
+
+<wire wireID="228">
+  <parent pid="125" pindex="0" />
+  <target tid="64" tindex="0" />
+  <colour r="0.648438" g="0.355469" b="0.160156" />
+</wire>
+
+<wire wireID="231">
+  <parent pid="120" pindex="0" />
+  <target tid="52" tindex="1" />
+  <colour r="0.199219" g="0.148438" b="0.183594" />
+</wire>
+
+<wire wireID="236">
+  <parent pid="132" pindex="0" />
+  <target tid="52" tindex="7" />
+  <colour r="0.945312" g="0.503906" b="0.000000" />
+</wire>
+
+<wire wireID="237">
+  <parent pid="115" pindex="0" />
+  <target tid="39" tindex="7" />
+  <colour r="0.000000" g="0.300781" b="0.199219" />
+</wire>
+
+<wire wireID="238">
+  <parent pid="115" pindex="0" />
+  <target tid="27" tindex="0" />
+  <colour r="0.085938" g="0.000000" b="0.648438" />
+</wire>
+
+<wire wireID="239">
+  <parent pid="109" pindex="0" />
+  <target tid="27" tindex="2" />
+  <colour r="0.996094" g="0.250000" b="0.449219" />
+</wire>
+
+<wire wireID="240">
+  <parent pid="87" pindex="0" />
+  <target tid="4" tindex="0" />
+  <colour r="0.199219" g="0.167969" b="0.101562" />
+</wire>
+
+<wire wireID="242">
+  <parent pid="103" pindex="0" />
+  <target tid="21" tindex="0" />
+  <colour r="0.945312" g="0.882812" b="0.000000" />
+</wire>
+
+<wire wireID="243">
+  <parent pid="106" pindex="0" />
+  <target tid="115" tindex="7" />
+  <colour r="0.000000" g="0.320312" b="0.398438" />
+</wire>
+
+<wire wireID="244">
+  <parent pid="106" pindex="0" />
+  <target tid="21" tindex="7" />
+  <colour r="0.757812" g="0.000000" b="0.945312" />
+</wire>
+
+<wire wireID="245">
+  <parent pid="64" pindex="0" />
+  <target tid="149" tindex="7" />
+  <colour r="0.546875" g="0.000000" b="0.000000" />
+</wire>
+
+<wire wireID="246">
+  <parent pid="132" pindex="0" />
+  <target tid="72" tindex="7" />
+  <colour r="0.796875" g="0.785156" b="0.597656" />
+</wire>
+
+<wire wireID="247">
+  <parent pid="140" pindex="0" />
+  <target tid="143" tindex="7" />
+  <colour r="0.484375" g="0.593750" b="0.648438" />
+</wire>
+
+<wire wireID="249">
+  <parent pid="125" pindex="0" />
+  <target tid="132" tindex="7" />
   <colour r="0.199219" g="0.000000" b="0.000000" />
 </wire>
 
-<wire wireID="200">
-  <parent pid="103" pindex="3" />
-  <target tid="21" tindex="1" />
-  <colour r="0.000000" g="0.105469" b="0.199219" />
+<wire wireID="250">
+  <parent pid="128" pindex="0" />
+  <target tid="64" tindex="4" />
+  <colour r="0.296875" g="0.398438" b="0.101562" />
 </wire>
 
-<wire wireID="202">
-  <parent pid="103" pindex="2" />
-  <target tid="115" tindex="2" />
-  <colour r="0.945312" g="0.597656" b="0.472656" />
+<wire wireID="251">
+  <parent pid="128" pindex="0" />
+  <target tid="132" tindex="1" />
+  <colour r="0.000000" g="0.105469" b="0.199219" />
 </wire>
 
 

@@ -99,7 +99,8 @@ void updateWire(wire_t* w)
 void deleteWire(wire_t* w)
 {
     wireList = g_list_remove (wireList, w);
-    w->parent->outputs[w->outIndex].wire = NULL;
+    //w->parent->outputs[w->outIndex].wire = NULL;
+    w->parent->outputWires = g_list_remove(w->parent->outputWires, w);
     w->target->inputs[w->inIndex].wire = NULL;
     free(w);
 }
@@ -107,10 +108,10 @@ void deleteWire(wire_t* w)
 void propagateWire(wire_t* w, gboolean state)
 {
     if (w->target->type == n_split) {
-        for (int i = 0; i < 8; i++) {
-            if (w->target->outputs[i].wire) {
-                propagateWire(w->target->outputs[i].wire, state);
-            }
+        GList* it;
+        for (it = w->target->outputWires; it; it=it->next) {
+            wire_t* tw = (wire_t*)it->data;
+            propagateWire(tw, state);
         }
     }
     w->target->inputStates[w->inIndex] = state;

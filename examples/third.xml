@@ -1,39 +1,45 @@
 <circuit>
 
 <node nodeID="4">
-  <pos x="216.166341" y="-112.008545" rot="0.785398"/>
+  <pos x="216.000000" y="-112.000000" rot="0.785398"/>
   <logic type="4" inv="0" />
   <io maxIn="8" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="13">
-  <pos x="149.693034" y="-43.618001" rot="0.785398"/>
+  <pos x="149.000000" y="-43.000000" rot="0.785398"/>
   <logic type="4" inv="1" />
   <io maxIn="8" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="16">
-  <pos x="75.308390" y="28.571086" rot="0.785398"/>
+  <pos x="75.625000" y="27.375000" rot="0.785398"/>
   <logic type="2" inv="1" />
   <io maxIn="8" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="19">
-  <pos x="-23.517293" y="128.758341" rot="0.785398"/>
+  <pos x="-23.000000" y="128.000000" rot="0.785398"/>
   <logic type="2" inv="0" />
   <io maxIn="8" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="31">
-  <pos x="-30.039810" y="-220.758542" rot="0.785398"/>
+  <pos x="-30.000000" y="-220.000000" rot="0.785398"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="36">
-  <pos x="-134.275024" y="-110.021220" rot="0.785398"/>
+  <pos x="-134.000000" y="-110.000000" rot="0.785398"/>
   <logic type="5" inv="0" />
-  <io maxIn="0" maxOut="8" />
+  <io maxIn="0" maxOut="1" />
+  <label text="" />
 </node>
 
 
@@ -44,46 +50,46 @@
   <colour r="0.449219" g="0.222656" b="0.253906" />
 </wire>
 
-<wire wireID="33">
-  <parent pid="31" pindex="1" />
+<wire wireID="46">
+  <parent pid="31" pindex="0" />
   <target tid="13" tindex="0" />
-  <colour r="0.449219" g="0.402344" b="0.222656" />
+  <colour r="0.000000" g="0.945312" b="0.125000" />
 </wire>
 
-<wire wireID="34">
-  <parent pid="31" pindex="2" />
+<wire wireID="47">
+  <parent pid="31" pindex="0" />
   <target tid="16" tindex="0" />
-  <colour r="0.000000" g="0.558594" b="0.699219" />
+  <colour r="0.000000" g="0.179688" b="0.449219" />
 </wire>
 
-<wire wireID="35">
-  <parent pid="31" pindex="3" />
+<wire wireID="48">
+  <parent pid="31" pindex="0" />
   <target tid="19" tindex="0" />
-  <colour r="0.535156" g="0.421875" b="0.847656" />
+  <colour r="0.996094" g="0.250000" b="0.746094" />
 </wire>
 
-<wire wireID="37">
+<wire wireID="52">
   <parent pid="36" pindex="0" />
-  <target tid="4" tindex="3" />
-  <colour r="0.796875" g="0.597656" b="0.625000" />
+  <target tid="13" tindex="7" />
+  <colour r="0.199219" g="0.148438" b="0.183594" />
 </wire>
 
-<wire wireID="38">
-  <parent pid="36" pindex="1" />
-  <target tid="13" tindex="3" />
-  <colour r="0.945312" g="0.882812" b="0.000000" />
+<wire wireID="53">
+  <parent pid="36" pindex="0" />
+  <target tid="4" tindex="7" />
+  <colour r="0.296875" g="0.164062" b="0.074219" />
 </wire>
 
-<wire wireID="39">
-  <parent pid="36" pindex="2" />
-  <target tid="16" tindex="3" />
-  <colour r="0.000000" g="0.320312" b="0.398438" />
+<wire wireID="54">
+  <parent pid="36" pindex="0" />
+  <target tid="19" tindex="7" />
+  <colour r="0.187500" g="0.250000" b="0.210938" />
 </wire>
 
-<wire wireID="40">
-  <parent pid="36" pindex="3" />
-  <target tid="19" tindex="3" />
-  <colour r="0.757812" g="0.000000" b="0.945312" />
+<wire wireID="55">
+  <parent pid="36" pindex="0" />
+  <target tid="16" tindex="7" />
+  <colour r="0.000000" g="0.000000" b="0.996094" />
 </wire>
 
 

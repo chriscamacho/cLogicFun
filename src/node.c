@@ -64,6 +64,7 @@ node_t* addNode(enum nodeType tp, double x, double y)
     n->invert = FALSE;
     n->state = FALSE;
     n->text[0] = 0;
+    n->outputWires = NULL;
     for (int i = 0; i < 8; i++) {
         n->outputs[i].index = i;
         n->outputs[i].wire = NULL;
@@ -76,19 +77,19 @@ node_t* addNode(enum nodeType tp, double x, double y)
 
     if (tp == n_and || tp == n_or || tp == n_xor) {
         n->maxInputs = 8;
-        n->maxOutputs = 8;
+        n->maxOutputs = 1;
     }
     if (tp == n_in) {
         n->maxInputs = 0;
-        n->maxOutputs = 8;
+        n->maxOutputs = 1;
     }
     if (tp == n_not) {
         n->maxInputs = 1;
-        n->maxOutputs = 8;
+        n->maxOutputs = 1;
     }
     if (tp == n_split) {
         n->maxInputs = 1;
-        n->maxOutputs = 8;
+        n->maxOutputs = 1;
     }
     if (tp == n_out) {
         n->maxInputs = 1;
@@ -130,34 +131,7 @@ void drawBox(cairo_t *cr, double width, double height, gboolean active)
 
 }
 
-// TODO this is horrible and doesn't work properly
-// tried many different things.... (give up for now loads more to do!)
-// would pango really be any better ?
-/*
-void vText(cairo_t *cr, const char* str)
-{
-    cairo_text_extents_t ex;
-    cairo_matrix_t save;
-    cairo_matrix_t matrix;
-    cairo_get_font_matrix(cr, &save);
 
-    // get the height of a char
-    char fc[] = { 'X', '\0'};
-    cairo_text_extents(cr, fc, &ex);
-    double w = ex.width + ex.x_bearing;
-
-    cairo_get_font_matrix(cr, &matrix);
-
-    int l = strlen(str);
-    cairo_move_to(cr, -w / 2, -((double)l) * 2.5);
-    for (int i = 0; i < l; i++) {
-        fc[0] = str[i];
-        cairo_show_text (cr, fc);
-        cairo_rel_move_to(cr, -w, w * 1.4);
-    }
-    cairo_set_font_matrix(cr, &save);
-}
-*/
 void drawNode(cairo_t *cr, node_t* n)
 {
     cairo_matrix_t before, local;
@@ -169,14 +143,7 @@ void drawNode(cairo_t *cr, node_t* n)
     
     drawBox(cr, nodeWidth, nodeHeight, n->state);
     cairo_set_matrix(cr, &local);
-/*
-    if (n->invert) {
-        vText(cr, invTypeNames[n->type]);
-    } else {
-        vText(cr, typeNames[n->type]);
-    }
-    cairo_stroke (cr);
-*/
+
     cairo_set_line_width(cr, 1);
     for (int i = 0; i < 8; i++) {
         if (i < n->maxOutputs) {

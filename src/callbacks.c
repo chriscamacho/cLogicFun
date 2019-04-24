@@ -267,7 +267,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
             w->target = dragWire.target;
             w->outIndex = dragWire.outIndex;
             w->inIndex = dragWire.inIndex;
-            w->parent->outputs[w->outIndex].wire = w;
+            //w->parent->outputs[w->outIndex].wire = w;
             w->target->inputs[w->inIndex].wire = w;
         }
     }
@@ -310,12 +310,15 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                     break;
                 }  
             }
-            if (hi != -1 ) {
+
+
+            if (hi != -1) {
                 wireDragMode = TRUE;
                 dragWire.cp2 = (vec2_t) {
                     (event->x - offset.x) / zoom,
                     (event->y - offset.y) / zoom
                 };
+
                 /*
                 int i = -1;
                 if (n->outputs[0].highlight) {
@@ -329,20 +332,34 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                 }
                 if (n->outputs[3].highlight) {
                     i = 3;
-                }
+                }*/
                 
-                if (i != -1) { */
-                    if ((wire_t*)n->outputs[hi].wire) {
-                        wire_t* w = (wire_t*)n->outputs[hi].wire;
-                        deleteWire(w);
-                    }
+                //if (i != -1) { 
+                    //if ((wire_t*)n->outputs[hi].wire) {
+                    //    wire_t* w = (wire_t*)n->outputs[hi].wire;
+                    //    deleteWire(w);
+                    //}
                 //}
             }
-
+            if (hi==-1) {
+                for (int i=0; i<8;i++)
+                if (n->inputs[i].highlight) {
+                    wire_t* w=(wire_t*)n->inputs[i].wire;
+                    if (w) {
+                        deleteWire((wire_t*)w);
+                    }
+                    wireDragMode = FALSE;
+                    panNode = NULL;
+                    wasMoved = TRUE;
+                    break;
+                }
+            }
             if (!wireDragMode) {
                 panNode = n;
                 break;
             }
+            
+
 
         }
     }

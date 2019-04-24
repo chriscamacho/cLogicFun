@@ -45,7 +45,9 @@ typedef struct node_s {
     int maxOutputs;
     gboolean invert;
     gboolean state;
+    // only using 1 output - reserving others for nodes that are embedded circuits
     output_t outputs[8];
+    GList* outputWires;
     gboolean inputStates[8];
     input_t inputs[8];
     char text[80];
