@@ -13,5 +13,7 @@
     <file>res/xor.png</file>
     <file>res/input.png</file>
     <file>res/thru.png</file>
+    <file>res/1.png</file>
+    <file>res/0.png</file>
   </gresource>
 </gresources>

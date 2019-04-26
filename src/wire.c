@@ -105,8 +105,10 @@ void deleteWire(wire_t* w)
     free(w);
 }
 
+/*
 void propagateWire(wire_t* w, gboolean state)
 {
+    
     if (w->target->type == n_split) {
         GList* it;
         for (it = w->target->outputWires; it; it=it->next) {
@@ -114,10 +116,11 @@ void propagateWire(wire_t* w, gboolean state)
             propagateWire(tw, state);
         }
     }
+    
     w->target->inputStates[w->inIndex] = state;
     w->state = state;
 }
-
+*/
 void propagateWires()
 {
     GList* it;
@@ -126,8 +129,10 @@ void propagateWires()
         wire_t* w = (wire_t*)it->data;
         gboolean state = w->parent->state;
         // recursion will propagate through the splits
-        if (w->parent->type != n_split) {
-            propagateWire(w, state);
-        }
+        //if (w->parent->type != n_split) {
+        //    propagateWire(w, state);
+        //}
+        w->target->inputStates[w->inIndex] = state;
+        w->state = state;
     }
 }

@@ -55,6 +55,10 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
             if (strcasecmp("inv", attr[i]) == 0) {
                 newNode.invert = atoi(attr[i + 1]);
             }
+            if (strcasecmp("latency", attr[i]) == 0) {
+                newNode.latency = atoi(attr[i + 1]);
+            }
+            
         }
         if (strcasecmp("io", el) == 0) {
             if (strcasecmp("maxIn", attr[i]) == 0) {
@@ -126,6 +130,7 @@ end(void *data, const XML_Char *el)
         n->invert = newNode.invert;
         n->maxInputs = newNode.maxInputs;
         n->maxOutputs = newNode.maxOutputs;
+        n->latency = newNode.latency;
         strcpy(n->text, newNode.text);
         if (n->type == n_in) {
             // fudge to help some feedback circuits like latches settle

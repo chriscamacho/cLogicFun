@@ -1,0 +1,51 @@
+<circuit>
+
+<node nodeID="0">
+  <pos x="-217.452576" y="-77.143188" rot="0.000000"/>
+  <logic type="1" inv="0" latency="0" />
+  <io maxIn="1" maxOut="1" />
+  <label text="" />
+</node>
+
+<node nodeID="2">
+  <pos x="-217.297485" y="66.863831" rot="0.000000"/>
+  <logic type="1" inv="0" latency="7" />
+  <io maxIn="1" maxOut="1" />
+  <label text="" />
+</node>
+
+<node nodeID="3">
+  <pos x="0.000000" y="0.000000" rot="0.000000"/>
+  <logic type="2" inv="0" latency="0" />
+  <io maxIn="8" maxOut="1" />
+  <label text="" />
+</node>
+
+
+
+<wire wireID="4">
+  <parent pid="0" pindex="0" />
+  <target tid="3" tindex="0" />
+  <colour r="0.796875" g="0.785156" b="0.597656" />
+</wire>
+
+<wire wireID="5">
+  <parent pid="2" pindex="0" />
+  <target tid="3" tindex="7" />
+  <colour r="0.484375" g="0.593750" b="0.648438" />
+</wire>
+
+<wire wireID="6">
+  <parent pid="2" pindex="0" />
+  <target tid="2" tindex="0" />
+  <colour r="0.898438" g="0.710938" b="0.945312" />
+</wire>
+
+<wire wireID="7">
+  <parent pid="0" pindex="0" />
+  <target tid="0" tindex="0" />
+  <colour r="0.199219" g="0.000000" b="0.000000" />
+</wire>
+
+
+</circuit>

@@ -29,11 +29,11 @@ vec2_t centrePos(GtkWidget* w)
 
 // node adders, want better userdata provision from glade!
 // would rather route all to same call back with index in data...
-gboolean addSplit(GtkWidget *widget, gpointer data)
+gboolean addConst(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_split, v.x, v.y);
+    addNode(n_const, v.x, v.y);
     return FALSE;
 }
 
@@ -168,7 +168,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
             node_t* n = (node_t*)it->data;
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
             fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n", n->pos.x, n->pos.y, n->rotation);
-            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" />\n", n->type, n->invert);
+            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" />\n", n->type, n->invert, n->latency);
             fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", n->maxInputs, n->maxOutputs);
             // TODO probably need to escape this string...
             fprintf(fp, "  <label text=\"%s\" />\n", n->text);
@@ -269,6 +269,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
             w->inIndex = dragWire.inIndex;
             //w->parent->outputs[w->outIndex].wire = w;
             w->target->inputs[w->inIndex].wire = w;
+            w->parent->outputWires = g_list_append(w->parent->outputWires, w);
         }
     }
     // finished dragging so reset stuff

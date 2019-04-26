@@ -16,7 +16,7 @@ GdkPixbuf* typeImg[7];
 GdkPixbuf* invTypeImg[7];
 
 char typeNames[7][8] = {
-    "SPLIT",
+    "CONST 1",
     "NOT",
     "AND",
     "OR",
@@ -27,7 +27,7 @@ char typeNames[7][8] = {
 
 // pesky XNOR can't just prepend N !!!
 char invTypeNames[7][8] = {
-    "SPLIT",
+    "CONST 0",
     "THRU",
     "NAND",
     "NOR",
@@ -73,13 +73,17 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->inputs[i].highlight = FALSE;
         n->inputs[i].index = i;
         n->inputs[i].wire = NULL;
+        
+        n->stateBuffer[i] = 0;
     }
+    
+    n->latency = 0;
 
     if (tp == n_and || tp == n_or || tp == n_xor) {
         n->maxInputs = 8;
         n->maxOutputs = 1;
     }
-    if (tp == n_in) {
+    if (tp == n_in || tp == n_const) {
         n->maxInputs = 0;
         n->maxOutputs = 1;
     }
@@ -87,10 +91,7 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->maxInputs = 1;
         n->maxOutputs = 1;
     }
-    if (tp == n_split) {
-        n->maxInputs = 1;
-        n->maxOutputs = 1;
-    }
+
     if (tp == n_out) {
         n->maxInputs = 1;
         n->maxOutputs = 0;
@@ -254,136 +255,50 @@ void updateLogic()
             }
         }
         
+        int newState = states[0];
+        
         if (n->type == n_in) {
-            continue;
-        }
-
-        if (n->type == n_out) {
-            n->state = states[0];
-            continue;
+            newState = n->state; 
         }
         
         if (n->type == n_not) {
-            if (n->invert) {
-                n->state = states[0];
-            } else {
-                n->state = !states[0];
-            }
-            continue;
+            newState = !states[0];
         }
-        int newState = states[0];
+        
+        if (n->type == n_const) {
+            newState = 1;
+        }
 
-        for (int i=1; i<stateCount; i++) {
-            if (n->type == n_and) {
-                newState = newState & states[i];
+        if (n->type == n_and || n->type == n_or || n->type == n_xor) {
+
+            for (int i=1; i<stateCount; i++) {
+                if (n->type == n_and) {
+                    newState = newState & states[i];
+                }
+                if (n->type == n_or) {
+                    newState = newState | states[i];
+                }
+                if (n->type == n_xor) {
+                    newState = newState ^ states[i];
+                }
             }
-            if (n->type == n_or) {
-                newState = newState | states[i];
-            }
-            if (n->type == n_xor) {
-                newState = newState ^ states[i];
-            }
+            
         }
+        
         if (n->invert) {
             newState = !newState;
         }
-        n->state = newState;
-/*
-        if (stateCount == 2) {
-            if (n->invert) {
-                if (n->type == n_and) {
-                    n->state = !(states[0] & states[1]);
-                }
-                if (n->type == n_or) {
-                    n->state = !(states[0] | states[1]);
-                }
-                if (n->type == n_xor) {
-                    n->state = !(states[0] ^ states[1]);
-                }
-            } else {
-                if (n->type == n_and) {
-                    n->state = states[0] & states[1];
-                }
-                if (n->type == n_or) {
-                    n->state = states[0] | states[1];
-                }
-                if (n->type == n_xor) {
-                    n->state = states[0] ^ states[1];
-                }
-            }
-        }
-        if (stateCount == 3) {
-            if (n->invert) {
-                if (n->type == n_and) {
-                    n->state = !(states[0] & states[1] & states[2]);
-                }
-                if (n->type == n_or) {
-                    n->state = !(states[0] | states[1] | states[2]);
-                }
-                if (n->type == n_xor) {
-                    n->state = !(states[0] ^ states[1] ^ states[2]);
-                }
-            } else {
-                if (n->type == n_and) {
-                    n->state = states[0] & states[1] & states[2];
-                }
-                if (n->type == n_or) {
-                    n->state = states[0] | states[1] | states[2];
-                }
-                if (n->type == n_xor) {
-                    n->state = states[0] ^ states[1] ^ states[2];
-                }
-            }
-        }
-        if (stateCount == 4) {
-            if (n->invert) {
-                if (n->type == n_and) {
-                    n->state = !(states[0] & states[1] & states[2] & states[3]);
-                }
-                if (n->type == n_or) {
-                    n->state = !(states[0] | states[1] | states[2] | states[3]);
-                }
-                if (n->type == n_xor) {
-                    n->state = !(states[0] ^ states[1] ^ states[2] ^ states[3]);
-                }
-            } else {
-                if (n->type == n_and) {
-                    n->state = states[0] & states[1] & states[2] & states[3];
-                }
-                if (n->type == n_or) {
-                    n->state = states[0] | states[1] | states[2] | states[3];
-                }
-                if (n->type == n_xor) {
-                    n->state = states[0] ^ states[1] ^ states[2] ^ states[3];
-                }
-            }
-        }
-        if (stateCount == 5) {
-            if (n->invert) {
-                if (n->type == n_and) {
-                    n->state = !(states[0] & states[1] & states[2] & states[3] &
-                    states[4]);
-                }
-                if (n->type == n_or) {
-                    n->state = !(states[0] | states[1] | states[2] | states[3] &
-                    states[4]);
-                }
-                if (n->type == n_xor) {
-                    n->state = !(states[0] ^ states[1] ^ states[2] ^ states[3]);
-                }
-            } else {
-                if (n->type == n_and) {
-                    n->state = states[0] & states[1] & states[2] & states[3];
-                }
-                if (n->type == n_or) {
-                    n->state = states[0] | states[1] | states[2] | states[3];
-                }
-                if (n->type == n_xor) {
-                    n->state = states[0] ^ states[1] ^ states[2] ^ states[3];
-                }
-            }
-        }
-    */
+        n->stateBuffer[7] = n->stateBuffer[6];
+        n->stateBuffer[6] = n->stateBuffer[5];
+        n->stateBuffer[5] = n->stateBuffer[4];
+        n->stateBuffer[4] = n->stateBuffer[3];
+        n->stateBuffer[3] = n->stateBuffer[2];
+        n->stateBuffer[2] = n->stateBuffer[1];
+        n->stateBuffer[1] = n->stateBuffer[0];
+        
+        n->stateBuffer[0] = newState;
+        n->state = n->stateBuffer[n->latency];
+
         
     }
 }

@@ -13,7 +13,7 @@ extern GdkPixbuf* invTypeImg[7];
 
 // each node can optionally invert its output
 enum nodeType {
-    n_split = 0,
+    n_const = 0,
     n_not,
     n_and,
     n_or,
@@ -51,6 +51,8 @@ typedef struct node_s {
     gboolean inputStates[8];
     input_t inputs[8];
     char text[80];
+    gboolean stateBuffer[8];
+    int latency;
 } node_t;
 
 node_t* addNode(enum nodeType tp, double x, double y);

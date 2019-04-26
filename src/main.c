@@ -14,8 +14,9 @@ gboolean timeOut(gpointer data)
 {
     (void)data;
 
-    propagateWires();
     updateLogic();
+    propagateWires();
+    propagateWires();
 
     gtk_widget_queue_draw(drawArea);
 
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
     calcIoPoints();
     gtk_init(&argc, &argv);
 
-    typeImg[0] = loadPb(PREFIX"res/blank.png");
+    typeImg[0] = loadPb(PREFIX"res/1.png");
     typeImg[1] = loadPb(PREFIX"res/not.png");
     typeImg[2] = loadPb(PREFIX"res/and.png");
     typeImg[3] = loadPb(PREFIX"res/or.png");
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
     typeImg[5] = loadPb(PREFIX"res/input.png");
     typeImg[6] = loadPb(PREFIX"res/output.png");
     
-    invTypeImg[0] = typeImg[0];
+    invTypeImg[0] = loadPb(PREFIX"res/0.png");
     invTypeImg[1] = loadPb(PREFIX"res/thru.png");
     invTypeImg[2] = loadPb(PREFIX"res/nand.png");
     invTypeImg[3] = loadPb(PREFIX"res/nor.png");
