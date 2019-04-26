@@ -326,27 +326,7 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                     (event->y - offset.y) / zoom
                 };
 
-                /*
-                int i = -1;
-                if (n->outputs[0].highlight) {
-                    i = 0;
-                }
-                if (n->outputs[1].highlight) {
-                    i = 1;
-                }
-                if (n->outputs[2].highlight) {
-                    i = 2;
-                }
-                if (n->outputs[3].highlight) {
-                    i = 3;
-                }*/
-                
-                //if (i != -1) { 
-                    //if ((wire_t*)n->outputs[hi].wire) {
-                    //    wire_t* w = (wire_t*)n->outputs[hi].wire;
-                    //    deleteWire(w);
-                    //}
-                //}
+
             }
             if (hi==-1) {
                 for (int i=0; i<8;i++)
@@ -365,8 +345,6 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                 panNode = n;
                 break;
             }
-            
-
 
         }
     }

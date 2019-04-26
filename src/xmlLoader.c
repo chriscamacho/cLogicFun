@@ -149,7 +149,7 @@ end(void *data, const XML_Char *el)
         w->colourG = newWire.colourG;
         w->colourB = newWire.colourB;
 
-        w->parent->outputs[w->outIndex].wire = w;
+        w->parent->outputWires = g_list_append(w->parent->outputWires, w);
         w->target->inputs[w->inIndex].wire = w;
     }
 }

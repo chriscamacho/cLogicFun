@@ -1,5 +1,3 @@
-#ifndef VEC_H
-#define VEC_H
 
 // just for convienience not doing any vec2 math here...
 
@@ -12,4 +10,3 @@ typedef struct {
     double y;
 } vec2_t;
 
-#endif

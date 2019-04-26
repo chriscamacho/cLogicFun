@@ -29,10 +29,6 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
         if (currentNode->inputs[i].wire) {
             deleteWire(currentNode->inputs[i].wire);
         }
-        if (currentNode->outputs[i].wire) {
-            deleteWire(currentNode->outputs[i].wire);
-        }
-
     }
 
 

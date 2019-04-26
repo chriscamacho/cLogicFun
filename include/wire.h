@@ -1,5 +1,3 @@
-#ifndef WIRE_H
-#define WIRE_H
 
 extern GList* wireList;
 
@@ -20,4 +18,3 @@ void updateWire(wire_t* w);
 void deleteWire(wire_t* w);
 void propagateWires();
 
-#endif

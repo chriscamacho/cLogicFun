@@ -66,12 +66,9 @@ node_t* addNode(enum nodeType tp, double x, double y)
     n->text[0] = 0;
     n->outputWires = NULL;
     for (int i = 0; i < 8; i++) {
-        n->outputs[i].index = i;
-        n->outputs[i].wire = NULL;
         n->outputs[i].highlight = FALSE;
         n->inputStates[i] = FALSE;
         n->inputs[i].highlight = FALSE;
-        n->inputs[i].index = i;
         n->inputs[i].wire = NULL;
         
         n->stateBuffer[i] = 0;
@@ -299,6 +296,5 @@ void updateLogic()
         n->stateBuffer[0] = newState;
         n->state = n->stateBuffer[n->latency];
 
-        
     }
 }

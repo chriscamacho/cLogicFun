@@ -1,5 +1,3 @@
-#ifndef NODE_H
-#define NODE_H
 
 extern vec2_t ioPoints[16];
 extern int currentID;
@@ -24,18 +22,16 @@ enum nodeType {
 
 
 typedef struct output_s {
-    int index;
-    void* wire;
+    //int index;
+    //void* wire;
     gboolean highlight;
 } output_t;
 
 typedef struct input_s {
-    int index;
     gboolean highlight;
     void* wire;
 } input_t;
 
-// each node has max 4 in/outputs
 typedef struct node_s {
     int id;
     vec2_t pos;
@@ -64,4 +60,3 @@ void calcIoPoints();
 void clearCircuit();
 void updateLogic();
 
-#endif // NODE_H
