@@ -167,9 +167,12 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         for (it = nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
-            fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n", n->pos.x, n->pos.y, n->rotation);
-            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" />\n", n->type, n->invert, n->latency);
-            fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", n->maxInputs, n->maxOutputs);
+            fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n",
+                            n->pos.x,n->pos.y, n->rotation);
+            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" />\n", 
+                            n->type, n->invert, n->latency);
+            fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", 
+                            n->maxInputs, n->maxOutputs);
             // TODO probably need to escape this string...
             fprintf(fp, "  <label text=\"%s\" />\n", n->text);
             fprintf(fp, "</node>\n\n");
@@ -179,9 +182,12 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         for (it = wireList; it; it = it->next) {
             wire_t* w = (wire_t*)it->data;
             fprintf(fp, "<wire wireID=\"%i\">\n", w->id);
-            fprintf(fp, "  <parent pid=\"%i\" pindex=\"%i\" />\n", w->parent->id, w->outIndex);
-            fprintf(fp, "  <target tid=\"%i\" tindex=\"%i\" />\n", w->target->id, w->inIndex);
-            fprintf(fp, "  <colour r=\"%f\" g=\"%f\" b=\"%f\" />\n", w->colourR, w->colourG, w->colourB);
+            fprintf(fp, "  <parent pid=\"%i\" pindex=\"%i\" />\n", 
+                            w->parent->id, w->outIndex);
+            fprintf(fp, "  <target tid=\"%i\" tindex=\"%i\" />\n", 
+                            w->target->id, w->inIndex);
+            fprintf(fp, "  <colour r=\"%f\" g=\"%f\" b=\"%f\" />\n", 
+                            w->colourR, w->colourG, w->colourB);
             fprintf(fp, "</wire>\n\n");
         }
 
@@ -452,8 +458,10 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
                     };
                     double ac = cos(-dragWire.target->rotation + 90.0 * D2R);
                     double as = sin(-dragWire.target->rotation + 90.0 * D2R);
-                    dragWire.cp2.x += (as * (ioPoints[ni - 8].x - 40.0) - ac * ioPoints[ni - 8].y);
-                    dragWire.cp2.y += (ac * (ioPoints[ni - 8].x - 40.0) + as * ioPoints[ni - 8].y);
+                    dragWire.cp2.x += ( as * (ioPoints[ni - 8].x - 40.0) 
+                                      - ac * ioPoints[ni - 8].y);
+                    dragWire.cp2.y += ( ac * (ioPoints[ni - 8].x - 40.0)
+                                      + as * ioPoints[ni - 8].y);
                 }
             } else {
                 // move the end control point if dragging
