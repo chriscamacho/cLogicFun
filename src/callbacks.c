@@ -31,23 +31,33 @@ vec2_t centrePos(GtkWidget* w)
     };
 }
 
-gboolean on_ResetStates_activate(GtkWidget *widget, gpointer data)
+gboolean on_chartOuputs_activate(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     (void)data;
-    
+
     GList* it;
-    for (it = wireList; it; it = it->next) {
-        wire_t* w = (wire_t*)it->data;
-        w->state = FALSE;
-    }
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
-        n->state = FALSE;
-        for(int i=0; i<8; i++) {
-            n->stateBuffer[i] = FALSE;
+        if (n->type == n_out) {
+            printf("%s ,",n->text);
         }
     }
+    printf("\n");
+    for (int i=0; i<160; i++) {
+        propagateWires();
+        updateLogic();
+        int os = 0;
+        for (it = nodeList; it; it = it->next) {
+            node_t* n = (node_t*)it->data;
+            if (n->type == n_out) {
+                printf("%i, ",n->state+os);
+                os++;
+            }
+        }
+        printf("\n");
+    }
+
     return FALSE;
 }
 

@@ -17,7 +17,6 @@ gboolean timeOut(gpointer data)
     propagateWires();
     updateLogic();
 
-
     gtk_widget_queue_draw(drawArea);
 
     return TRUE;

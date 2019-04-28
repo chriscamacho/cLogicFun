@@ -31,7 +31,6 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
         }
     }
 
-
     freeNode(currentNode);
 
     gtk_widget_hide(nodeWindow);
@@ -79,7 +78,11 @@ void showNodeWindow(node_t* n)
 {
     char degStr[80];
     currentNode = n;
-    gtk_label_set_text((GtkLabel*)nodeWinType, typeNames[n->type]);
+    if (n->invert) {
+        gtk_label_set_text((GtkLabel*)nodeWinType, invTypeNames[n->type]);
+    } else {
+        gtk_label_set_text((GtkLabel*)nodeWinType, typeNames[n->type]);
+    }
     gtk_toggle_button_set_active((GtkToggleButton*)nodeWinInvert, n->invert);
     sprintf(degStr, "%f", n->rotation * R2D);
     gtk_entry_set_text((GtkEntry*)nodeWinRotation, degStr);
