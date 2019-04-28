@@ -6,6 +6,9 @@
 #include "xmlLoader.h"
 #include "nodeWin.h"
 
+char *repl_str(const char *str, const char *from, const char *to);
+
+
 // hmmm a blob of globals...
 double zoom = 1.0;
 vec2_t ds = { 0.0, 0.0 }; // pan delta
@@ -17,6 +20,7 @@ wire_t dragWire;
 
 // because panNode moved gets reset by redraw
 gboolean wasMoved = FALSE;
+
 
 
 vec2_t centrePos(GtkWidget* w)
@@ -173,8 +177,22 @@ gboolean onSave(GtkWidget *widget, gpointer data)
                             n->type, n->invert, n->latency);
             fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", 
                             n->maxInputs, n->maxOutputs);
-            // TODO probably need to escape this string...
-            fprintf(fp, "  <label text=\"%s\" />\n", n->text);
+            
+            // escape chars in label textstring...
+            char* san1 = repl_str(n->text,  "&",    "&amp;");
+            char* san2 = repl_str(san1,     "'",    "&apos;");
+            char* san3 = repl_str(san2,     "<",    "&lt;");
+            char* san4 = repl_str(san3,     ">",    "&gt;");
+            char* san5 = repl_str(san4,     "\"",   "&quot;");
+            
+            fprintf(fp, "  <label text=\"%s\" />\n", san5);
+            
+            free(san1);
+            free(san2);
+            free(san3);
+            free(san4);
+            free(san5);
+            
             fprintf(fp, "</node>\n\n");
         }
         fprintf(fp, "\n\n");
@@ -484,6 +502,7 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     (void)data;
     (void)widget;
     cairo_matrix_t matrix;
+    
     /*
         guint width, height;
 
@@ -503,7 +522,6 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 
     // centre point mark
     cairo_set_line_width(cr, 1.0 / zoom);
-    cairo_move_to(cr, 0, 0);
     cairo_set_source_rgba(cr, 0, 0, 0, 1);
     cairo_move_to(cr, -400, 0);
     cairo_line_to(cr, 400, 0);
@@ -511,6 +529,7 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     cairo_line_to(cr, 0, 400);
     cairo_move_to(cr, 0, 0);
     cairo_stroke(cr);
+
 
     GList* it;
     for (it = nodeList; it; it = it->next) {
