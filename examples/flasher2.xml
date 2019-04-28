@@ -1,23 +1,30 @@
 <circuit>
 
 <node nodeID="0">
-  <pos x="-217.452576" y="-77.143188" rot="0.000000"/>
-  <logic type="1" inv="0" latency="0" />
+  <pos x="-217.000000" y="-77.000000" rot="0.000000"/>
+  <logic type="1" inv="0" latency="0" state="1" />
   <io maxIn="1" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="2">
-  <pos x="-217.297485" y="66.863831" rot="0.000000"/>
-  <logic type="1" inv="0" latency="7" />
+  <pos x="-197.669189" y="125.175720" rot="0.000000"/>
+  <logic type="1" inv="0" latency="7" state="0" />
   <io maxIn="1" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="3">
-  <pos x="0.000000" y="0.000000" rot="0.000000"/>
-  <logic type="2" inv="0" latency="0" />
+  <pos x="-38.913635" y="-0.701172" rot="0.000000"/>
+  <logic type="2" inv="0" latency="0" state="0" />
   <io maxIn="8" maxOut="1" />
+  <label text="" />
+</node>
+
+<node nodeID="9">
+  <pos x="104.650330" y="25.979218" rot="0.000000"/>
+  <logic type="6" inv="0" latency="0" state="1" />
+  <io maxIn="1" maxOut="0" />
   <label text="" />
 </node>
 
@@ -45,6 +52,12 @@
   <parent pid="0" pindex="0" />
   <target tid="0" tindex="0" />
   <colour r="0.199219" g="0.000000" b="0.000000" />
+</wire>
+
+<wire wireID="10">
+  <parent pid="3" pindex="0" />
+  <target tid="9" tindex="0" />
+  <colour r="0.000000" g="0.105469" b="0.199219" />
 </wire>
 
 

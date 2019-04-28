@@ -2,42 +2,42 @@
 
 <node nodeID="4">
   <pos x="216.000000" y="-112.000000" rot="0.785398"/>
-  <logic type="4" inv="0" />
+  <logic type="4" inv="0" latency="0" state="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="13">
   <pos x="149.000000" y="-43.000000" rot="0.785398"/>
-  <logic type="4" inv="1" />
+  <logic type="4" inv="1" latency="0" state="1" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="16">
-  <pos x="75.625000" y="27.375000" rot="0.785398"/>
-  <logic type="2" inv="1" />
+  <pos x="75.000000" y="27.000000" rot="0.785398"/>
+  <logic type="2" inv="1" latency="0" state="1" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="19">
   <pos x="-23.000000" y="128.000000" rot="0.785398"/>
-  <logic type="2" inv="0" />
+  <logic type="2" inv="0" latency="0" state="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="31">
   <pos x="-30.000000" y="-220.000000" rot="0.785398"/>
-  <logic type="5" inv="0" />
+  <logic type="5" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="36">
   <pos x="-134.000000" y="-110.000000" rot="0.785398"/>
-  <logic type="5" inv="0" />
+  <logic type="5" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="" />
 </node>

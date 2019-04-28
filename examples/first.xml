@@ -1,27 +1,31 @@
 <circuit>
 
 <node nodeID="0">
-  <pos x="-129.638000" y="-51.390381" rot="0.000000"/>
-  <logic type="5" inv="0" />
+  <pos x="-129.000000" y="-51.000000" rot="0.000000"/>
+  <logic type="5" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="1">
-  <pos x="-132.417053" y="51.650879" rot="0.000000"/>
-  <logic type="5" inv="0" />
+  <pos x="-132.000000" y="51.000000" rot="0.000000"/>
+  <logic type="5" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="2">
-  <pos x="8.394165" y="0.910095" rot="0.000000"/>
-  <logic type="2" inv="0" />
+  <pos x="8.000000" y="0.000000" rot="0.000000"/>
+  <logic type="2" inv="0" latency="0" state="0" />
   <io maxIn="8" maxOut="1" />
+  <label text="" />
 </node>
 
 <node nodeID="3">
-  <pos x="108.688354" y="1.885437" rot="0.000000"/>
-  <logic type="6" inv="0" />
+  <pos x="108.000000" y="1.000000" rot="0.000000"/>
+  <logic type="6" inv="0" latency="0" state="0" />
   <io maxIn="1" maxOut="0" />
+  <label text="" />
 </node>
 
 

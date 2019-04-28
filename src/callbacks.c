@@ -31,6 +31,26 @@ vec2_t centrePos(GtkWidget* w)
     };
 }
 
+gboolean on_ResetStates_activate(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    (void)data;
+    
+    GList* it;
+    for (it = wireList; it; it = it->next) {
+        wire_t* w = (wire_t*)it->data;
+        w->state = FALSE;
+    }
+    for (it = nodeList; it; it = it->next) {
+        node_t* n = (node_t*)it->data;
+        n->state = FALSE;
+        for(int i=0; i<8; i++) {
+            n->stateBuffer[i] = FALSE;
+        }
+    }
+    return FALSE;
+}
+
 // node adders, want better userdata provision from glade!
 // would rather route all to same call back with index in data...
 gboolean addConst(GtkWidget *widget, gpointer data)
@@ -173,8 +193,8 @@ gboolean onSave(GtkWidget *widget, gpointer data)
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
             fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n",
                             n->pos.x,n->pos.y, n->rotation);
-            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" />\n", 
-                            n->type, n->invert, n->latency);
+            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" state=\"%i\" />\n", 
+                            n->type, n->invert, n->latency, n->state);
             fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", 
                             n->maxInputs, n->maxOutputs);
             

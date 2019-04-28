@@ -58,6 +58,9 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
             if (strcasecmp("latency", attr[i]) == 0) {
                 newNode.latency = atoi(attr[i + 1]);
             }
+            if (strcasecmp("state", attr[i]) == 0) {
+                newNode.state = atoi(attr[i + 1]);
+            }
             
         }
         if (strcasecmp("io", el) == 0) {
@@ -131,11 +134,12 @@ end(void *data, const XML_Char *el)
         n->maxInputs = newNode.maxInputs;
         n->maxOutputs = newNode.maxOutputs;
         n->latency = newNode.latency;
-        strcpy(n->text, newNode.text);
-        if (n->type == n_in) {
-            // fudge to help some feedback circuits like latches settle
-            n->state = TRUE;
+        n->state = newNode.state;
+        for (int i=0; i<8; i++) {
+            n->stateBuffer[i] = n->state;
         }
+        strcpy(n->text, newNode.text);
+
     }
     if (strcasecmp("wire", el) == 0) {
         // add wire from newWire
@@ -202,19 +206,6 @@ void loadCircuit(const char* fileName)
     XML_ParserFree(p);
     g_hash_table_destroy(hash);
     
-    
-    // fudge to help some feedback circuits like latches settle
-    propagateWires();
-    updateLogic();
-    
-    GList* it;
-    for (it = nodeList; it; it = it->next) {
-        node_t* n = (node_t*)it->data;
-        if (n->type == n_in) {
-            n->state = FALSE;
-        }
-        propagateWires();
-        updateLogic();
-    } 
+
 }
 
