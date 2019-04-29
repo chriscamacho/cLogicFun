@@ -5,9 +5,11 @@
 #include <math.h>
 #include "xmlLoader.h"
 #include "nodeWin.h"
+#include "graph.h"
 
 char *repl_str(const char *str, const char *from, const char *to);
 
+GtkWidget* drawArea;
 
 // hmmm a blob of globals...
 double zoom = 1.0;
@@ -20,6 +22,72 @@ wire_t dragWire;
 
 // because panNode moved gets reset by redraw
 gboolean wasMoved = FALSE;
+
+guint timerTag = 0;
+
+
+gboolean timeOut(gpointer data)
+{
+    (void)data;
+
+    propagateWires();
+    updateLogic();
+
+    gtk_widget_queue_draw(drawArea);
+
+    return TRUE;
+}
+
+void initTimer(GtkWidget* da) {
+    drawArea = da;
+    timerTag = g_timeout_add (240, timeOut, NULL);    
+}
+
+// again with glade I'd rather send an INT as user data....
+// then these 4 callbacks could be one routine
+gboolean onSimStop(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    (void)data;
+    if (timerTag) {
+        g_source_remove (timerTag);
+        timerTag = 0; // TODO hopefully tag zero is never issued ?
+    }
+    return FALSE;
+}
+
+gboolean onSimSlow(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    (void)data;
+    if (timerTag) {
+        g_source_remove (timerTag);        
+    }
+    timerTag = g_timeout_add (1000, timeOut, NULL);
+    return FALSE;
+}
+
+gboolean onSimNormal(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    (void)data;
+    if (timerTag) {
+        g_source_remove (timerTag);        
+    }
+    timerTag = g_timeout_add (250, timeOut, NULL);
+    return FALSE;
+}
+
+gboolean onSimFast(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    (void)data;
+    if (timerTag) {
+        g_source_remove (timerTag);        
+    }
+    timerTag = g_timeout_add (25, timeOut, NULL);
+    return FALSE;
+}
 
 
 
@@ -36,28 +104,7 @@ gboolean on_chartOuputs_activate(GtkWidget *widget, gpointer data)
     (void)widget;
     (void)data;
 
-    GList* it;
-    for (it = nodeList; it; it = it->next) {
-        node_t* n = (node_t*)it->data;
-        if (n->type == n_out) {
-            printf("%s ,",n->text);
-        }
-    }
-    printf("\n");
-    for (int i=0; i<160; i++) {
-        propagateWires();
-        updateLogic();
-        int os = 0;
-        for (it = nodeList; it; it = it->next) {
-            node_t* n = (node_t*)it->data;
-            if (n->type == n_out) {
-                printf("%i, ",n->state+os);
-                os++;
-            }
-        }
-        printf("\n");
-    }
-
+    showGraph();
     return FALSE;
 }
 

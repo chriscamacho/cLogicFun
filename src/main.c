@@ -5,22 +5,13 @@
 #include "xmlLoader.h"
 #include "callbacks.h"
 #include "nodeWin.h"
+#include "graph.h"
 
 #define PREFIX "/uk/co/bedroomcoders/cLogicFun/"
 
-GtkWidget *drawArea;
+void initTimer(GtkWidget*);
 
-gboolean timeOut(gpointer data)
-{
-    (void)data;
 
-    propagateWires();
-    updateLogic();
-
-    gtk_widget_queue_draw(drawArea);
-
-    return TRUE;
-}
 
 GdkPixbuf* loadPb(const char* fn)
 {
@@ -39,6 +30,7 @@ int main(int argc, char *argv[])
 {
     GtkBuilder      *builder;
     GtkWidget       *window;
+    GtkWidget       *drawArea;
 
     calcIoPoints();
     gtk_init(&argc, &argv);
@@ -66,8 +58,10 @@ int main(int argc, char *argv[])
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
     drawArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawArea"));
+
     initNodeWin(builder);
-    (void)drawArea;
+    initGraphWin(builder);
+
     gtk_builder_connect_signals(builder, NULL);
 
     g_object_unref(builder);
@@ -76,7 +70,7 @@ int main(int argc, char *argv[])
     setOffset( gtk_widget_get_allocated_width (drawArea) / 2.0,
                gtk_widget_get_allocated_height (drawArea) / 2.0);
 
-    g_timeout_add (250, timeOut, NULL);
+    initTimer(drawArea);
     gtk_main();
 
     return 0;

@@ -57,9 +57,9 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     currentNode->rotation = r;
     currentNode->latency = gtk_spin_button_get_value((GtkSpinButton*)nodeWinLatency)-1;
     gtk_widget_hide(nodeWindow);
-    for (int i =0;i<8;i++) {
-        currentNode->stateBuffer[i]=0;
-    }
+    //for (int i =0;i<8;i++) {
+    //    currentNode->stateBuffer[i]=0;
+    //}
     return FALSE;
 }
 
