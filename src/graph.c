@@ -37,8 +37,8 @@ void showGraph() {
         GList* pit = points;
         for (it = nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
-            int* ip = (int*)pit->data;
             if (n->type == n_out) {
+                int* ip = (int*)pit->data;
                 ip[i] = 1-n->state; // inverted because y+ is down
                 pit = pit->next;
             }
@@ -65,6 +65,16 @@ gboolean on_graph_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
     (void)data;
     (void)widget;
+    
+    cairo_set_line_width(cr, 1);    
+    cairo_set_source_rgb(cr, 0.25, 0.25, 0.5);
+    for (int x=0; x<640; x=x+4) {
+        cairo_move_to(cr, x, 0);        
+        cairo_line_to(cr, x, 100);        
+    }
+    cairo_stroke(cr);
+    
+    cairo_set_line_width(cr, 2);    
     cairo_set_source_rgb(cr, 0, 0, 0);
     GList* pit;
     GList* lit = labels;
@@ -82,7 +92,7 @@ gboolean on_graph_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
         cairo_stroke(cr);
         lit=lit->next;
     }
-    
+
 
     
     return FALSE;

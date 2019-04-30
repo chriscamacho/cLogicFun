@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     typeImg[6] = loadPb(PREFIX"res/output.png");
     
     invTypeImg[0] = loadPb(PREFIX"res/0.png");
-    invTypeImg[1] = loadPb(PREFIX"res/thru.png");
+    invTypeImg[1] = loadPb(PREFIX"res/buffer.png");
     invTypeImg[2] = loadPb(PREFIX"res/nand.png");
     invTypeImg[3] = loadPb(PREFIX"res/nor.png");
     invTypeImg[4] = loadPb(PREFIX"res/xnor.png");

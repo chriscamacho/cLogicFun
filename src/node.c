@@ -142,13 +142,14 @@ void drawNode(cairo_t *cr, node_t* n)
     drawBox(cr, nodeWidth, nodeHeight, n->state);
     cairo_set_matrix(cr, &local);
 
-    cairo_set_line_width(cr, 1);
     for (int i = 0; i < 8; i++) {
         if (i < n->maxOutputs) {
             if (n->outputs[i].highlight) {
                 cairo_set_source_rgb(cr, 1, 1, 0);
+                cairo_set_line_width(cr, 6);
             } else {
                 cairo_set_source_rgb(cr, 0, 0, 0);
+                cairo_set_line_width(cr, 2);
             }
             cairo_arc(cr, ioPoints[i].x, ioPoints[i].y, 4, 0, 2 * PI);
             cairo_stroke(cr);
@@ -157,13 +158,17 @@ void drawNode(cairo_t *cr, node_t* n)
         if (i < n->maxInputs) {
             if (n->inputs[i].highlight) {
                 cairo_set_source_rgb(cr, 1, 1, 0);
+                cairo_set_line_width(cr, 6);
             } else {
                 cairo_set_source_rgb(cr, 0, 0, 0);
+                cairo_set_line_width(cr, 2);
             }
             cairo_arc(cr, ioPoints[i + 8].x, ioPoints[i + 8].y, 4, 0, 2 * PI);
             cairo_stroke(cr);
         }
     }
+
+    cairo_set_line_width(cr, 1);
     
     if (n->invert) {    
         gdk_cairo_set_source_pixbuf (cr, invTypeImg[n->type], -24, -24);
