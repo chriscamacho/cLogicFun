@@ -15,5 +15,7 @@
     <file>res/buffer.png</file>
     <file>res/1.png</file>
     <file>res/0.png</file>
+    <file>res/src.png</file>
+    <file>res/dst.png</file>
   </gresource>
 </gresources>

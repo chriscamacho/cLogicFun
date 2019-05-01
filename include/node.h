@@ -3,11 +3,11 @@ extern vec2_t ioPoints[16];
 extern int currentID;
 extern GList* nodeList;
 
-extern char typeNames[7][8];
-extern char invTypeNames[7][8];
+extern char typeNames[9][8];
+extern char invTypeNames[9][8];
 
-extern GdkPixbuf* typeImg[7];
-extern GdkPixbuf* invTypeImg[7];
+extern GdkPixbuf* typeImg[9];
+extern GdkPixbuf* invTypeImg[9];
 
 // each node can optionally invert its output
 enum nodeType {
@@ -17,7 +17,9 @@ enum nodeType {
     n_or,
     n_xor,
     n_in,
-    n_out
+    n_out,
+    n_src,
+    n_dst
 };
 
 
@@ -36,6 +38,7 @@ typedef struct node_s {
     int id;
     vec2_t pos;
     double rotation;
+    double width, height;
     enum nodeType type;
     int maxInputs;
     int maxOutputs;
@@ -43,7 +46,10 @@ typedef struct node_s {
     gboolean state;
     // only using 1 output - reserving others for nodes that are embedded circuits
     output_t outputs[8];
+
     GList* outputWires;
+    GList* srcOutputs;
+
     gboolean inputStates[8];
     input_t inputs[8];
     char text[80];
@@ -59,4 +65,5 @@ int pointInIo(double x, double y, node_t* n);
 void calcIoPoints();
 void clearCircuit();
 void updateLogic();
+void findSrcTargets();
 

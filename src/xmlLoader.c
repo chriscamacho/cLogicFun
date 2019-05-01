@@ -205,7 +205,7 @@ void loadCircuit(const char* fileName)
 
     XML_ParserFree(p);
     g_hash_table_destroy(hash);
-    
+    findSrcTargets();
 
 }
 

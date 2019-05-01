@@ -166,6 +166,22 @@ gboolean addNot(GtkWidget *widget, gpointer data)
     return FALSE;
 }
 
+gboolean addSrc(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    vec2_t v = centrePos((GtkWidget*)data);
+    addNode(n_src, v.x, v.y);
+    return FALSE;
+}
+
+gboolean addDst(GtkWidget *widget, gpointer data)
+{
+    (void)widget;
+    vec2_t v = centrePos((GtkWidget*)data);
+    addNode(n_dst, v.x, v.y);
+    return FALSE;
+}
+
 gboolean on_new_activate(GtkWidget *widget, gpointer data)
 {
     (void)widget;
@@ -505,8 +521,8 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
                 // TODO work out what happening here!
                 double ac = cos(-dragWire.parent->rotation + 90.0 * D2R);
                 double as = sin(-dragWire.parent->rotation + 90.0 * D2R);
-                vec2_t p = {as * ioPoints[ni].x - ac * ioPoints[ni].y,
-                            ac * ioPoints[ni].x + as * ioPoints[ni].y
+                vec2_t p = {as * ioPoints[ni].x - ac * (ioPoints[ni].y-((n->height-64)/2.0)),
+                            ac * ioPoints[ni].x + as * (ioPoints[ni].y-((n->height-64)/2.0))
                            };
 
                 p.x += dragWire.parent->pos.x;
@@ -514,8 +530,8 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
 
                 dragWire.sp = p;
 
-                p.x += (as * (ioPoints[ni].x + 40.0) - ac * ioPoints[ni].y);
-                p.y += (ac * (ioPoints[ni].x + 40.0) + as * ioPoints[ni].y);
+                p.x += as * (ioPoints[ni].x + 40.0) - ac * (ioPoints[ni].y-((n->height-64)/2.0));
+                p.y += ac * (ioPoints[ni].x + 40.0) + as * (ioPoints[ni].y-((n->height-64)/2.0));
                 dragWire.cp1 = p;
             }
 
@@ -576,6 +592,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
 
 gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
+
     (void)data;
     (void)widget;
     cairo_matrix_t matrix;

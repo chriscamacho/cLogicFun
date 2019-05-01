@@ -17,6 +17,8 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Node edit</property>
     <property name="window_position">center</property>
+    <property name="default_width">640</property>
+    <property name="deletable">False</property>
     <child>
       <placeholder/>
     </child>
@@ -286,7 +288,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem">
+              <object class="GtkMenuItem" id="fileMenu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_File</property>
@@ -362,7 +364,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem">
+              <object class="GtkMenuItem" id="addMenu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Add</property>
@@ -431,6 +433,22 @@
                         <property name="label" translatable="yes">add OUTPUT</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="addOut" object="drawArea" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Add Source label</property>
+                        <signal name="activate" handler="addSrc" object="drawArea" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">add Destination label</property>
+                        <signal name="activate" handler="addDst" object="drawArea" swapped="no"/>
                       </object>
                     </child>
                   </object>

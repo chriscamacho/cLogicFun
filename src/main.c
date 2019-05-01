@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
     typeImg[4] = loadPb(PREFIX"res/xor.png");
     typeImg[5] = loadPb(PREFIX"res/input.png");
     typeImg[6] = loadPb(PREFIX"res/output.png");
+    typeImg[7] = loadPb(PREFIX"res/src.png");
+    typeImg[8] = loadPb(PREFIX"res/dst.png");
     
     invTypeImg[0] = loadPb(PREFIX"res/0.png");
     invTypeImg[1] = loadPb(PREFIX"res/buffer.png");
@@ -50,6 +52,8 @@ int main(int argc, char *argv[])
     invTypeImg[4] = loadPb(PREFIX"res/xnor.png");
     invTypeImg[5] = typeImg[5];
     invTypeImg[6] = typeImg[6];
+    invTypeImg[7] = typeImg[7];
+    invTypeImg[8] = typeImg[8];
     
 
     builder = gtk_builder_new();

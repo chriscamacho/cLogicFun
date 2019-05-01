@@ -70,28 +70,28 @@ void updateWire(wire_t* w)
     double ac = cos(-w->parent->rotation + 90.0 * D2R);
     double as = sin(-w->parent->rotation + 90.0 * D2R);
     w->sp = (vec2_t) {
-        as * ioPoints[w->outIndex].x - ac * ioPoints[w->outIndex].y,
-        ac * ioPoints[w->outIndex].x + as * ioPoints[w->outIndex].y
+        as * ioPoints[w->outIndex].x - ac * (ioPoints[w->outIndex].y-((w->parent->height-64)/2.0)),
+        ac * ioPoints[w->outIndex].x + as * (ioPoints[w->outIndex].y-((w->parent->height-64)/2.0))
     };
     w->sp.x += w->parent->pos.x;
     w->sp.y += w->parent->pos.y;
 
-    w->cp1.x = (as * (ioPoints[w->outIndex].x + 60.0 - (w->outIndex * 5.0)) - ac * ioPoints[w->outIndex].y);
-    w->cp1.y = (ac * (ioPoints[w->outIndex].x + 60.0 - (w->outIndex * 5.0)) + as * ioPoints[w->outIndex].y);
+    w->cp1.x = (as * (ioPoints[w->outIndex].x + 60.0 - (w->outIndex * 5.0)) - ac * (ioPoints[w->outIndex].y-((w->parent->height-64)/2.0)));
+    w->cp1.y = (ac * (ioPoints[w->outIndex].x + 60.0 - (w->outIndex * 5.0)) + as * (ioPoints[w->outIndex].y-((w->parent->height-64)/2.0)));
     w->cp1.x += w->parent->pos.x;
     w->cp1.y += w->parent->pos.y;
 
     ac = cos(-w->target->rotation + 90.0 * D2R);
     as = sin(-w->target->rotation + 90.0 * D2R);
     w->ep = (vec2_t) {
-        as * ioPoints[w->inIndex + 8].x - ac * ioPoints[w->inIndex + 8].y,
-        ac * ioPoints[w->inIndex + 8].x + as * ioPoints[w->inIndex + 8].y
+        as * ioPoints[w->inIndex + 8].x - ac * (ioPoints[w->inIndex + 8].y-((w->target->height-64)/2.0)),
+        ac * ioPoints[w->inIndex + 8].x + as * (ioPoints[w->inIndex + 8].y-((w->target->height-64)/2.0))
     };
     w->ep.x += w->target->pos.x;
     w->ep.y += w->target->pos.y;
 
-    w->cp2.x = (as * (ioPoints[w->inIndex + 8].x - 60.0 + (w->inIndex * 5.0)) - ac * ioPoints[w->inIndex + 8].y);
-    w->cp2.y = (ac * (ioPoints[w->inIndex + 8].x - 60.0 + (w->inIndex * 5.0)) + as * ioPoints[w->inIndex + 8].y);
+    w->cp2.x = (as * (ioPoints[w->inIndex + 8].x - 60.0 + (w->inIndex * 5.0)) - ac * (ioPoints[w->inIndex + 8].y-((w->target->height-64)/2.0)));
+    w->cp2.y = (ac * (ioPoints[w->inIndex + 8].x - 60.0 + (w->inIndex * 5.0)) + as * (ioPoints[w->inIndex + 8].y-((w->target->height-64)/2.0)));
     w->cp2.x += w->target->pos.x;
     w->cp2.y += w->target->pos.y;
 }
@@ -104,6 +104,26 @@ void deleteWire(wire_t* w)
     free(w);
 }
 
+void propagateSrc(gboolean state, wire_t* w) {
+    GList* it,*iit;
+
+    for (it = w->target->srcOutputs; it; it=it->next) {
+        node_t* n = (node_t*)it->data;
+        n->state = state;
+        
+        if (n->type != n_src) {
+            for (iit=n->outputWires; iit; iit=iit->next) {
+                wire_t* ww = (wire_t*)iit->data;
+                ww->target->inputStates[ww->inIndex] = state;
+                ww->state = state;
+            }
+        } else {
+            // find the wire to propagate new src
+            // TODO double check why this didn't end up being necessary
+            
+        }
+    }
+}
 
 void propagateWires()
 {
@@ -113,6 +133,10 @@ void propagateWires()
         wire_t* w = (wire_t*)it->data;
         gboolean state = w->parent->state;
         w->target->inputStates[w->inIndex] = state;
-        w->state = state;
+        w->state=state;
+        if (w->target->type == n_src) {
+            propagateSrc(state, w);
+        }
+        
     }
 }

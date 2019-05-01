@@ -4,50 +4,56 @@
 #include "vec2.h"
 #include "node.h"
 #include "wire.h"
+#include <strings.h>
 
 int currentID = 0;
 
 GList* nodeList = NULL;
 
-#define nodeWidth 64
-#define nodeHeight 64
+//#define nodeWidth 64
+//#define nodeHeight 64
 
-GdkPixbuf* typeImg[7];
-GdkPixbuf* invTypeImg[7];
+GdkPixbuf* typeImg[9];
+GdkPixbuf* invTypeImg[9];
 
-char typeNames[7][8] = {
+char typeNames[9][8] = {
     "CONST 1",
     "NOT",
     "AND",
     "OR",
     "XOR",
     "IN",
-    "OUT"
+    "OUT",
+    "SRC",
+    "DST"
 };
 
 // pesky XNOR can't just prepend N !!!
-char invTypeNames[7][8] = {
+char invTypeNames[9][8] = {
     "CONST 0",
     "THRU",
     "NAND",
     "NOR",
     "XNOR",
     "IN",
-    "OUT"
+    "OUT",
+    "SRC",
+    "DST"
 };
 
+/* TODO this needs looking at as width/height not fixed any more */
 vec2_t ioPoints[16];
 
 void calcIoPoints()
 {
     for (int i = 0; i < 8; i++) {
         ioPoints[i] = (vec2_t) {
-            nodeWidth / 2.0 - 4.0,
-                      (nodeHeight / 8.0)*(i + 0.5) - (nodeHeight / 2.0)
+            64 / 2.0 - 4.0,
+                      (64 / 8.0)*(i + 0.5) - (64 / 2.0)
         };
         ioPoints[i + 8] = (vec2_t) {
-            -nodeWidth / 2.0 + 4.0,
-                (nodeHeight / 8.0)*(i + 0.5) - (nodeHeight / 2.0)
+            -64 / 2.0 + 4.0,
+                (64 / 8.0)*(i + 0.5) - (64 / 2.0)
             };
     }
 }
@@ -61,10 +67,13 @@ node_t* addNode(enum nodeType tp, double x, double y)
     n->pos.x = x;
     n->pos.y = y;
     n->rotation = 0;
+    n->width = 64;
+    n->height = 64;
     n->invert = FALSE;
     n->state = FALSE;
     n->text[0] = 0;
     n->outputWires = NULL;
+    n->srcOutputs = NULL;
     for (int i = 0; i < 8; i++) {
         n->outputs[i].highlight = FALSE;
         n->inputStates[i] = FALSE;
@@ -80,7 +89,7 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->maxInputs = 8;
         n->maxOutputs = 1;
     }
-    if (tp == n_in || tp == n_const) {
+    if (tp == n_in || tp == n_const || tp == n_dst) {
         n->maxInputs = 0;
         n->maxOutputs = 1;
     }
@@ -89,9 +98,13 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->maxOutputs = 1;
     }
 
-    if (tp == n_out) {
+    if (tp == n_out || tp == n_src) {
         n->maxInputs = 1;
         n->maxOutputs = 0;
+    }
+    
+    if (tp == n_src || tp == n_dst) {
+        n->height = 24;
     }
 
     nodeList = g_list_append(nodeList, n);
@@ -139,7 +152,7 @@ void drawNode(cairo_t *cr, node_t* n)
     cairo_rotate(cr, n->rotation);
     cairo_get_matrix(cr, &local);
     
-    drawBox(cr, nodeWidth, nodeHeight, n->state);
+    drawBox(cr, n->width, n->height, n->state);
     cairo_set_matrix(cr, &local);
 
     for (int i = 0; i < 8; i++) {
@@ -151,7 +164,7 @@ void drawNode(cairo_t *cr, node_t* n)
                 cairo_set_source_rgb(cr, 0, 0, 0);
                 cairo_set_line_width(cr, 2);
             }
-            cairo_arc(cr, ioPoints[i].x, ioPoints[i].y, 4, 0, 2 * PI);
+            cairo_arc(cr, ioPoints[i].x, ioPoints[i].y-((n->height-64)/2.0), 4, 0, 2 * PI);
             cairo_stroke(cr);
         }
 
@@ -163,17 +176,21 @@ void drawNode(cairo_t *cr, node_t* n)
                 cairo_set_source_rgb(cr, 0, 0, 0);
                 cairo_set_line_width(cr, 2);
             }
-            cairo_arc(cr, ioPoints[i + 8].x, ioPoints[i + 8].y, 4, 0, 2 * PI);
+            cairo_arc(cr, ioPoints[i + 8].x, ioPoints[i + 8].y-((n->height-64)/2.0), 4, 0, 2 * PI);
             cairo_stroke(cr);
         }
     }
 
     cairo_set_line_width(cr, 1);
     
-    if (n->invert) {    
-        gdk_cairo_set_source_pixbuf (cr, invTypeImg[n->type], -24, -24);
+    if (n->invert) {
+        gdk_cairo_set_source_pixbuf (cr, invTypeImg[n->type], -24, -24);   
     } else {
-        gdk_cairo_set_source_pixbuf (cr, typeImg[n->type], -24, -24);
+        if (n->type == n_src || n->type == n_dst) {
+            gdk_cairo_set_source_pixbuf (cr, typeImg[n->type], -24, -12);
+        } else {
+            gdk_cairo_set_source_pixbuf (cr, typeImg[n->type], -24, -24);
+        }
     }
     cairo_paint(cr);
     
@@ -181,7 +198,7 @@ void drawNode(cairo_t *cr, node_t* n)
     cairo_text_extents_t ex;
     cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_text_extents(cr, n->text, &ex);
-    cairo_move_to(cr, -ex.width*.5, -nodeHeight*.6);
+    cairo_move_to(cr, -ex.width*.5, -n->height*.6);
     cairo_show_text (cr, n->text);
     
     cairo_set_matrix(cr, &before);
@@ -197,11 +214,11 @@ gboolean pointInNode(double x, double y, node_t* n)
     double lx = ac * r.x - as * r.y;
     double ly = as * r.x + ac * r.y;
 
-    lx -= n->pos.x - (nodeWidth / 2.0);
-    ly -= n->pos.y - (nodeHeight / 2.0);
+    lx -= n->pos.x - (n->width / 2.0);
+    ly -= n->pos.y - (n->height / 2.0);
 
-    return lx >= -n->pos.x && lx <= nodeWidth - n->pos.x &&
-           ly >= -n->pos.y && ly <= nodeHeight - n->pos.y;
+    return lx >= -n->pos.x && lx <= n->width - n->pos.x &&
+           ly >= -n->pos.y && ly <= n->height - n->pos.y;
 }
 
 int pointInIo(double x, double y, node_t* n)
@@ -214,14 +231,14 @@ int pointInIo(double x, double y, node_t* n)
     for (int i = 0; i < 8; i++) {
         if (i < n->maxOutputs) {
             if (fabs(ioPoints[i].x - l.x) < 4.0 &&
-                    fabs(ioPoints[i].y - l.y) < 4.0) {
+                    fabs(ioPoints[i].y-((n->height-64)/2.0) - l.y) < 4.0) {
                 return i;
             }
         }
 
         if (i < n->maxInputs) {
             if (fabs(ioPoints[i + 8].x - l.x) < 4.0 &&
-                    fabs(ioPoints[i + 8].y - l.y) < 4.0) {
+                    fabs(ioPoints[i + 8].y-((n->height-64)/2.0) - l.y) < 4.0) {
                 return i + 8;
             }
         }
@@ -248,6 +265,9 @@ void updateLogic()
     GList* it;
     for (it = nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
+        if (n->type == n_dst) {
+            continue;
+        }
         gboolean states[] = {0,0,0,0,0,0,0,0};
         int stateCount = 0;
         for (int i = 0; i < 8; i++) {
@@ -302,4 +322,36 @@ void updateLogic()
         n->state = n->stateBuffer[n->latency];
 
     }
+}
+
+void findSrcTargets() {
+    GList* it;
+    for (it = nodeList; it; it = it->next) {
+        node_t* n = (node_t*)it->data;
+        if (n->type == n_src) {
+            if(n->srcOutputs){
+                //g_list_free(n->srcOutputs);
+                // TODO find out why g_list_free caused seg fault
+                // in gtk internals
+                // but only when called from nodeWindow
+                while(n->srcOutputs) {
+                    n->srcOutputs = g_list_remove(n->srcOutputs, n->srcOutputs->data);
+                }
+            }
+        }
+    }
+    for (it = nodeList; it; it = it->next) {
+        node_t* n = (node_t*)it->data;
+        if (n->type == n_src) {
+            GList* iit;
+            for (iit = nodeList; iit; iit=iit->next) {
+                node_t* nn = (node_t*)iit->data;
+                if (nn->type == n_dst) {
+                    if (strcasecmp(nn->text, n->text) == 0) {
+                        n->srcOutputs = g_list_append(n->srcOutputs, nn);
+                    }
+                }
+            }
+        }
+    }   
 }
