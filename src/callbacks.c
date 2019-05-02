@@ -478,7 +478,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
 {
     (void)widget;
 
-    if(panning && event->state == GDK_BUTTON1_MASK) {
+    if(panning && (event->state || GDK_BUTTON1_MASK)) {
         // change view offset when panning
         double x = (event->x - ds.x); // /zoom;
         double y = (event->y - ds.y); // /zoom;
