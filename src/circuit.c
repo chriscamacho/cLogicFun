@@ -4,13 +4,7 @@
 #include "node.h"
 #include "wire.h"
 
-/*
-struct circuit_s {
-    guint nextID; // next free ID for this circuit
-    GList* nodeList;
-    GList* wireList;
-} circuit_t;
-*/
+
 
 circuit_t* createCircuit() {
     circuit_t* c = malloc(sizeof(circuit_t));

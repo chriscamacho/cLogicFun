@@ -1,5 +1,5 @@
 
-//extern GList* wireList;
+
 
 typedef struct wire_s {
     guint id;

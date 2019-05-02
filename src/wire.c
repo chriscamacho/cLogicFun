@@ -5,7 +5,6 @@
 #include "node.h"
 #include "wire.h"
 
-//GList* wireList = NULL;
 
 // TODO some consecutives are too close (dark), pick a better list of colours!
 double wireColours[43][3] = {

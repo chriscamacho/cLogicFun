@@ -7,12 +7,8 @@
 #include "wire.h"
 #include <strings.h>
 
-int currentID = 0;
 
-//GList* nodeList = NULL;
 
-//#define nodeWidth 64
-//#define nodeHeight 64
 
 GdkPixbuf* typeImg[9];
 GdkPixbuf* invTypeImg[9];
@@ -63,7 +59,7 @@ void calcIoPoints()
 node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
 {
     node_t* n = malloc(sizeof(node_t));
-    n->id = currentID++;
+    n->id = cir->nextID++;
     n->type = tp;
     n->pos.x = x;
     n->pos.y = y;
