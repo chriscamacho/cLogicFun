@@ -31,9 +31,9 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
         findSrcTargets(currentCircuit);
     }
 
-    while (currentNode->outputWires) {
-        wire_t* w = (wire_t*)currentNode->outputWires->data;
-        currentNode->outputWires = g_list_remove(currentNode->outputWires, w);
+    while (currentNode->outputList) {
+        wire_t* w = (wire_t*)currentNode->outputList->data;
+        currentNode->outputList = g_list_remove(currentNode->outputList, w);
         deleteWire(currentCircuit, w);
     }
 

@@ -30,8 +30,9 @@ typedef struct output_s {
 } output_t;
 
 typedef struct input_s {
-    gboolean highlight;
+    gboolean highlight;     // highlighted by gui (mouse hover)
     void* wire;
+    gboolean state;
 } input_t;
 
 typedef struct node_s {
@@ -40,20 +41,23 @@ typedef struct node_s {
     double rotation;
     double width, height;
     enum nodeType type;
-    int maxInputs;
+
+    int maxInputs;  // max physicsal attachment points
+    input_t inputs[8];
+    //gboolean inputStates[8];
+
     int maxOutputs;
-    gboolean invert;
-    gboolean state;
     // only using 1 output - reserving others for nodes that are embedded circuits
     output_t outputs[8];
 
-    GList* outputWires;
-    GList* srcOutputs;
+    // usually a list of wires except for n_src which
+    // uses it as a list of nodes
+    GList* outputList;
 
-    gboolean inputStates[8];
-    input_t inputs[8];
+    gboolean state;
+    gboolean stateBuffer[8]; // for latency
     char text[80];
-    gboolean stateBuffer[8];
+    gboolean invert;
     int latency;
 } node_t;
 

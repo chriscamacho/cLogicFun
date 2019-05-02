@@ -69,11 +69,12 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
     n->invert = FALSE;
     n->state = FALSE;
     n->text[0] = 0;
-    n->outputWires = NULL;
-    n->srcOutputs = NULL;
+    n->outputList = NULL;
+    //n->srcOutputs = NULL;
     for (int i = 0; i < 8; i++) {
         n->outputs[i].highlight = FALSE;
-        n->inputStates[i] = FALSE;
+        //n->inputStates[i] = FALSE;
+        n->inputs[i].state = FALSE;
         n->inputs[i].highlight = FALSE;
         n->inputs[i].wire = NULL;
         
@@ -269,7 +270,7 @@ void updateLogic(circuit_t* cir)
         int stateCount = 0;
         for (int i = 0; i < 8; i++) {
             if (n->inputs[i].wire) {
-                states[stateCount] = n->inputStates[i];
+                states[stateCount] = n->inputs[i].state;
                 stateCount++;
             }
         }
@@ -326,13 +327,13 @@ void findSrcTargets(circuit_t* cir) {
     for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_src) {
-            if(n->srcOutputs){
+            if(n->outputList){
                 //g_list_free(n->srcOutputs);
                 // TODO find out why g_list_free caused seg fault
                 // in gtk internals
                 // but only when called from nodeWindow
-                while(n->srcOutputs) {
-                    n->srcOutputs = g_list_remove(n->srcOutputs, n->srcOutputs->data);
+                while(n->outputList) {
+                    n->outputList = g_list_remove(n->outputList, n->outputList->data);
                 }
             }
         }
@@ -345,7 +346,7 @@ void findSrcTargets(circuit_t* cir) {
                 node_t* nn = (node_t*)iit->data;
                 if (nn->type == n_dst) {
                     if (strcasecmp(nn->text, n->text) == 0) {
-                        n->srcOutputs = g_list_append(n->srcOutputs, nn);
+                        n->outputList = g_list_append(n->outputList, nn);
                     }
                 }
             }

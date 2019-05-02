@@ -42,6 +42,6 @@ guint getNextID(circuit_t* c) {
             nid++;
         }
     }
-    printf("new id=%i\n",nid);
+    //printf("new id=%i\n",nid);
     return nid;
 }

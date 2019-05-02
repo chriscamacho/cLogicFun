@@ -392,7 +392,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
             w->inIndex = dragWire.inIndex;
             //w->parent->outputs[w->outIndex].wire = w;
             w->target->inputs[w->inIndex].wire = w;
-            w->parent->outputWires = g_list_append(w->parent->outputWires, w);
+            w->parent->outputList = g_list_append(w->parent->outputList, w);
         }
     }
     // finished dragging so reset stuff

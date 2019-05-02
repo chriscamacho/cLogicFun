@@ -41,6 +41,7 @@ void showGraph(circuit_t* cir) {
             if (n->type == n_out) {
                 int* ip = (int*)pit->data;
                 ip[i] = 1-n->state; // inverted because y+ is down
+                //printf("%i, ",n->state);
                 pit = pit->next;
             }
             

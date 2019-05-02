@@ -100,7 +100,7 @@ void updateWire(wire_t* w)
 void deleteWire(circuit_t* cir, wire_t* w)
 {
     cir->wireList = g_list_remove (cir->wireList, w);
-    w->parent->outputWires = g_list_remove(w->parent->outputWires, w);
+    w->parent->outputList = g_list_remove(w->parent->outputList, w);
     w->target->inputs[w->inIndex].wire = NULL;
     free(w);
 }
@@ -108,14 +108,14 @@ void deleteWire(circuit_t* cir, wire_t* w)
 void propagateSrc(gboolean state, wire_t* w) {
     GList* it,*iit;
 
-    for (it = w->target->srcOutputs; it; it=it->next) {
+    for (it = w->target->outputList; it; it=it->next) {
         node_t* n = (node_t*)it->data;
         n->state = state;
         
         if (n->type != n_src) {
-            for (iit=n->outputWires; iit; iit=iit->next) {
+            for (iit=n->outputList; iit; iit=iit->next) {
                 wire_t* ww = (wire_t*)iit->data;
-                ww->target->inputStates[ww->inIndex] = state;
+                ww->target->inputs[ww->inIndex].state = state;
                 ww->state = state;
             }
         } else {
@@ -133,7 +133,7 @@ void propagateWires(circuit_t* cir)
     for (it = cir->wireList; it; it = it->next) {
         wire_t* w = (wire_t*)it->data;
         gboolean state = w->parent->state;
-        w->target->inputStates[w->inIndex] = state;
+        w->target->inputs[w->inIndex].state = state;
         w->state=state;
         if (w->target->type == n_src) {
             propagateSrc(state, w);
