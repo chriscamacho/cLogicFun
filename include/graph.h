@@ -1,3 +1,3 @@
 
 void initGraphWin(GtkBuilder* builder);
-void showGraph();
+void showGraph(circuit_t* cir);

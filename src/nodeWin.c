@@ -1,6 +1,7 @@
 
 #include <gtk/gtk.h>
 #include "vec2.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
 #include "nodeWin.h"
@@ -14,6 +15,7 @@ GtkWidget* nodeWinText;
 GtkWidget* nodeWinLatency;
 
 node_t* currentNode;
+circuit_t* currentCircuit;
 
 gboolean onDelete(GtkWidget *widget, gpointer data)
 {
@@ -26,22 +28,22 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
         currentNode->text[0]=127;
         currentNode->text[1]=0;
         // rebuild label targets
-        findSrcTargets();
+        findSrcTargets(currentCircuit);
     }
 
     while (currentNode->outputWires) {
         wire_t* w = (wire_t*)currentNode->outputWires->data;
         currentNode->outputWires = g_list_remove(currentNode->outputWires, w);
-        deleteWire(w);
+        deleteWire(currentCircuit, w);
     }
 
     for (int i = 0; i < 8; i++) {
         if (currentNode->inputs[i].wire) {
-            deleteWire(currentNode->inputs[i].wire);
+            deleteWire(currentCircuit, currentNode->inputs[i].wire);
         }
     }
 
-    freeNode(currentNode);
+    freeNode(currentCircuit, currentNode);
 
     gtk_widget_hide(nodeWindow);
     return FALSE;
@@ -66,7 +68,7 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
 
     if (currentNode->type == n_src) {
         
-        for (it = nodeList; it; it = it->next) {
+        for (it = currentCircuit->nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             if (n==currentNode) {
                 continue;
@@ -92,8 +94,7 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     }
     
     // TODO if n_src or n_dst do linkups
-    findSrcTargets();
-    printf("?\n");
+    findSrcTargets(currentCircuit);
     gtk_widget_hide(nodeWindow);
     return TRUE;
 }
@@ -109,8 +110,9 @@ void initNodeWin(GtkBuilder *builder)
     gtk_entry_set_activates_default ((GtkEntry*)nodeWinRotation, TRUE);
 }
 
-void showNodeWindow(node_t* n)
+void showNodeWindow(circuit_t* cir, node_t* n)
 {
+    currentCircuit = cir;
     char degStr[80];
     currentNode = n;
     if (n->invert) {

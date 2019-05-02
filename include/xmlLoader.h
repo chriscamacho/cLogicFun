@@ -1,2 +1,2 @@
 
-void loadCircuit(const char* fileName);
+void loadCircuit(circuit_t* c, const char* fileName);

@@ -1,8 +1,8 @@
 
-extern GList* wireList;
+//extern GList* wireList;
 
 typedef struct wire_s {
-    int id;
+    guint id;
     node_t* parent; // where it comes from
     node_t* target; //
     int outIndex; // which output is it connected to on the parent
@@ -12,9 +12,9 @@ typedef struct wire_s {
     gboolean state;
 } wire_t;
 
-void drawWires(cairo_t* cr, double zoom);
-wire_t* addWire();
+void drawWires(cairo_t* cr, circuit_t* cir, double zoom);
+wire_t* addWire(circuit_t* cir);
 void updateWire(wire_t* w);
-void deleteWire(wire_t* w);
-void propagateWires();
+void deleteWire(circuit_t* cir, wire_t* w);
+void propagateWires(circuit_t* cir);
 

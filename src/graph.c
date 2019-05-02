@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "vec2.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
 
@@ -15,12 +16,12 @@ void initGraphWin(GtkBuilder* builder) {
     graphWin = GTK_WIDGET(gtk_builder_get_object(builder, "graphWin"));
 }
 
-void showGraph() {
+void showGraph(circuit_t* cir) {
     
     #define mxPoints 160
     
     GList* it;
-    for (it = nodeList; it; it = it->next) {
+    for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_out) {
             //printf("%s ,",n->text);
@@ -32,10 +33,10 @@ void showGraph() {
     
     //printf("\n");
     for (int i=0; i<mxPoints; i++) {
-        propagateWires();
-        updateLogic();
+        propagateWires(cir);
+        updateLogic(cir);
         GList* pit = points;
-        for (it = nodeList; it; it = it->next) {
+        for (it = cir->nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             if (n->type == n_out) {
                 int* ip = (int*)pit->data;

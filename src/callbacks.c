@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "vec2.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
 #include <math.h>
@@ -10,6 +11,7 @@
 char *repl_str(const char *str, const char *from, const char *to);
 
 GtkWidget* drawArea;
+extern circuit_t* circuit; // from main.c as callbacks only deal with the main circuit
 
 // hmmm a blob of globals...
 double zoom = 1.0;
@@ -23,6 +25,8 @@ wire_t dragWire;
 // because panNode moved gets reset by redraw
 gboolean wasMoved = FALSE;
 
+// allows destroying and recreating of timer
+// so we can change its interval or pause
 guint timerTag = 0;
 
 
@@ -30,8 +34,8 @@ gboolean timeOut(gpointer data)
 {
     (void)data;
 
-    propagateWires();
-    updateLogic();
+    propagateWires(circuit);
+    updateLogic(circuit);
 
     gtk_widget_queue_draw(drawArea);
 
@@ -104,7 +108,7 @@ gboolean on_chartOuputs_activate(GtkWidget *widget, gpointer data)
     (void)widget;
     (void)data;
 
-    showGraph();
+    showGraph(circuit);
     return FALSE;
 }
 
@@ -114,7 +118,7 @@ gboolean addConst(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_const, v.x, v.y);
+    addNode(circuit, n_const, v.x, v.y);
     return FALSE;
 }
 
@@ -122,7 +126,7 @@ gboolean addOut(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_out, v.x, v.y);
+    addNode(circuit, n_out, v.x, v.y);
     return FALSE;
 }
 
@@ -130,7 +134,7 @@ gboolean addIn(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_in, v.x, v.y);
+    addNode(circuit, n_in, v.x, v.y);
     return FALSE;
 }
 
@@ -138,7 +142,7 @@ gboolean addXor(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_xor, v.x, v.y);
+    addNode(circuit, n_xor, v.x, v.y);
     return FALSE;
 }
 
@@ -146,7 +150,7 @@ gboolean addOr(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_or, v.x, v.y);
+    addNode(circuit, n_or, v.x, v.y);
     return FALSE;
 }
 
@@ -154,7 +158,7 @@ gboolean addAnd(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_and, v.x, v.y);
+    addNode(circuit, n_and, v.x, v.y);
     return FALSE;
 }
 
@@ -162,7 +166,7 @@ gboolean addNot(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_not, v.x, v.y);
+    addNode(circuit, n_not, v.x, v.y);
     return FALSE;
 }
 
@@ -170,7 +174,7 @@ gboolean addSrc(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_src, v.x, v.y);
+    addNode(circuit, n_src, v.x, v.y);
     return FALSE;
 }
 
@@ -178,14 +182,14 @@ gboolean addDst(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     vec2_t v = centrePos((GtkWidget*)data);
-    addNode(n_dst, v.x, v.y);
+    addNode(circuit, n_dst, v.x, v.y);
     return FALSE;
 }
 
 gboolean on_new_activate(GtkWidget *widget, gpointer data)
 {
     (void)widget;
-    clearCircuit();
+    clearCircuit(circuit);
     gtk_widget_queue_draw((GtkWidget*)data);
     return FALSE;
 }
@@ -212,7 +216,8 @@ gboolean on_open_activate(GtkWidget *widget, gpointer data)
         char *filename;
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         filename = gtk_file_chooser_get_filename (chooser);
-        loadCircuit(filename);
+
+        loadCircuit(circuit, filename);
         char title[1024];
         char* f = g_strrstr(filename,"/");
         f++;
@@ -253,6 +258,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
 
     res = gtk_dialog_run (GTK_DIALOG (dialog));
     if (res == GTK_RESPONSE_ACCEPT) {
+        // TODO move this into circuit.c
         char *filename;
         filename = gtk_file_chooser_get_filename (chooser);
         FILE * fp;
@@ -261,7 +267,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         fprintf(fp, "<circuit>\n\n");
 
         GList* it;
-        for (it = nodeList; it; it = it->next) {
+        for (it = circuit->nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
             fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n",
@@ -290,7 +296,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         }
         fprintf(fp, "\n\n");
 
-        for (it = wireList; it; it = it->next) {
+        for (it = circuit->wireList; it; it = it->next) {
             wire_t* w = (wire_t*)it->data;
             fprintf(fp, "<wire wireID=\"%i\">\n", w->id);
             fprintf(fp, "  <parent pid=\"%i\" pindex=\"%i\" />\n", 
@@ -356,7 +362,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
     (void)data;
     if(event->button == GDK_BUTTON_PRIMARY) {
         if (panNode && !wasMoved) {
-            showNodeWindow(panNode);
+            showNodeWindow(circuit, panNode);
         }
     }
 
@@ -375,11 +381,11 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
 
             if ((wire_t*)dragWire.target->inputs[dragWire.inIndex].wire) {
                 wire_t* w = (wire_t*)dragWire.target->inputs[dragWire.inIndex].wire;
-                deleteWire(w);
+                deleteWire(circuit, w);
             }
 
             // add the new wire from the drag wire info
-            wire_t* w = addWire();
+            wire_t* w = addWire(circuit);
             w->parent = dragWire.parent;
             w->target = dragWire.target;
             w->outIndex = dragWire.outIndex;
@@ -415,7 +421,7 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
     dragWire.target = NULL;
     dragWire.parent = NULL;
     GList* it;
-    for (it = nodeList; it; it = it->next) {
+    for (it = circuit->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (pointInNode((event->x - offset.x) / zoom,
                         (event->y - offset.y) / zoom, n)) {
@@ -444,7 +450,7 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                 if (n->inputs[i].highlight) {
                     wire_t* w=(wire_t*)n->inputs[i].wire;
                     if (w) {
-                        deleteWire((wire_t*)w);
+                        deleteWire(circuit, (wire_t*)w);
                     }
                     wireDragMode = FALSE;
                     panNode = NULL;
@@ -494,7 +500,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
     double y = (event->y - offset.y) / zoom;
     GList* it;
     gboolean redraw = FALSE;
-    for (it = nodeList; it; it = it->next) {
+    for (it = circuit->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         gboolean oldv[16];
         // find the state of all the node in/outputs
@@ -626,12 +632,12 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 
 
     GList* it;
-    for (it = nodeList; it; it = it->next) {
+    for (it = circuit->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         drawNode(cr, n);
     }
 
-    drawWires(cr, zoom);
+    drawWires(cr, circuit, zoom);
 
     if (wireDragMode) {
         cairo_set_source_rgb(cr, 0, 0, 0);

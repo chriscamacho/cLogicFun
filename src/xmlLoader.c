@@ -1,9 +1,10 @@
 #include <gtk/gtk.h>
 
 #include "vec2.h"
-#include "xmlLoader.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
+#include "xmlLoader.h"
 
 #include <expat.h>
 #include <stdio.h>
@@ -20,6 +21,8 @@ int pid, tid;
 
 GHashTable* hash;
 
+circuit_t* currentCircuit;
+
 
 // as each xml tag is first encountered the callback is triggered
 static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
@@ -32,8 +35,8 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("node", el) == 0) {
             if (strcasecmp("nodeID", attr[i]) == 0) {
                 newNode.id = atoi(attr[i + 1]);
-                if (newNode.id > currentID) {
-                    currentID = newNode.id + 1;
+                if (newNode.id > currentCircuit->nextID) {
+                    currentCircuit->nextID = newNode.id + 1;
                 }
             }
         }
@@ -75,8 +78,8 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("wire", el) == 0) {
             if (strcasecmp("wireID", attr[i]) == 0) {
                 newWire.id = atoi(attr[i + 1]);
-                if (newWire.id > currentID) {
-                    currentID = newWire.id + 1;
+                if (newWire.id > currentCircuit->nextID) {
+                    currentCircuit->nextID = newWire.id + 1;
                 }
             }
         }
@@ -126,7 +129,7 @@ end(void *data, const XML_Char *el)
 
     if (strcasecmp("node", el) == 0) {
         // add node from newNode
-        node_t* n = addNode(newNode.type, newNode.pos.x, newNode.pos.y);
+        node_t* n = addNode(currentCircuit, newNode.type, newNode.pos.x, newNode.pos.y);
         n->id = newNode.id;
         g_hash_table_insert(hash, GINT_TO_POINTER(n->id), n);
         n->rotation = newNode.rotation;
@@ -143,7 +146,7 @@ end(void *data, const XML_Char *el)
     }
     if (strcasecmp("wire", el) == 0) {
         // add wire from newWire
-        wire_t* w = addWire();
+        wire_t* w = addWire(currentCircuit);
         w->id = newWire.id;
         w->parent = g_hash_table_lookup(hash, GINT_TO_POINTER(pid));
         w->target = g_hash_table_lookup(hash, GINT_TO_POINTER(tid));
@@ -159,9 +162,10 @@ end(void *data, const XML_Char *el)
 }
 
 // presents a gtk file dialog for loading
-void loadCircuit(const char* fileName)
+void loadCircuit(circuit_t* c, const char* fileName)
 {
-    clearCircuit();
+    currentCircuit = c;
+    clearCircuit(c);
 
     hash = g_hash_table_new(g_direct_hash, g_direct_equal);
 
@@ -205,7 +209,7 @@ void loadCircuit(const char* fileName)
 
     XML_ParserFree(p);
     g_hash_table_destroy(hash);
-    findSrcTargets();
+    findSrcTargets(currentCircuit);
 
 }
 

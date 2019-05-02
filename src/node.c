@@ -2,13 +2,14 @@
 #include <gtk/gtk.h>
 #include <math.h>
 #include "vec2.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
 #include <strings.h>
 
 int currentID = 0;
 
-GList* nodeList = NULL;
+//GList* nodeList = NULL;
 
 //#define nodeWidth 64
 //#define nodeHeight 64
@@ -59,7 +60,7 @@ void calcIoPoints()
 }
 
 // returns a newly created node also adds it to the node list
-node_t* addNode(enum nodeType tp, double x, double y)
+node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
 {
     node_t* n = malloc(sizeof(node_t));
     n->id = currentID++;
@@ -107,13 +108,13 @@ node_t* addNode(enum nodeType tp, double x, double y)
         n->height = 24;
     }
 
-    nodeList = g_list_append(nodeList, n);
+    cir->nodeList = g_list_append(cir->nodeList, n);
     return n;
 }
 
-void freeNode(node_t* n)
+void freeNode(circuit_t* cir, node_t* n)
 {
-    nodeList = g_list_remove(nodeList, n);
+    cir->nodeList = g_list_remove(cir->nodeList, n);
     free(n);
 }
 
@@ -246,24 +247,24 @@ int pointInIo(double x, double y, node_t* n)
     return -1;
 }
 
-void clearCircuit()
+void clearCircuit(circuit_t* cir)
 {
-    while (wireList) {
-        wire_t* w = (wire_t*)wireList->data;
-        deleteWire(w);
+    while (cir->wireList) {
+        wire_t* w = (wire_t*)cir->wireList->data;
+        deleteWire(cir, w);
     }
 
-    while (nodeList) {
-        node_t* n = (node_t*)nodeList->data;
-        freeNode(n);
+    while (cir->nodeList) {
+        node_t* n = (node_t*)cir->nodeList->data;
+        freeNode(cir, n);
     }
-    currentID = 0;
+    cir->nextID = 0;
 }
 
-void updateLogic()
+void updateLogic(circuit_t* cir)
 {
     GList* it;
-    for (it = nodeList; it; it = it->next) {
+    for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_dst) {
             continue;
@@ -324,9 +325,9 @@ void updateLogic()
     }
 }
 
-void findSrcTargets() {
+void findSrcTargets(circuit_t* cir) {
     GList* it;
-    for (it = nodeList; it; it = it->next) {
+    for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_src) {
             if(n->srcOutputs){
@@ -340,11 +341,11 @@ void findSrcTargets() {
             }
         }
     }
-    for (it = nodeList; it; it = it->next) {
+    for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_src) {
             GList* iit;
-            for (iit = nodeList; iit; iit=iit->next) {
+            for (iit = cir->nodeList; iit; iit=iit->next) {
                 node_t* nn = (node_t*)iit->data;
                 if (nn->type == n_dst) {
                     if (strcasecmp(nn->text, n->text) == 0) {

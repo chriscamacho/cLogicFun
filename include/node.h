@@ -1,7 +1,7 @@
 
 extern vec2_t ioPoints[16];
-extern int currentID;
-extern GList* nodeList;
+//extern int currentID;
+//extern GList* nodeList;
 
 extern char typeNames[9][8];
 extern char invTypeNames[9][8];
@@ -35,7 +35,7 @@ typedef struct input_s {
 } input_t;
 
 typedef struct node_s {
-    int id;
+    guint id;
     vec2_t pos;
     double rotation;
     double width, height;
@@ -57,13 +57,13 @@ typedef struct node_s {
     int latency;
 } node_t;
 
-node_t* addNode(enum nodeType tp, double x, double y);
-void freeNode(node_t* n);
+node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y);
+void freeNode(circuit_t*, node_t* n);
 void drawNode(cairo_t *cr, node_t* n);
 gboolean pointInNode(double x, double y, node_t* n);
 int pointInIo(double x, double y, node_t* n);
 void calcIoPoints();
-void clearCircuit();
-void updateLogic();
-void findSrcTargets();
+void clearCircuit(circuit_t* cir);
+void updateLogic(circuit_t* cir);
+void findSrcTargets(circuit_t* cir);
 

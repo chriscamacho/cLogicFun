@@ -1,10 +1,11 @@
 #include <gtk/gtk.h>
 #include "math.h"
 #include "vec2.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
 
-GList* wireList = NULL;
+//GList* wireList = NULL;
 
 // TODO some consecutives are too close (dark), pick a better list of colours!
 double wireColours[43][3] = {
@@ -25,10 +26,10 @@ double wireColours[43][3] = {
 int nextColour = 0;
 // TODO for wires and nodes is it worth using glibs allocator ?
 
-wire_t* addWire()
+wire_t* addWire(circuit_t* cir)
 {
     wire_t* w = malloc(sizeof(wire_t));
-    w->id = currentID++;
+    w->id = cir->nextID++;
     int r;
     nextColour += 1;
     if (nextColour > 42) {
@@ -41,16 +42,16 @@ wire_t* addWire()
     w->colourB = wireColours[r][2] / 256.0;
     w->parent = NULL;
     w->target = NULL;
-    wireList = g_list_append(wireList, w);
+    cir->wireList = g_list_append(cir->wireList, w);
     return w;
 }
 
-void drawWires(cairo_t* cr, double zoom)
+void drawWires(cairo_t* cr, circuit_t* cir, double zoom)
 {
     GList* it;
     (void)zoom;
 
-    for (it = wireList; it; it = it->next) {
+    for (it = cir->wireList; it; it = it->next) {
         wire_t* w = (wire_t*)it->data;
         if (w->state) {
             cairo_set_line_width(cr, 6.0);
@@ -96,9 +97,9 @@ void updateWire(wire_t* w)
     w->cp2.y += w->target->pos.y;
 }
 
-void deleteWire(wire_t* w)
+void deleteWire(circuit_t* cir, wire_t* w)
 {
-    wireList = g_list_remove (wireList, w);
+    cir->wireList = g_list_remove (cir->wireList, w);
     w->parent->outputWires = g_list_remove(w->parent->outputWires, w);
     w->target->inputs[w->inIndex].wire = NULL;
     free(w);
@@ -125,11 +126,11 @@ void propagateSrc(gboolean state, wire_t* w) {
     }
 }
 
-void propagateWires()
+void propagateWires(circuit_t* cir)
 {
     GList* it;
 
-    for (it = wireList; it; it = it->next) {
+    for (it = cir->wireList; it; it = it->next) {
         wire_t* w = (wire_t*)it->data;
         gboolean state = w->parent->state;
         w->target->inputStates[w->inIndex] = state;

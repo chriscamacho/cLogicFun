@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "vec2.h"
+#include "circuit.h"
 #include "node.h"
 #include "wire.h"
 #include "xmlLoader.h"
@@ -11,7 +12,7 @@
 
 void initTimer(GtkWidget*);
 
-
+circuit_t* circuit;
 
 GdkPixbuf* loadPb(const char* fn)
 {
@@ -28,6 +29,8 @@ GdkPixbuf* loadPb(const char* fn)
 
 int main(int argc, char *argv[])
 {
+    circuit = createCircuit();
+    
     GtkBuilder      *builder;
     GtkWidget       *window;
     GtkWidget       *drawArea;

@@ -1,3 +1,3 @@
 
 void initNodeWin(GtkBuilder *builder);
-void showNodeWindow(node_t* n);
+void showNodeWindow(circuit_t* cir, node_t* n);
