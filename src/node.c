@@ -59,7 +59,7 @@ void calcIoPoints()
 node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
 {
     node_t* n = malloc(sizeof(node_t));
-    n->id = cir->nextID++;
+    n->id = getNextID(cir);//cir->nextID++;
     n->type = tp;
     n->pos.x = x;
     n->pos.y = y;
@@ -254,7 +254,7 @@ void clearCircuit(circuit_t* cir)
         node_t* n = (node_t*)cir->nodeList->data;
         freeNode(cir, n);
     }
-    cir->nextID = 0;
+    //cir->nextID = 0;
 }
 
 void updateLogic(circuit_t* cir)

@@ -28,7 +28,8 @@ int nextColour = 0;
 wire_t* addWire(circuit_t* cir)
 {
     wire_t* w = malloc(sizeof(wire_t));
-    w->id = cir->nextID++;
+    //w->id = cir->nextID++;
+    w->id = getNextID(cir);
     int r;
     nextColour += 1;
     if (nextColour > 42) {
