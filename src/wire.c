@@ -111,17 +111,13 @@ void propagateSrc(gboolean state, wire_t* w) {
     for (it = w->target->outputList; it; it=it->next) {
         node_t* n = (node_t*)it->data;
         n->state = state;
-        
-        if (n->type != n_src) {
-            for (iit=n->outputList; iit; iit=iit->next) {
-                wire_t* ww = (wire_t*)iit->data;
-                ww->target->inputs[ww->inIndex].state = state;
-                ww->state = state;
+        for (iit=n->outputList; iit; iit=iit->next) {
+            wire_t* ww = (wire_t*)iit->data;
+            ww->target->inputs[ww->inIndex].state = state;
+            ww->state = state;
+            if (ww->target->type == n_src) {
+                propagateSrc(state,ww->target->inputs[0].wire);
             }
-        } else {
-            // find the wire to propagate new src
-            // TODO double check why this didn't end up being necessary
-            
         }
     }
 }
@@ -138,6 +134,6 @@ void propagateWires(circuit_t* cir)
         if (w->target->type == n_src) {
             propagateSrc(state, w);
         }
-        
     }
+    
 }
