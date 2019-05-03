@@ -30,7 +30,7 @@ gboolean wasMoved = FALSE;
 guint timerTag = 0;
 
 GtkWidget* timerOps[5];
-GtkWidget* addOps[8];
+GtkWidget* addOps[9];
 
 gboolean timeOut(gpointer data)
 {
@@ -81,7 +81,7 @@ gboolean onSpeedSelected(GtkWidget *widget, gpointer data)
     }
     
     if (widget==timerOps[0]) {
-        return FALSE;        
+        return TRUE;        
     }
     
     if (widget==timerOps[1]) {
@@ -98,13 +98,11 @@ gboolean onSpeedSelected(GtkWidget *widget, gpointer data)
     
     if (widget==timerOps[4]) {
         timerTag = g_idle_add(timeOut, NULL);
-        return FALSE;
+        return TRUE;
     }
 
-
-
     timerTag = g_timeout_add (interval, timeOut, NULL);
-    return FALSE;
+    return TRUE;
 }
 
 vec2_t centrePos(GtkWidget* w)
