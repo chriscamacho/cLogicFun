@@ -29,6 +29,8 @@ gboolean wasMoved = FALSE;
 // so we can change its interval or pause
 guint timerTag = 0;
 
+GtkWidget* timerOps[4];
+GtkWidget* addOps[8];
 
 gboolean timeOut(gpointer data)
 {
@@ -42,58 +44,60 @@ gboolean timeOut(gpointer data)
     return TRUE;
 }
 
-void initTimer(GtkWidget* da) {
+
+void initCallbacks(GtkWidget* da, GtkBuilder* builder) 
+{
+    addOps[n_not] = GTK_WIDGET(gtk_builder_get_object(builder, "addNot"));
+    addOps[n_and] = GTK_WIDGET(gtk_builder_get_object(builder, "addAnd"));
+    addOps[n_or] = GTK_WIDGET(gtk_builder_get_object(builder, "addOr"));
+    addOps[n_xor] = GTK_WIDGET(gtk_builder_get_object(builder, "addXor"));
+    addOps[n_const] = GTK_WIDGET(gtk_builder_get_object(builder, "addConst"));
+    addOps[n_in] = GTK_WIDGET(gtk_builder_get_object(builder, "addInput"));
+    addOps[n_out] = GTK_WIDGET(gtk_builder_get_object(builder, "addOutput"));
+    addOps[n_src] = GTK_WIDGET(gtk_builder_get_object(builder, "addSource"));
+    addOps[n_dst] = GTK_WIDGET(gtk_builder_get_object(builder, "addDestination"));
+
+
+    timerOps[0] = GTK_WIDGET(gtk_builder_get_object(builder, "speedStop"));
+    timerOps[1] = GTK_WIDGET(gtk_builder_get_object(builder, "speedSlow"));
+    timerOps[2] = GTK_WIDGET(gtk_builder_get_object(builder, "speedNormal"));
+    timerOps[3] = GTK_WIDGET(gtk_builder_get_object(builder, "speedFast"));
+
     drawArea = da;
     timerTag = g_timeout_add (240, timeOut, NULL);    
 }
 
-// again with glade I'd rather send an INT as user data....
-// then these 4 callbacks could be one routine
-gboolean onSimStop(GtkWidget *widget, gpointer data)
+// the 4 speed menu options all call here, which menu option was selected
+// effects the new timer interval
+gboolean onSpeedSelected(GtkWidget *widget, gpointer data) 
 {
-    (void)widget;
     (void)data;
-    if (timerTag) {
-        g_source_remove (timerTag);
-        timerTag = 0; // TODO hopefully tag zero is never issued ?
+    int interval = 1000;
+    
+    if (widget==timerOps[0]) {
+        if (timerTag) {
+            g_source_remove (timerTag);
+            timerTag = 0; // TODO hopefully tag zero is never issued ?
+        }
+        return FALSE;        
+    } else {
+        if (widget==timerOps[1]) {
+            interval = 1000;
+        }
+        if (widget==timerOps[2]) {
+            interval = 250;
+        }
+        if (widget==timerOps[3]) {
+            interval = 25;
+        }
     }
-    return FALSE;
-}
 
-gboolean onSimSlow(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    (void)data;
-    if (timerTag) {
-        g_source_remove (timerTag);        
-    }
-    timerTag = g_timeout_add (1000, timeOut, NULL);
-    return FALSE;
-}
-
-gboolean onSimNormal(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    (void)data;
     if (timerTag) {
         g_source_remove (timerTag);        
     }
-    timerTag = g_timeout_add (250, timeOut, NULL);
+    timerTag = g_timeout_add (interval, timeOut, NULL);
     return FALSE;
 }
-
-gboolean onSimFast(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    (void)data;
-    if (timerTag) {
-        g_source_remove (timerTag);        
-    }
-    timerTag = g_timeout_add (25, timeOut, NULL);
-    return FALSE;
-}
-
-
 
 vec2_t centrePos(GtkWidget* w)
 {
@@ -112,78 +116,20 @@ gboolean on_chartOuputs_activate(GtkWidget *widget, gpointer data)
     return FALSE;
 }
 
-// node adders, want better userdata provision from glade!
-// would rather route all to same call back with index in data...
-gboolean addConst(GtkWidget *widget, gpointer data)
+// all the add menu options come here
+gboolean addNodeOp(GtkWidget *widget, gpointer data) 
 {
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_const, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addOut(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_out, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addIn(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_in, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addXor(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_xor, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addOr(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_or, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addAnd(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_and, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addNot(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_not, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addSrc(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_src, v.x, v.y);
-    return FALSE;
-}
-
-gboolean addDst(GtkWidget *widget, gpointer data)
-{
-    (void)widget;
-    vec2_t v = centrePos((GtkWidget*)data);
-    addNode(circuit, n_dst, v.x, v.y);
-    return FALSE;
+    (void)data;
+    vec2_t v = centrePos(drawArea);
+    guint type = 0;
+    for (int i=0; i<9; i++) {
+        if (widget==addOps[i]) {
+            type = i;
+            break;
+        }
+    }
+    addNode(circuit, type, v.x, v.y);
+    return FALSE;    
 }
 
 gboolean on_new_activate(GtkWidget *widget, gpointer data)

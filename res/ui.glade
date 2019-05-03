@@ -16,6 +16,7 @@
   <object class="GtkWindow" id="nodeWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Node edit</property>
+    <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">640</property>
     <property name="deletable">False</property>
@@ -378,77 +379,77 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add NOT</property>
-                        <signal name="activate" handler="addNot" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addAnd">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add AND</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="addAnd" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addOr">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add OR</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="addOr" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addXor">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add XOR</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="addXor" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addConst">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add CONST</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="addConst" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addInput">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add INPUT</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="addIn" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addOutput">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add OUTPUT</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="addOut" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addSource">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Add Source label</property>
-                        <signal name="activate" handler="addSrc" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="addDestination">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">add Destination label</property>
-                        <signal name="activate" handler="addDst" object="drawArea" swapped="no"/>
+                        <signal name="activate" handler="addNodeOp" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -466,39 +467,39 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="speedStop">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">STOP</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="onSimStop" swapped="no"/>
+                        <signal name="activate" handler="onSpeedSelected" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="speedSlow">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">slow</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="onSimSlow" swapped="no"/>
+                        <signal name="activate" handler="onSpeedSelected" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="speedNormal">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">normal</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="onSimNormal" swapped="no"/>
+                        <signal name="activate" handler="onSpeedSelected" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="speedFast">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">fast</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="onSimFast" swapped="no"/>
+                        <signal name="activate" handler="onSpeedSelected" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -544,6 +545,7 @@
   <object class="GtkWindow" id="graphWin">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Output Graph</property>
+    <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">640</property>
     <property name="default_height">200</property>
@@ -581,6 +583,28 @@
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="pinMapWindow">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

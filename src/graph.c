@@ -11,9 +11,11 @@ GList* labels = NULL;
 GList* points = NULL;
 
 // will eventually have more controls...
-void initGraphWin(GtkBuilder* builder) {
+void initGraphWin(GtkBuilder* builder, GtkWidget* mainWin) {
     graph = GTK_WIDGET(gtk_builder_get_object(builder, "graph"));
     graphWin = GTK_WIDGET(gtk_builder_get_object(builder, "graphWin"));
+    gtk_window_set_transient_for((GtkWindow*)graphWin, (GtkWindow*)mainWin);
+    
 }
 
 void showGraph(circuit_t* cir) {

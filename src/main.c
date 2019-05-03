@@ -10,7 +10,7 @@
 
 #define PREFIX "/uk/co/bedroomcoders/cLogicFun/"
 
-void initTimer(GtkWidget*);
+void initCallbacks(GtkWidget* da, GtkBuilder* builder);
 
 circuit_t* circuit;
 
@@ -66,18 +66,18 @@ int main(int argc, char *argv[])
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
     drawArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawArea"));
 
-    initNodeWin(builder);
-    initGraphWin(builder);
+    initNodeWin(builder, window);
+    initGraphWin(builder, window);
 
     gtk_builder_connect_signals(builder, NULL);
 
-    g_object_unref(builder);
     gtk_widget_show(window);
 
     setOffset( gtk_widget_get_allocated_width (drawArea) / 2.0,
                gtk_widget_get_allocated_height (drawArea) / 2.0);
 
-    initTimer(drawArea);
+    initCallbacks(drawArea, builder);
+    g_object_unref(builder);
     gtk_main();
 
     return 0;
@@ -86,5 +86,7 @@ int main(int argc, char *argv[])
 // called when window is closed
 void on_window_main_destroy()
 {
+    clearCircuit(circuit); // os can do this, but why not...
+    
     gtk_main_quit();
 }

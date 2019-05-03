@@ -99,9 +99,10 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     return TRUE;
 }
 
-void initNodeWin(GtkBuilder *builder)
+void initNodeWin(GtkBuilder *builder, GtkWidget* mainWin)
 {
     nodeWindow = GTK_WIDGET(gtk_builder_get_object(builder, "nodeWindow"));
+    gtk_window_set_transient_for((GtkWindow*)nodeWindow, (GtkWindow*)mainWin);
     nodeWinType = GTK_WIDGET(gtk_builder_get_object(builder, "nodeWinType"));
     nodeWinRotation = GTK_WIDGET(gtk_builder_get_object(builder, "nodeWinRotation"));
     nodeWinInvert = GTK_WIDGET(gtk_builder_get_object(builder, "nodeWinInvert"));
