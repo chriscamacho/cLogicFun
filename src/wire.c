@@ -46,26 +46,6 @@ wire_t* addWire(circuit_t* cir)
     return w;
 }
 
-void drawWires(cairo_t* cr, circuit_t* cir, double zoom)
-{
-    GList* it;
-    (void)zoom;
-
-    for (it = cir->wireList; it; it = it->next) {
-        wire_t* w = (wire_t*)it->data;
-        if (w->state) {
-            cairo_set_line_width(cr, 6.0);
-        } else {
-            cairo_set_line_width(cr, 3.0);
-        }
-        updateWire(w);
-        cairo_set_source_rgb(cr, w->colourR, w->colourB, w->colourG);
-        cairo_move_to(cr, w->sp.x, w->sp.y);
-        cairo_curve_to(cr, w->cp1.x, w->cp1.y, w->cp2.x, w->cp2.y, w->ep.x, w->ep.y);
-        cairo_stroke(cr);
-    }
-}
-
 void updateWire(wire_t* w)
 {
     double ac = cos(-w->parent->rotation + 90.0 * D2R);
@@ -96,6 +76,27 @@ void updateWire(wire_t* w)
     w->cp2.x += w->target->pos.x;
     w->cp2.y += w->target->pos.y;
 }
+
+void drawWires(cairo_t* cr, circuit_t* cir, double zoom)
+{
+    GList* it;
+    (void)zoom;
+
+    for (it = cir->wireList; it; it = it->next) {
+        wire_t* w = (wire_t*)it->data;
+        if (w->state) {
+            cairo_set_line_width(cr, 6.0);
+        } else {
+            cairo_set_line_width(cr, 3.0);
+        }
+        updateWire(w);
+        cairo_set_source_rgb(cr, w->colourR, w->colourB, w->colourG);
+        cairo_move_to(cr, w->sp.x, w->sp.y);
+        cairo_curve_to(cr, w->cp1.x, w->cp1.y, w->cp2.x, w->cp2.y, w->ep.x, w->ep.y);
+        cairo_stroke(cr);
+    }
+}
+
 
 void deleteWire(circuit_t* cir, wire_t* w)
 {

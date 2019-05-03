@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 // called when window is closed
 void on_window_main_destroy()
 {
-    clearCircuit(circuit); // os can do this, but why not...
+    freeCircuit(circuit); // os can do this, but why not...
     
     gtk_main_quit();
 }

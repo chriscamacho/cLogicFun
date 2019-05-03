@@ -1,7 +1,5 @@
 
 extern vec2_t ioPoints[16];
-//extern int currentID;
-//extern GList* nodeList;
 
 extern char typeNames[9][8];
 extern char invTypeNames[9][8];
@@ -23,9 +21,8 @@ enum nodeType {
 };
 
 
+// was more in here... 
 typedef struct output_s {
-    //int index;
-    //void* wire;
     gboolean highlight;
 } output_t;
 
@@ -43,12 +40,11 @@ typedef struct node_s {
     enum nodeType type;
 
     int maxInputs;  // max physicsal attachment points
-    input_t inputs[8];
-    //gboolean inputStates[8];
+    input_t inputs[8]; // consider list instead
 
     int maxOutputs;
     // only using 1 output - reserving others for nodes that are embedded circuits
-    output_t outputs[8];
+    output_t outputs[8]; // consider list instead
 
     // usually a list of wires except for n_src which
     // uses it as a list of nodes
@@ -61,13 +57,21 @@ typedef struct node_s {
     int latency;
 } node_t;
 
+// adds a new node to a circuit
 node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y);
+
+// removes the node from a circuit and frees its memory
 void freeNode(circuit_t*, node_t* n);
+
 void drawNode(cairo_t *cr, node_t* n);
+
+// is the point inside a node
 gboolean pointInNode(double x, double y, node_t* n);
+
+// is the point inside a nodes IO attachment point
 int pointInIo(double x, double y, node_t* n);
+
+// TODO better doing this on the fly?
 void calcIoPoints();
-void clearCircuit(circuit_t* cir);
-void updateLogic(circuit_t* cir);
-void findSrcTargets(circuit_t* cir);
+
 

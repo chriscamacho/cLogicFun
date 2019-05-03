@@ -29,7 +29,7 @@ gboolean wasMoved = FALSE;
 // so we can change its interval or pause
 guint timerTag = 0;
 
-GtkWidget* timerOps[4];
+GtkWidget* timerOps[5];
 GtkWidget* addOps[8];
 
 gboolean timeOut(gpointer data)
@@ -62,6 +62,7 @@ void initCallbacks(GtkWidget* da, GtkBuilder* builder)
     timerOps[1] = GTK_WIDGET(gtk_builder_get_object(builder, "speedSlow"));
     timerOps[2] = GTK_WIDGET(gtk_builder_get_object(builder, "speedNormal"));
     timerOps[3] = GTK_WIDGET(gtk_builder_get_object(builder, "speedFast"));
+    timerOps[4] = GTK_WIDGET(gtk_builder_get_object(builder, "speedSilly"));
 
     drawArea = da;
     timerTag = g_timeout_add (240, timeOut, NULL);    
@@ -73,28 +74,35 @@ gboolean onSpeedSelected(GtkWidget *widget, gpointer data)
 {
     (void)data;
     int interval = 1000;
-    
-    if (widget==timerOps[0]) {
-        if (timerTag) {
-            g_source_remove (timerTag);
-            timerTag = 0; // TODO hopefully tag zero is never issued ?
-        }
-        return FALSE;        
-    } else {
-        if (widget==timerOps[1]) {
-            interval = 1000;
-        }
-        if (widget==timerOps[2]) {
-            interval = 250;
-        }
-        if (widget==timerOps[3]) {
-            interval = 25;
-        }
-    }
 
     if (timerTag) {
-        g_source_remove (timerTag);        
+        g_source_remove (timerTag);
+        timerTag = 0;     
     }
+    
+    if (widget==timerOps[0]) {
+        return FALSE;        
+    }
+    
+    if (widget==timerOps[1]) {
+        interval = 1000;
+    }
+    
+    if (widget==timerOps[2]) {
+        interval = 250;
+    }
+    
+    if (widget==timerOps[3]) {
+        interval = 25;
+    }
+    
+    if (widget==timerOps[4]) {
+        timerTag = g_idle_add(timeOut, NULL);
+        return FALSE;
+    }
+
+
+
     timerTag = g_timeout_add (interval, timeOut, NULL);
     return FALSE;
 }
