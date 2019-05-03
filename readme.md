@@ -15,9 +15,8 @@ drag from a nodes output to another nodes input to create a wire.
 
 delete a wire by clicking on its destination input. 
 
+Each Nodes output can source multiple wires, label source nodes can transmit signals
+to multiple destination labels without wires, they have no latency.
+
 There are a number of examples to get you started...
-
-Note a wire splitter node (SPLIT) has no delay, an inverted not gate (THRU) has latency
-
-As a nodes single output can have multiple wires the SPLIT node is deprecated...
 
