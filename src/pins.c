@@ -139,8 +139,27 @@ gboolean onOK(GtkWidget* widget, gpointer data)
     }
     g_list_free(currentCircuit->pinsIn);
     g_list_free(currentCircuit->pinsOut);
+    
 
 
+
+    GtkTreeIter  it;
+    GtkTreeModel* inputModel;
+    inputModel = gtk_tree_view_get_model (GTK_TREE_VIEW(inputTreeView));
+    gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(inputModel), &it);
+
+    while (valid)
+    {   
+        GValue str = G_VALUE_INIT;
+        GValue i = G_VALUE_INIT;
+        gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_NAME, &str);
+        gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_PIN, &i);
+        //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
+        printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
+        g_value_unset(&str);
+        g_value_unset(&i);
+        valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(inputModel), &it);
+    }
 
     return FALSE;
 }
