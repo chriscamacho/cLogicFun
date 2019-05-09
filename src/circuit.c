@@ -14,6 +14,8 @@ circuit_t* createCircuit() {
     c->wireList = NULL;
     c->pinsIn = NULL;
     c->pinsOut = NULL;
+    c->txtHash = //g_hash_table_new(g_direct_hash, g_direct_equal);
+    g_hash_table_new(g_str_hash, g_str_equal);
     return c;
 }
 
@@ -28,11 +30,13 @@ void clearCircuit(circuit_t* cir)
         node_t* n = (node_t*)cir->nodeList->data;
         freeNode(cir, n);
     }
+    g_hash_table_remove_all(cir->txtHash);
     //cir->nextID = 0;
 }
 
 void freeCircuit(circuit_t* c) {
     clearCircuit(c);
+    g_hash_table_destroy(c->txtHash);
     free(c);
 }
 
@@ -152,7 +156,7 @@ void findSrcTargets(circuit_t* cir) {
             for (iit = cir->nodeList; iit; iit=iit->next) {
                 node_t* nn = (node_t*)iit->data;
                 if (nn->type == n_dst) {
-                    if (strcasecmp(nn->text, n->text) == 0) {
+                    if (strcasecmp(nn->p_text, n->p_text) == 0) {
                         n->outputList = g_list_append(n->outputList, nn);
                     }
                 }

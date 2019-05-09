@@ -15,24 +15,24 @@ void initGraphWin(GtkBuilder* builder, GtkWidget* mainWin) {
     graph = GTK_WIDGET(gtk_builder_get_object(builder, "graph"));
     graphWin = GTK_WIDGET(gtk_builder_get_object(builder, "graphWin"));
     gtk_window_set_transient_for((GtkWindow*)graphWin, (GtkWindow*)mainWin);
-    
+
 }
 
 void showGraph(circuit_t* cir) {
-    
+
     #define mxPoints 160
-    
+
     GList* it;
     for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_out) {
             //printf("%s ,",n->text);
-            labels = g_list_append(labels, &n->text);
+            labels = g_list_append(labels, &n->p_text);
             int* p = malloc(sizeof(int)* mxPoints);
             points = g_list_append(points, p);
         }
     }
-    
+
     //printf("\n");
     for (int i=0; i<mxPoints; i++) {
         propagateWires(cir);
@@ -46,7 +46,7 @@ void showGraph(circuit_t* cir) {
                 //printf("%i, ",n->state);
                 pit = pit->next;
             }
-            
+
         }
         //printf("\n");
     }
@@ -69,16 +69,16 @@ gboolean on_graph_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
     (void)data;
     (void)widget;
-    
-    cairo_set_line_width(cr, 1);    
+
+    cairo_set_line_width(cr, 1);
     cairo_set_source_rgb(cr, 0.25, 0.25, 0.5);
     for (int x=0; x<640; x=x+4) {
-        cairo_move_to(cr, x, 0);        
-        cairo_line_to(cr, x, 100);        
+        cairo_move_to(cr, x, 0);
+        cairo_line_to(cr, x, 100);
     }
     cairo_stroke(cr);
-    
-    cairo_set_line_width(cr, 2);    
+
+    cairo_set_line_width(cr, 2);
     cairo_set_source_rgb(cr, 0, 0, 0);
     GList* pit;
     GList* lit = labels;
@@ -98,6 +98,6 @@ gboolean on_graph_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
     }
 
 
-    
+
     return FALSE;
 }

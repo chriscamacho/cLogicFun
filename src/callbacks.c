@@ -239,7 +239,7 @@ gboolean onSave(GtkWidget *widget, gpointer data)
                             n->maxInputs, n->maxOutputs);
 
             // escape chars in label textstring...
-            char* san1 = repl_str(n->text,  "&",    "&amp;");
+            char* san1 = repl_str(n->p_text,  "&",    "&amp;");
             char* san2 = repl_str(san1,     "'",    "&apos;");
             char* san3 = repl_str(san2,     "<",    "&lt;");
             char* san4 = repl_str(san3,     ">",    "&gt;");

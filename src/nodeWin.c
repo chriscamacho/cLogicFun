@@ -21,15 +21,8 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
 {
     (void)widget;
     (void)data;
-    
-    // TODO handle n_src and n_dst
-    if (currentNode->type == n_src || currentNode->type == n_dst) {
-        // set text to something unique and invalid
-        currentNode->text[0]=127;
-        currentNode->text[1]=0;
-        // rebuild label targets
-        findSrcTargets(currentCircuit);
-    }
+
+    guint ty = currentNode->type;
 
     while (currentNode->outputList) {
         wire_t* w = (wire_t*)currentNode->outputList->data;
@@ -44,6 +37,11 @@ gboolean onDelete(GtkWidget *widget, gpointer data)
     }
 
     freeNode(currentCircuit, currentNode);
+
+    // TODO handle n_src and n_dst?
+    if (ty == n_src || ty == n_dst) {
+        findSrcTargets(currentCircuit);
+    }
 
     gtk_widget_hide(nodeWindow);
     return FALSE;
@@ -64,26 +62,29 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     (void)widget;
     (void)data;
     GList* it;
-    strcpy(currentNode->text, gtk_entry_get_text((GtkEntry*)nodeWinText));
 
-    if (currentNode->type == n_src) {
-        
+    setNodeText(currentCircuit, currentNode, gtk_entry_get_text((GtkEntry*)nodeWinText));
+
+    // have to make sure all node types have unique names for hash map txt > node
+    //if (currentNode->type == n_src) {
+
         for (it = currentCircuit->nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
-            if (n==currentNode) {
+            if (n==currentNode || strlen(n->p_text)==0) {
                 continue;
             }
-            if (n->type == n_src) {
-                if (strcasecmp(n->text, currentNode->text) == 0) {
+            //if (n->type == n_src) {
+                if (strcasecmp(n->p_text, currentNode->p_text) == 0) {
                     gtk_entry_set_text((GtkEntry*)nodeWinText,"");
-                    currentNode->text[0]=0;
+                    //currentNode->text[0]=0;
+                     setNodeText(currentCircuit, currentNode, "");
                     gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"Needs to be unique");
                     return FALSE;
                 }
-            }
+            //}
         }
-    }
-        
+    //}
+
     currentNode->invert = gtk_toggle_button_get_active((GtkToggleButton*)nodeWinInvert);
     double r = atof(gtk_entry_get_text((GtkEntry*)nodeWinRotation)) * D2R;
     currentNode->rotation = r;
@@ -92,7 +93,7 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     for (int i =0;i<8;i++) {
         currentNode->stateBuffer[i]=currentNode->state;
     }
-    
+
     // TODO if n_src or n_dst do linkups
     findSrcTargets(currentCircuit);
     gtk_widget_hide(nodeWindow);
@@ -124,9 +125,9 @@ void showNodeWindow(circuit_t* cir, node_t* n)
     gtk_toggle_button_set_active((GtkToggleButton*)nodeWinInvert, n->invert);
     sprintf(degStr, "%f", n->rotation * R2D);
     gtk_entry_set_text((GtkEntry*)nodeWinRotation, degStr);
-    gtk_entry_set_text((GtkEntry*)nodeWinText, n->text);
+    gtk_entry_set_text((GtkEntry*)nodeWinText, n->p_text);
     gtk_spin_button_set_value((GtkSpinButton*)nodeWinLatency, n->latency+1);
-    if (n->type == n_src || n->type == n_dst 
+    if (n->type == n_src || n->type == n_dst
         || n->type == n_in || n->type == n_out) {
         gtk_widget_set_sensitive(nodeWinInvert, FALSE);
         gtk_widget_set_sensitive(nodeWinLatency, FALSE);
@@ -136,4 +137,8 @@ void showNodeWindow(circuit_t* cir, node_t* n)
         gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"");
     }
     gtk_widget_show(nodeWindow);
+    // test of getNodeFromText
+    if (strlen(n->p_text)!=0) {
+        printf("node text %s txt to node->p_text %s\n", n->p_text, getNodeFromText(cir,n)->p_text);
+    }
 }

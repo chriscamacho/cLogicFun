@@ -139,7 +139,7 @@ gboolean onOK(GtkWidget* widget, gpointer data)
     }
     g_list_free(currentCircuit->pinsIn);
     g_list_free(currentCircuit->pinsOut);
-    
+
 
 
 
@@ -149,7 +149,7 @@ gboolean onOK(GtkWidget* widget, gpointer data)
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(inputModel), &it);
 
     while (valid)
-    {   
+    {
         GValue str = G_VALUE_INIT;
         GValue i = G_VALUE_INIT;
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_NAME, &str);
@@ -261,11 +261,11 @@ void showPinsWindow(circuit_t* cir)
     for (it = cir->nodeList; it!=NULL; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_in) {
-            addRow(inStore, &iter, n->text, UNUSED_PIN);
+            addRow(inStore, &iter, n->p_text, UNUSED_PIN);
             mInputs++;
         }
         if (n->type == n_out) {
-            addRow(outStore, &iter, n->text, UNUSED_PIN);
+            addRow(outStore, &iter, n->p_text, UNUSED_PIN);
             mOutputs++;
         }
     }

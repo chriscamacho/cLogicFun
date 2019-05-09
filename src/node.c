@@ -25,7 +25,7 @@ char typeNames[9][8] = {
 // pesky XNOR can't just prepend N !!!
 char invTypeNames[9][8] = {
     "CONST 0",
-    "THRU",
+    "BUFFER",
     "NAND",
     "NOR",
     "XNOR",
@@ -65,7 +65,7 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
     n->height = 64;
     n->invert = FALSE;
     n->state = FALSE;
-    n->text[0] = 0;
+    n->p_text[0] = 0;
     n->outputList = NULL;
     //n->srcOutputs = NULL;
     for (int i = 0; i < 8; i++) {
@@ -74,10 +74,10 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
         n->inputs[i].state = FALSE;
         n->inputs[i].highlight = FALSE;
         n->inputs[i].wire = NULL;
-        
+
         n->stateBuffer[i] = 0;
     }
-    
+
     n->latency = 0;
 
     if (tp == n_and || tp == n_or || tp == n_xor) {
@@ -97,19 +97,43 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
         n->maxInputs = 1;
         n->maxOutputs = 0;
     }
-    
+
     if (tp == n_src || tp == n_dst) {
         n->height = 24;
     }
 
     cir->nodeList = g_list_append(cir->nodeList, n);
+    //g_hash_table_insert(cir->idHash, GINT_TO_POINTER(n->id), n);
     return n;
 }
 
 void freeNode(circuit_t* cir, node_t* n)
 {
     cir->nodeList = g_list_remove(cir->nodeList, n);
+    //g_hash_table_remove (cir->idHash, GINT_TO_POINTER(n->id));
+    if (strlen(n->p_text)!=0) {
+        g_hash_table_remove (cir->txtHash, n->p_text);
+    }
+
     free(n);
+}
+
+void setNodeText(circuit_t* c, node_t* n, const char* tx)
+{
+    // remove old text from hash
+    if (strlen(n->p_text)!=0) {
+        g_hash_table_remove(c->txtHash, n->p_text);
+    }
+    strcpy(n->p_text, tx);
+    // add new text to hash
+    if (strlen(n->p_text)!=0) {
+        g_hash_table_insert(c->txtHash, n->p_text, n);
+    }
+}
+
+node_t* getNodeFromText(circuit_t* cir, node_t* n)
+{
+    return g_hash_table_lookup(cir->txtHash, n->p_text);
 }
 
 // adapted from https://www.cairographics.org/samples/rounded_rectangle/
@@ -146,7 +170,7 @@ void drawNode(cairo_t *cr, node_t* n)
     cairo_translate(cr, n->pos.x, n->pos.y);
     cairo_rotate(cr, n->rotation);
     cairo_get_matrix(cr, &local);
-    
+
     drawBox(cr, n->width, n->height, n->state);
     cairo_set_matrix(cr, &local);
 
@@ -177,9 +201,9 @@ void drawNode(cairo_t *cr, node_t* n)
     }
 
     cairo_set_line_width(cr, 1);
-    
+
     if (n->invert) {
-        gdk_cairo_set_source_pixbuf (cr, invTypeImg[n->type], -24, -24);   
+        gdk_cairo_set_source_pixbuf (cr, invTypeImg[n->type], -24, -24);
     } else {
         if (n->type == n_src || n->type == n_dst) {
             gdk_cairo_set_source_pixbuf (cr, typeImg[n->type], -24, -12);
@@ -188,14 +212,14 @@ void drawNode(cairo_t *cr, node_t* n)
         }
     }
     cairo_paint(cr);
-    
-    
+
+
     cairo_text_extents_t ex;
     cairo_set_source_rgb(cr, 0, 0, 0);
-    cairo_text_extents(cr, n->text, &ex);
+    cairo_text_extents(cr, n->p_text, &ex);
     cairo_move_to(cr, -ex.width*.5, -n->height*.6);
-    cairo_show_text (cr, n->text);
-    
+    cairo_show_text (cr, n->p_text);
+
     cairo_set_matrix(cr, &before);
 }
 

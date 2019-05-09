@@ -112,7 +112,8 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         }
         if (strcasecmp("label", el) == 0) {
             if (strcasecmp("text", attr[i]) == 0) {
-                strcpy(newNode.text, attr[i + 1]);
+                // newNode never directly added to circuit so safe to directly modify
+                strcpy(newNode.p_text, attr[i + 1]);
             }
         }
     }
@@ -141,7 +142,8 @@ end(void *data, const XML_Char *el)
         for (int i=0; i<8; i++) {
             n->stateBuffer[i] = n->state;
         }
-        strcpy(n->text, newNode.text);
+        setNodeText(currentCircuit, n, &newNode.p_text[0]);
+        //strcpy(n->text, newNode.text);
 
     }
     if (strcasecmp("wire", el) == 0) {

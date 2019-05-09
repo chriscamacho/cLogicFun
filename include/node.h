@@ -21,7 +21,7 @@ enum nodeType {
 };
 
 
-// was more in here... 
+// was more in here...
 typedef struct output_s {
     gboolean highlight;
 } output_t;
@@ -52,7 +52,7 @@ typedef struct node_s {
 
     gboolean state;
     gboolean stateBuffer[8]; // for latency
-    char text[80];
+    char p_text[80]; //  p_ "private" do not change directly
     gboolean invert;
     int latency;
 } node_t;
@@ -74,4 +74,7 @@ int pointInIo(double x, double y, node_t* n);
 // TODO better doing this on the fly?
 void calcIoPoints();
 
+// set a nodes text keeping text to node hashmap up to date
+void setNodeText(circuit_t* c, node_t* n, const char* tx);
 
+node_t* getNodeFromText(circuit_t* cir, node_t* n);
