@@ -7,6 +7,7 @@
 #include "xmlLoader.h"
 #include "nodeWin.h"
 #include "graph.h"
+#include "pins.h"
 
 char *repl_str(const char *str, const char *from, const char *to);
 
@@ -45,7 +46,7 @@ gboolean timeOut(gpointer data)
 }
 
 
-void initCallbacks(GtkWidget* da, GtkBuilder* builder) 
+void initCallbacks(GtkWidget* da, GtkBuilder* builder)
 {
     addOps[n_not] = GTK_WIDGET(gtk_builder_get_object(builder, "addNot"));
     addOps[n_and] = GTK_WIDGET(gtk_builder_get_object(builder, "addAnd"));
@@ -65,37 +66,45 @@ void initCallbacks(GtkWidget* da, GtkBuilder* builder)
     timerOps[4] = GTK_WIDGET(gtk_builder_get_object(builder, "speedSilly"));
 
     drawArea = da;
-    timerTag = g_timeout_add (240, timeOut, NULL);    
+    timerTag = g_timeout_add (240, timeOut, NULL);
+}
+
+gboolean onPinAssign(GtkWidget *widget, gpointer data)
+{
+    (void)data;
+    (void)widget;
+    showPinsWindow(circuit);
+    return FALSE;
 }
 
 // the 4 speed menu options all call here, which menu option was selected
 // effects the new timer interval
-gboolean onSpeedSelected(GtkWidget *widget, gpointer data) 
+gboolean onSpeedSelected(GtkWidget *widget, gpointer data)
 {
     (void)data;
     int interval = 1000;
 
     if (timerTag) {
         g_source_remove (timerTag);
-        timerTag = 0;     
+        timerTag = 0;
     }
-    
+
     if (widget==timerOps[0]) {
-        return TRUE;        
+        return TRUE;
     }
-    
+
     if (widget==timerOps[1]) {
         interval = 1000;
     }
-    
+
     if (widget==timerOps[2]) {
         interval = 250;
     }
-    
+
     if (widget==timerOps[3]) {
         interval = 25;
     }
-    
+
     if (widget==timerOps[4]) {
         timerTag = g_idle_add(timeOut, NULL);
         return TRUE;
@@ -123,7 +132,7 @@ gboolean on_chartOuputs_activate(GtkWidget *widget, gpointer data)
 }
 
 // all the add menu options come here
-gboolean addNodeOp(GtkWidget *widget, gpointer data) 
+gboolean addNodeOp(GtkWidget *widget, gpointer data)
 {
     (void)data;
     vec2_t v = centrePos(drawArea);
@@ -135,7 +144,7 @@ gboolean addNodeOp(GtkWidget *widget, gpointer data)
         }
     }
     addNode(circuit, type, v.x, v.y);
-    return FALSE;    
+    return FALSE;
 }
 
 gboolean on_new_activate(GtkWidget *widget, gpointer data)
@@ -224,26 +233,26 @@ gboolean onSave(GtkWidget *widget, gpointer data)
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
             fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n",
                             n->pos.x,n->pos.y, n->rotation);
-            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" state=\"%i\" />\n", 
+            fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" state=\"%i\" />\n",
                             n->type, n->invert, n->latency, n->state);
-            fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n", 
+            fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n",
                             n->maxInputs, n->maxOutputs);
-            
+
             // escape chars in label textstring...
             char* san1 = repl_str(n->text,  "&",    "&amp;");
             char* san2 = repl_str(san1,     "'",    "&apos;");
             char* san3 = repl_str(san2,     "<",    "&lt;");
             char* san4 = repl_str(san3,     ">",    "&gt;");
             char* san5 = repl_str(san4,     "\"",   "&quot;");
-            
+
             fprintf(fp, "  <label text=\"%s\" />\n", san5);
-            
+
             free(san1);
             free(san2);
             free(san3);
             free(san4);
             free(san5);
-            
+
             fprintf(fp, "</node>\n\n");
         }
         fprintf(fp, "\n\n");
@@ -251,11 +260,11 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         for (it = circuit->wireList; it; it = it->next) {
             wire_t* w = (wire_t*)it->data;
             fprintf(fp, "<wire wireID=\"%i\">\n", w->id);
-            fprintf(fp, "  <parent pid=\"%i\" pindex=\"%i\" />\n", 
+            fprintf(fp, "  <parent pid=\"%i\" pindex=\"%i\" />\n",
                             w->parent->id, w->outIndex);
-            fprintf(fp, "  <target tid=\"%i\" tindex=\"%i\" />\n", 
+            fprintf(fp, "  <target tid=\"%i\" tindex=\"%i\" />\n",
                             w->target->id, w->inIndex);
-            fprintf(fp, "  <colour r=\"%f\" g=\"%f\" b=\"%f\" />\n", 
+            fprintf(fp, "  <colour r=\"%f\" g=\"%f\" b=\"%f\" />\n",
                             w->colourR, w->colourG, w->colourB);
             fprintf(fp, "</wire>\n\n");
         }
@@ -384,7 +393,7 @@ gboolean eventBox_button_press_event_cb(GtkWidget *widget, GdkEventButton *event
                 if (n->outputs[i].highlight) {
                     hi = i;
                     break;
-                }  
+                }
             }
 
 
@@ -505,7 +514,7 @@ gboolean eventBox_motion_notify_event_cb( GtkWidget *widget, GdkEventMotion *eve
                     };
                     double ac = cos(-dragWire.target->rotation + 90.0 * D2R);
                     double as = sin(-dragWire.target->rotation + 90.0 * D2R);
-                    dragWire.cp2.x += ( as * (ioPoints[ni - 8].x - 40.0) 
+                    dragWire.cp2.x += ( as * (ioPoints[ni - 8].x - 40.0)
                                       - ac * ioPoints[ni - 8].y);
                     dragWire.cp2.y += ( ac * (ioPoints[ni - 8].x - 40.0)
                                       + as * ioPoints[ni - 8].y);
@@ -554,7 +563,7 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     (void)data;
     (void)widget;
     cairo_matrix_t matrix;
-    
+
     /*
         guint width, height;
 

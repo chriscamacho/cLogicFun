@@ -12,6 +12,8 @@ circuit_t* createCircuit() {
     //c->nextID = 0;
     c->nodeList = NULL;
     c->wireList = NULL;
+    c->pinsIn = NULL;
+    c->pinsOut = NULL;
     return c;
 }
 
@@ -46,7 +48,7 @@ guint getNextID(circuit_t* c) {
                 found = TRUE;
             }
         }
-        
+
         for (it = c->wireList; it; it = it->next) {
             wire_t* w = (wire_t*)it->data;
             if (nid == w->id) {
@@ -78,17 +80,17 @@ void updateLogic(circuit_t* cir)
                 stateCount++;
             }
         }
-        
+
         int newState = states[0];
-        
+
         if (n->type == n_in) {
-            newState = n->state; 
+            newState = n->state;
         }
-        
+
         if (n->type == n_not) {
             newState = !states[0];
         }
-        
+
         if (n->type == n_const) {
             newState = 1;
         }
@@ -106,9 +108,9 @@ void updateLogic(circuit_t* cir)
                     newState = newState ^ states[i];
                 }
             }
-            
+
         }
-        
+
         if (n->invert) {
             newState = !newState;
         }
@@ -119,7 +121,7 @@ void updateLogic(circuit_t* cir)
         n->stateBuffer[3] = n->stateBuffer[2];
         n->stateBuffer[2] = n->stateBuffer[1];
         n->stateBuffer[1] = n->stateBuffer[0];
-        
+
         n->stateBuffer[0] = newState;
         n->state = n->stateBuffer[n->latency];
 
@@ -156,5 +158,5 @@ void findSrcTargets(circuit_t* cir) {
                 }
             }
         }
-    }   
+    }
 }

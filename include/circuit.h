@@ -4,6 +4,8 @@
 typedef struct circuit_s {
     GList* nodeList;
     GList* wireList;
+    GList* pinsIn;
+    GList* pinsOut;
 } circuit_t;
 
 // allocates memory for a circuit struct

@@ -7,6 +7,7 @@
 #include "callbacks.h"
 #include "nodeWin.h"
 #include "graph.h"
+#include "pins.h"
 
 #define PREFIX "/uk/co/bedroomcoders/cLogicFun/"
 
@@ -30,7 +31,8 @@ GdkPixbuf* loadPb(const char* fn)
 int main(int argc, char *argv[])
 {
     circuit = createCircuit();
-    
+
+
     GtkBuilder      *builder;
     GtkWidget       *window;
     GtkWidget       *drawArea;
@@ -47,7 +49,7 @@ int main(int argc, char *argv[])
     typeImg[6] = loadPb(PREFIX"res/output.png");
     typeImg[7] = loadPb(PREFIX"res/src.png");
     typeImg[8] = loadPb(PREFIX"res/dst.png");
-    
+
     invTypeImg[0] = loadPb(PREFIX"res/0.png");
     invTypeImg[1] = loadPb(PREFIX"res/buffer.png");
     invTypeImg[2] = loadPb(PREFIX"res/nand.png");
@@ -57,7 +59,7 @@ int main(int argc, char *argv[])
     invTypeImg[6] = typeImg[6];
     invTypeImg[7] = typeImg[7];
     invTypeImg[8] = typeImg[8];
-    
+
 
     builder = gtk_builder_new();
 
@@ -68,6 +70,7 @@ int main(int argc, char *argv[])
 
     initNodeWin(builder, window);
     initGraphWin(builder, window);
+    initPinsWin(builder, window);
 
     gtk_builder_connect_signals(builder, NULL);
 
@@ -78,6 +81,12 @@ int main(int argc, char *argv[])
 
     initCallbacks(drawArea, builder);
     g_object_unref(builder);
+
+    if (argc==2) {
+        loadCircuit(circuit, argv[1]);
+    }
+
+
     gtk_main();
 
     return 0;
@@ -87,6 +96,6 @@ int main(int argc, char *argv[])
 void on_window_main_destroy()
 {
     freeCircuit(circuit); // os can do this, but why not...
-    
+
     gtk_main_quit();
 }

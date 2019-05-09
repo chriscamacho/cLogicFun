@@ -64,7 +64,7 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
             if (strcasecmp("state", attr[i]) == 0) {
                 newNode.state = atoi(attr[i + 1]);
             }
-            
+
         }
         if (strcasecmp("io", el) == 0) {
             if (strcasecmp("maxIn", attr[i]) == 0) {
@@ -178,6 +178,7 @@ void loadCircuit(circuit_t* c, const char* fileName)
 
     FILE *fp;
     fp = fopen(fileName, "r");
+    if (!fp) return;
 
     XML_SetElementHandler(p, start, end);
 
