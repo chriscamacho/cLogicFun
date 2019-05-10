@@ -1,7 +1,7 @@
 
 typedef struct pins_s {
     node_t* node; // node the pin is connected to (sub circuit input or output)
-    gboolean isInput; //
+    gboolean isInput; // TODO two different lists don't really need this
     guint pin; // which pin
 } pins_t;
 

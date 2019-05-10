@@ -4,9 +4,11 @@
 typedef struct circuit_s {
     GList* nodeList;
     GList* wireList;
-    GList* pinsIn;
-    GList* pinsOut;
-    GHashTable* txtHash;
+    GList* pinsIn;  // list of input pins
+    GList* pinsOut; // list of output pins
+    guint nIns; // number of input pins
+    guint nOuts; // number of output pins
+    GHashTable* txtHash; // lookup a node pointer from its label (text)
 } circuit_t;
 
 // allocates memory for a circuit struct

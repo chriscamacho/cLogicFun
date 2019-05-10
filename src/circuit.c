@@ -14,6 +14,8 @@ circuit_t* createCircuit() {
     c->wireList = NULL;
     c->pinsIn = NULL;
     c->pinsOut = NULL;
+    c->nIns = 0;
+    c->nOuts = 0;
     c->txtHash = //g_hash_table_new(g_direct_hash, g_direct_equal);
     g_hash_table_new(g_str_hash, g_str_equal);
     return c;

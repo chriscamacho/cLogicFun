@@ -129,16 +129,25 @@ gboolean onOK(GtkWidget* widget, gpointer data)
     (void)widget;
     (void)data;
     // clear out old pin defs
-    while (currentCircuit->pinsIn) {
-        pins_t* p = (pins_t*)currentCircuit->pinsIn->data;
+    GList* i;
+    for (i = currentCircuit->pinsIn; i!=NULL; i = i->next) {
+        pins_t* p = (pins_t*)i->data;
         freePin(p);
     }
-    while (currentCircuit->pinsOut) {
-        pins_t* p = (pins_t*)currentCircuit->pinsOut->data;
+    for (i = currentCircuit->pinsOut; i!=NULL; i = i->next) {
+        pins_t* p = (pins_t*)i->data;
         freePin(p);
     }
-    g_list_free(currentCircuit->pinsIn);
-    g_list_free(currentCircuit->pinsOut);
+
+    // TODO research - why does this cause an issue but while loop is ok???
+    //g_list_free(currentCircuit->pinsIn);
+    //g_list_free(currentCircuit->pinsOut);
+    while(currentCircuit->pinsIn) {
+        currentCircuit->pinsIn = g_list_remove(currentCircuit->pinsIn, currentCircuit->pinsIn->data);
+    }
+    while(currentCircuit->pinsOut) {
+        currentCircuit->pinsOut = g_list_remove(currentCircuit->pinsOut, currentCircuit->pinsOut->data);
+    }
 
 
     // TODO belated thought, can treeviews have hidden columns that could
@@ -156,14 +165,14 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_NAME, &str);
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_PIN, &i);
         //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
-        printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
+        //printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
         guint pin = g_value_get_uint(&i);
         if (pin!=UNUSED_PIN) {
             node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
             if (n) {
                 pins_t* p = createPin(n, TRUE);
                 p->pin = pin;
-                currentCircuit->pinsIn = g_list_append(currentCircuit->pinsIn, n);
+                currentCircuit->pinsIn = g_list_append(currentCircuit->pinsIn, p);
             }
         }
         g_value_unset(&str);
@@ -185,14 +194,14 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         gtk_tree_model_get_value (GTK_TREE_MODEL(outputModel), &it, COL_NAME, &str);
         gtk_tree_model_get_value (GTK_TREE_MODEL(outputModel), &it, COL_PIN, &i);
         //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
-        printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
+        //printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
         guint pin = g_value_get_uint(&i);
         if (pin!=UNUSED_PIN) {
             node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
             if (n) {
                 pins_t* p = createPin(n, FALSE);
                 p->pin = pin;
-                currentCircuit->pinsOut = g_list_append(currentCircuit->pinsOut, n);
+                currentCircuit->pinsOut = g_list_append(currentCircuit->pinsOut, p);
             }
         }
         g_value_unset(&str);
@@ -204,7 +213,10 @@ gboolean onOK(GtkWidget* widget, gpointer data)
     }
 
 
+    currentCircuit->nIns = nInputs;
+    currentCircuit->nOuts = nOutputs;
 
+    gtk_widget_hide(pinMapWindow);
 
 
     return FALSE;
@@ -301,18 +313,53 @@ void showPinsWindow(circuit_t* cir)
 
     inStore = gtk_list_store_new (2, G_TYPE_UINT, G_TYPE_STRING);
     outStore = gtk_list_store_new (2, G_TYPE_UINT, G_TYPE_STRING);
-    nInputs = 0;
-    nOutputs = 0;
+    nInputs = currentCircuit->nIns;
+    nOutputs = currentCircuit->nOuts;
     GList* it;
+    GList* it2;
+
+    // pins in consecutive order
+    for (it = cir->pinsIn; it!=NULL; it = it->next) {
+        pins_t* p = (pins_t*)it->data;
+        //printf("pin# %i\n",p->pin);
+        addRow(inStore, &iter, p->node->p_text, p->pin);
+        mInputs++;
+    }
+    for (it = cir->pinsOut; it!=NULL; it = it->next) {
+        pins_t* p = (pins_t*)it->data;
+        addRow(outStore, &iter, p->node->p_text, p->pin);
+        mOutputs++;
+    }
+
     for (it = cir->nodeList; it!=NULL; it = it->next) {
         node_t* n = (node_t*)it->data;
+
         if (n->type == n_in) {
-            addRow(inStore, &iter, n->p_text, UNUSED_PIN);
-            mInputs++;
+            gboolean found = FALSE;
+            for (it2 = cir->pinsIn; it2!=NULL; it2 = it2->next) {
+                pins_t* p = (pins_t*)it2->data;
+                if (p->node == n) {
+                    found = TRUE;
+                }
+            }
+            if (!found) {
+                addRow(inStore, &iter, n->p_text, UNUSED_PIN);
+                mInputs++;
+            }
         }
+
         if (n->type == n_out) {
-            addRow(outStore, &iter, n->p_text, UNUSED_PIN);
-            mOutputs++;
+            gboolean found = FALSE;
+            for (it2 = cir->pinsOut; it2!=NULL; it2 = it2->next) {
+                pins_t* p = (pins_t*)it2->data;
+                if (p->node == n) {
+                    found = TRUE;
+                }
+            }
+            if (!found) {
+                addRow(outStore, &iter, n->p_text, UNUSED_PIN);
+                mOutputs++;
+            }
         }
     }
 
