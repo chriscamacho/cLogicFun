@@ -141,7 +141,8 @@ gboolean onOK(GtkWidget* widget, gpointer data)
     g_list_free(currentCircuit->pinsOut);
 
 
-
+    // TODO belated thought, can treeviews have hidden columns that could
+    // store a node pointer ?
 
     GtkTreeIter  it;
     GtkTreeModel* inputModel;
@@ -156,10 +157,55 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_PIN, &i);
         //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
         printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
+        guint pin = g_value_get_uint(&i);
+        if (pin!=UNUSED_PIN) {
+            node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
+            if (n) {
+                pins_t* p = createPin(n, TRUE);
+                p->pin = pin;
+                currentCircuit->pinsIn = g_list_append(currentCircuit->pinsIn, n);
+            }
+        }
         g_value_unset(&str);
         g_value_unset(&i);
+        if (pin==UNUSED_PIN) {
+            break;
+        }
         valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(inputModel), &it);
     }
+
+    printf("-----\n");
+    GtkTreeModel* outputModel = gtk_tree_view_get_model (GTK_TREE_VIEW(outputTreeView));
+    valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(outputModel), &it);
+
+    while (valid)
+    {
+        GValue str = G_VALUE_INIT;
+        GValue i = G_VALUE_INIT;
+        gtk_tree_model_get_value (GTK_TREE_MODEL(outputModel), &it, COL_NAME, &str);
+        gtk_tree_model_get_value (GTK_TREE_MODEL(outputModel), &it, COL_PIN, &i);
+        //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
+        printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
+        guint pin = g_value_get_uint(&i);
+        if (pin!=UNUSED_PIN) {
+            node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
+            if (n) {
+                pins_t* p = createPin(n, FALSE);
+                p->pin = pin;
+                currentCircuit->pinsOut = g_list_append(currentCircuit->pinsOut, n);
+            }
+        }
+        g_value_unset(&str);
+        g_value_unset(&i);
+        if (pin==UNUSED_PIN) {
+            break;
+        }
+        valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(outputModel), &it);
+    }
+
+
+
+
 
     return FALSE;
 }

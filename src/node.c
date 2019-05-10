@@ -131,9 +131,9 @@ void setNodeText(circuit_t* c, node_t* n, const char* tx)
     }
 }
 
-node_t* getNodeFromText(circuit_t* cir, node_t* n)
+node_t* getNodeFromText(circuit_t* cir, const char* str)
 {
-    return g_hash_table_lookup(cir->txtHash, n->p_text);
+    return g_hash_table_lookup(cir->txtHash, str);
 }
 
 // adapted from https://www.cairographics.org/samples/rounded_rectangle/

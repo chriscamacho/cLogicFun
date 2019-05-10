@@ -77,4 +77,4 @@ void calcIoPoints();
 // set a nodes text keeping text to node hashmap up to date
 void setNodeText(circuit_t* c, node_t* n, const char* tx);
 
-node_t* getNodeFromText(circuit_t* cir, node_t* n);
+node_t* getNodeFromText(circuit_t* cir, const char* n);

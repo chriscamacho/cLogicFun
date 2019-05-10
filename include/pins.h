@@ -1,9 +1,8 @@
 
 typedef struct pins_s {
-    //char* text;  use node text its the same thing!
     node_t* node; // node the pin is connected to (sub circuit input or output)
     gboolean isInput; //
-    guint ID;
+    guint pin; // which pin
 } pins_t;
 
 void initPinsWin(GtkBuilder* builder, GtkWidget* mainWin);
