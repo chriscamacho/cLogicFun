@@ -4,6 +4,7 @@
 #include "circuit.h"
 #include "node.h"
 #include "wire.h"
+#include "pins.h"
 #include "xmlLoader.h"
 
 #include <expat.h>
@@ -16,6 +17,7 @@ char Buff[BUFFSIZE];
 
 node_t newNode;
 wire_t newWire;
+pins_t pinIn,pinOut;
 
 int pid, tid;
 
@@ -31,13 +33,33 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
     (void)data;
     (void)el;
 
+
     for (i = 0; attr[i]; i += 2) {
+
+        if (strcasecmp("pinIn", el) == 0) {
+            if (strcasecmp("destID", attr[i]) == 0) {
+                pinIn.tmpID = atoi(attr[i + 1]);
+                printf("pin in tmpid=%i\n",pinIn.tmpID);
+            }
+            if (strcasecmp("pin", attr[i]) == 0) {
+                pinIn.pin = atoi(attr[i + 1]);
+            }
+        }
+
+        if (strcasecmp("pinOut", el) == 0) {
+            if (strcasecmp("destID", attr[i]) == 0) {
+                pinOut.tmpID = atoi(attr[i + 1]);
+                printf("pin in tmpid=%i\n",pinOut.tmpID);
+            }
+            if (strcasecmp("pin", attr[i]) == 0) {
+                pinOut.pin = atoi(attr[i + 1]);
+            }
+        }
+
+
         if (strcasecmp("node", el) == 0) {
             if (strcasecmp("nodeID", attr[i]) == 0) {
                 newNode.id = atoi(attr[i + 1]);
-                //if (newNode.id > currentCircuit->nextID) {
-                //    currentCircuit->nextID = newNode.id + 1;
-                //}
             }
         }
         if (strcasecmp("pos", el) == 0) {
@@ -78,9 +100,6 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("wire", el) == 0) {
             if (strcasecmp("wireID", attr[i]) == 0) {
                 newWire.id = atoi(attr[i + 1]);
-                //if (newWire.id > currentCircuit->nextID) {
-                //    currentCircuit->nextID = newWire.id + 1;
-                //}
             }
         }
         if (strcasecmp("parent", el) == 0) {
@@ -143,9 +162,8 @@ end(void *data, const XML_Char *el)
             n->stateBuffer[i] = n->state;
         }
         setNodeText(currentCircuit, n, &newNode.p_text[0]);
-        //strcpy(n->text, newNode.text);
-
     }
+
     if (strcasecmp("wire", el) == 0) {
         // add wire from newWire
         wire_t* w = addWire(currentCircuit);
@@ -160,6 +178,20 @@ end(void *data, const XML_Char *el)
 
         w->parent->outputList = g_list_append(w->parent->outputList, w);
         w->target->inputs[w->inIndex].wire = w;
+    }
+
+    if (strcasecmp("pinIn", el) == 0) {
+        pins_t* p = createPin(NULL);
+        p->tmpID = pinIn.tmpID;
+        p->pin = pinIn.pin;
+        currentCircuit->pinsIn = g_list_append(currentCircuit->pinsIn, p);
+    }
+
+    if (strcasecmp("pinOut", el) == 0) {
+        pins_t* p = createPin(NULL);
+        p->tmpID = pinOut.tmpID;
+        p->pin = pinOut.pin;
+        currentCircuit->pinsOut = g_list_append(currentCircuit->pinsOut, p);
     }
 }
 
@@ -208,6 +240,19 @@ void loadCircuit(circuit_t* c, const char* fileName)
         if (done) {
             break;
         }
+    }
+
+    GList* i;
+    for (i = currentCircuit->pinsIn; i!=NULL; i = i->next) {
+        pins_t* p = (pins_t*)i->data;
+        node_t* n = g_hash_table_lookup(hash, GINT_TO_POINTER(p->tmpID));
+        p->node = n;
+    }
+
+    for (i = currentCircuit->pinsOut; i!=NULL; i = i->next) {
+        pins_t* p = (pins_t*)i->data;
+        node_t* n = g_hash_table_lookup(hash, GINT_TO_POINTER(p->tmpID));
+        p->node = n;
     }
 
     XML_ParserFree(p);

@@ -3,6 +3,7 @@
 #include "circuit.h"
 #include "node.h"
 #include "wire.h"
+#include "pins.h"
 #include <strings.h>
 
 
@@ -33,6 +34,18 @@ void clearCircuit(circuit_t* cir)
         freeNode(cir, n);
     }
     g_hash_table_remove_all(cir->txtHash);
+
+    while(cir->pinsIn) {
+        pins_t* p = (pins_t*)cir->pinsIn->data;
+        cir->pinsIn = g_list_remove(cir->pinsIn, cir->pinsIn->data);
+        freePin(p);
+    }
+
+    while(cir->pinsOut) {
+        pins_t* p = (pins_t*)cir->pinsOut->data;
+        cir->pinsOut = g_list_remove(cir->pinsOut, cir->pinsOut->data);
+        freePin(p);
+    }
     //cir->nextID = 0;
 }
 

@@ -6,10 +6,9 @@
 
 // TODO split UI and basic "pin" functionality to different sources
 
-pins_t* createPin(node_t* n, gboolean input)
+pins_t* createPin(node_t* n)
 {
     pins_t* p = malloc(sizeof(pins_t));
-    p->isInput = input;
     p->node = n;
     return p;
 }
@@ -61,7 +60,6 @@ void custom_cell_renderer_text_render(GtkCellRenderer *cell,
     gchar *strval;
     gboolean bail = FALSE;
     g_object_get (cell, "text", &strval, NULL);
-    //printf("renderer %s\n",strval);
     if (strlen(strval)>2) {
         bail=TRUE;
     }
@@ -164,13 +162,11 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         GValue i = G_VALUE_INIT;
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_NAME, &str);
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_PIN, &i);
-        //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
-        //printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
         guint pin = g_value_get_uint(&i);
         if (pin!=UNUSED_PIN) {
             node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
             if (n) {
-                pins_t* p = createPin(n, TRUE);
+                pins_t* p = createPin(n);
                 p->pin = pin;
                 currentCircuit->pinsIn = g_list_append(currentCircuit->pinsIn, p);
             }
@@ -183,7 +179,6 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(inputModel), &it);
     }
 
-    printf("-----\n");
     GtkTreeModel* outputModel = gtk_tree_view_get_model (GTK_TREE_VIEW(outputTreeView));
     valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(outputModel), &it);
 
@@ -193,13 +188,11 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         GValue i = G_VALUE_INIT;
         gtk_tree_model_get_value (GTK_TREE_MODEL(outputModel), &it, COL_NAME, &str);
         gtk_tree_model_get_value (GTK_TREE_MODEL(outputModel), &it, COL_PIN, &i);
-        //printf("type=%s\n",g_type_name(G_VALUE_TYPE(&i)));
-        //printf("> %s = %i\n",g_value_get_string(&str), g_value_get_uint(&i));
         guint pin = g_value_get_uint(&i);
         if (pin!=UNUSED_PIN) {
             node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
             if (n) {
-                pins_t* p = createPin(n, FALSE);
+                pins_t* p = createPin(n);
                 p->pin = pin;
                 currentCircuit->pinsOut = g_list_append(currentCircuit->pinsOut, p);
             }
@@ -228,7 +221,6 @@ void rowDeleted(GtkTreeModel *tree_model,
                GtkTreePath  *path,
                gpointer      data)
 {
-    //printf("row deleted\n");
     (void)path;
     GtkTreeIter  it;
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(tree_model), &it);
@@ -295,13 +287,11 @@ void initPinsWin(GtkBuilder* builder, GtkWidget* mainWin)
 
 void addRow(GtkListStore* store, GtkTreeIter* iter, const char* name, int pin)
 {
-
     gtk_list_store_append (store, iter);
     gtk_list_store_set (store, iter,
                       COL_NAME, name,
                       COL_PIN, pin,
                       -1);
-
 }
 
 void showPinsWindow(circuit_t* cir)
@@ -321,7 +311,6 @@ void showPinsWindow(circuit_t* cir)
     // pins in consecutive order
     for (it = cir->pinsIn; it!=NULL; it = it->next) {
         pins_t* p = (pins_t*)it->data;
-        //printf("pin# %i\n",p->pin);
         addRow(inStore, &iter, p->node->p_text, p->pin);
         mInputs++;
     }
@@ -331,6 +320,7 @@ void showPinsWindow(circuit_t* cir)
         mOutputs++;
     }
 
+    // there could be new inputs or outputs that are not in the pins lists...
     for (it = cir->nodeList; it!=NULL; it = it->next) {
         node_t* n = (node_t*)it->data;
 

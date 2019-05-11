@@ -228,6 +228,19 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         fprintf(fp, "<circuit>\n\n");
 
         GList* it;
+
+        for (it = circuit->pinsIn; it; it = it->next) {
+            pins_t* p = (pins_t*)it->data;
+            fprintf(fp, "<pinIn destID=\"%i\" pin=\"%i\" />\n", p->node->id, p->pin);
+        }
+        fprintf(fp, "\n");
+
+        for (it = circuit->pinsOut; it; it = it->next) {
+            pins_t* p = (pins_t*)it->data;
+            fprintf(fp, "<pinOut destID=\"%i\" pin=\"%i\" />\n", p->node->id, p->pin);
+        }
+        fprintf(fp, "\n");
+
         for (it = circuit->nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
