@@ -66,24 +66,19 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
     setNodeText(currentCircuit, currentNode, gtk_entry_get_text((GtkEntry*)nodeWinText));
 
     // have to make sure all node types have unique names for hash map txt > node
-    //if (currentNode->type == n_src) {
 
-        for (it = currentCircuit->nodeList; it; it = it->next) {
-            node_t* n = (node_t*)it->data;
-            if (n==currentNode || strlen(n->p_text)==0) {
-                continue;
-            }
-            //if (n->type == n_src) {
-                if (strcasecmp(n->p_text, currentNode->p_text) == 0) {
-                    gtk_entry_set_text((GtkEntry*)nodeWinText,"");
-                    //currentNode->text[0]=0;
-                     setNodeText(currentCircuit, currentNode, "");
-                    gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"Needs to be unique");
-                    return FALSE;
-                }
-            //}
+    for (it = currentCircuit->nodeList; it; it = it->next) {
+        node_t* n = (node_t*)it->data;
+        if (n==currentNode || strlen(n->p_text)==0) {
+            continue;
         }
-    //}
+        if (strcasecmp(n->p_text, currentNode->p_text) == 0) {
+            gtk_entry_set_text((GtkEntry*)nodeWinText,"");
+             setNodeText(currentCircuit, currentNode, "");
+            gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"Needs to be unique");
+            return FALSE;
+        }
+    }
 
     currentNode->invert = gtk_toggle_button_get_active((GtkToggleButton*)nodeWinInvert);
     double r = atof(gtk_entry_get_text((GtkEntry*)nodeWinRotation)) * D2R;
@@ -138,7 +133,7 @@ void showNodeWindow(circuit_t* cir, node_t* n)
     }
     gtk_widget_show(nodeWindow);
     // test of getNodeFromText
-    if (strlen(n->p_text)!=0) {
-        printf("node text %s txt to node->p_text %s\n", n->p_text, getNodeFromText(cir,n->p_text)->p_text);
-    }
+    //if (strlen(n->p_text)!=0) {
+    //    printf("node text %s txt to node->p_text %s\n", n->p_text, getNodeFromText(cir,n->p_text)->p_text);
+    //}
 }

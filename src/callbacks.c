@@ -33,6 +33,7 @@ guint timerTag = 0;
 GtkWidget* timerOps[5];
 GtkWidget* addOps[9];
 
+// this does a simulation "tick"
 gboolean timeOut(gpointer data)
 {
     (void)data;
@@ -44,7 +45,6 @@ gboolean timeOut(gpointer data)
 
     return TRUE;
 }
-
 
 void initCallbacks(GtkWidget* da, GtkBuilder* builder)
 {
@@ -364,7 +364,6 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
             w->target = dragWire.target;
             w->outIndex = dragWire.outIndex;
             w->inIndex = dragWire.inIndex;
-            //w->parent->outputs[w->outIndex].wire = w;
             w->target->inputs[w->inIndex].wire = w;
             w->parent->outputList = g_list_append(w->parent->outputList, w);
         }
@@ -576,13 +575,6 @@ gboolean drawArea_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
     (void)data;
     (void)widget;
     cairo_matrix_t matrix;
-
-    /*
-        guint width, height;
-
-        width = gtk_widget_get_allocated_width (widget);
-        height = gtk_widget_get_allocated_height (widget);
-    */
 
     cairo_select_font_face (cr, "Mono", CAIRO_FONT_SLANT_NORMAL,
                             CAIRO_FONT_WEIGHT_BOLD);

@@ -67,10 +67,8 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
     n->state = FALSE;
     n->p_text[0] = 0;
     n->outputList = NULL;
-    //n->srcOutputs = NULL;
     for (int i = 0; i < 8; i++) {
         n->outputs[i].highlight = FALSE;
-        //n->inputStates[i] = FALSE;
         n->inputs[i].state = FALSE;
         n->inputs[i].highlight = FALSE;
         n->inputs[i].wire = NULL;
@@ -103,14 +101,12 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
     }
 
     cir->nodeList = g_list_append(cir->nodeList, n);
-    //g_hash_table_insert(cir->idHash, GINT_TO_POINTER(n->id), n);
     return n;
 }
 
 void freeNode(circuit_t* cir, node_t* n)
 {
     cir->nodeList = g_list_remove(cir->nodeList, n);
-    //g_hash_table_remove (cir->idHash, GINT_TO_POINTER(n->id));
     if (strlen(n->p_text)!=0) {
         g_hash_table_remove (cir->txtHash, n->p_text);
     }

@@ -10,6 +10,8 @@ GtkWidget* graphWin;
 GList* labels = NULL;
 GList* points = NULL;
 
+// this is really just a stand in, needs more work
+
 // will eventually have more controls...
 void initGraphWin(GtkBuilder* builder, GtkWidget* mainWin) {
     graph = GTK_WIDGET(gtk_builder_get_object(builder, "graph"));
@@ -26,14 +28,12 @@ void showGraph(circuit_t* cir) {
     for (it = cir->nodeList; it; it = it->next) {
         node_t* n = (node_t*)it->data;
         if (n->type == n_out) {
-            //printf("%s ,",n->text);
             labels = g_list_append(labels, &n->p_text);
             int* p = malloc(sizeof(int)* mxPoints);
             points = g_list_append(points, p);
         }
     }
 
-    //printf("\n");
     for (int i=0; i<mxPoints; i++) {
         propagateWires(cir);
         updateLogic(cir);
@@ -43,12 +43,10 @@ void showGraph(circuit_t* cir) {
             if (n->type == n_out) {
                 int* ip = (int*)pit->data;
                 ip[i] = 1-n->state; // inverted because y+ is down
-                //printf("%i, ",n->state);
                 pit = pit->next;
             }
 
         }
-        //printf("\n");
     }
     gtk_widget_show(graphWin);
 }

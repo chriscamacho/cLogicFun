@@ -10,15 +10,13 @@
 
 circuit_t* createCircuit() {
     circuit_t* c = malloc(sizeof(circuit_t));
-    //c->nextID = 0;
     c->nodeList = NULL;
     c->wireList = NULL;
     c->pinsIn = NULL;
     c->pinsOut = NULL;
     c->nIns = 0;
     c->nOuts = 0;
-    c->txtHash = //g_hash_table_new(g_direct_hash, g_direct_equal);
-    g_hash_table_new(g_str_hash, g_str_equal);
+    c->txtHash = g_hash_table_new(g_str_hash, g_str_equal);
     return c;
 }
 
@@ -46,7 +44,7 @@ void clearCircuit(circuit_t* cir)
         cir->pinsOut = g_list_remove(cir->pinsOut, cir->pinsOut->data);
         freePin(p);
     }
-    //cir->nextID = 0;
+
 }
 
 void freeCircuit(circuit_t* c) {
@@ -78,7 +76,7 @@ guint getNextID(circuit_t* c) {
             nid++;
         }
     }
-    //printf("new id=%i\n",nid);
+
     return nid;
 }
 

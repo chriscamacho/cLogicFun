@@ -60,7 +60,7 @@ void custom_cell_renderer_text_render(GtkCellRenderer *cell,
     gchar *strval;
     gboolean bail = FALSE;
     g_object_get (cell, "text", &strval, NULL);
-    if (strlen(strval)>2) {
+    if (strlen(strval)>2) { // don't render if 3 or more characters unused pin value = 100...
         bail=TRUE;
     }
     g_free (strval);
@@ -98,14 +98,15 @@ GtkWidget* inputSpin;
 GtkWidget* outputSpin;
 circuit_t* currentCircuit;
 
-int nInputs;
+int nInputs;    // number of inputs
 int nOutputs;
-int mInputs; // max input candidates
+int mInputs;    // max input candidates
 int mOutputs;
 
 
-#define UNUSED_PIN  100
+#define UNUSED_PIN  100 // unassigned pin value
 
+// column indexes
 enum
 {
   COL_PIN = 0,
@@ -150,12 +151,13 @@ gboolean onOK(GtkWidget* widget, gpointer data)
 
     // TODO belated thought, can treeviews have hidden columns that could
     // store a node pointer ?
-
+    // mean time keep doing it the hard way!
     GtkTreeIter  it;
     GtkTreeModel* inputModel;
     inputModel = gtk_tree_view_get_model (GTK_TREE_VIEW(inputTreeView));
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(inputModel), &it);
 
+    // create the pins from the list of in/output labels
     while (valid)
     {
         GValue str = G_VALUE_INIT;
@@ -163,6 +165,7 @@ gboolean onOK(GtkWidget* widget, gpointer data)
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_NAME, &str);
         gtk_tree_model_get_value (GTK_TREE_MODEL(inputModel), &it, COL_PIN, &i);
         guint pin = g_value_get_uint(&i);
+        // only save pins that have been assigned
         if (pin!=UNUSED_PIN) {
             node_t* n = getNodeFromText(currentCircuit, g_value_get_string(&str));
             if (n) {
@@ -216,7 +219,9 @@ gboolean onOK(GtkWidget* widget, gpointer data)
 }
 
 
-
+// this happens after a drag and drop
+// no rows really get deleted, the drag and drop
+// first inserts then deletes
 void rowDeleted(GtkTreeModel *tree_model,
                GtkTreePath  *path,
                gpointer      data)
@@ -237,7 +242,7 @@ void rowDeleted(GtkTreeModel *tree_model,
     }
 }
 
-
+// how many of the pins have assignments
 void inputSpinChange(GtkSpinButton *spinButton, GtkScrollType scroll, gpointer data)
 {
     (void)scroll;
@@ -256,6 +261,7 @@ void outputSpinChange(GtkSpinButton *spinButton, GtkScrollType scroll, gpointer 
     rowDeleted(model, NULL, &nOutputs);
 }
 
+// set up the UI
 void initPinsWin(GtkBuilder* builder, GtkWidget* mainWin)
 {
     inputTreeView = GTK_WIDGET(gtk_builder_get_object(builder, "inputTreeView"));
@@ -285,6 +291,7 @@ void initPinsWin(GtkBuilder* builder, GtkWidget* mainWin)
             -1, "Pin", renderer, "text", COL_PIN, NULL);
 }
 
+// add a new row to a list store
 void addRow(GtkListStore* store, GtkTreeIter* iter, const char* name, int pin)
 {
     gtk_list_store_append (store, iter);
@@ -294,6 +301,8 @@ void addRow(GtkListStore* store, GtkTreeIter* iter, const char* name, int pin)
                       -1);
 }
 
+// the sets up the UI with the current pin lists and also checks for
+// and new out/inputs
 void showPinsWindow(circuit_t* cir)
 {
 
@@ -355,7 +364,7 @@ void showPinsWindow(circuit_t* cir)
 
     currentCircuit = cir;
 
-
+    // happens on drag and drop
     g_signal_connect (inStore, "row-deleted", G_CALLBACK (rowDeleted), &nInputs);
     gtk_tree_view_set_model (GTK_TREE_VIEW (inputTreeView), GTK_TREE_MODEL(inStore));
     g_object_unref (inStore);

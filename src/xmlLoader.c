@@ -39,7 +39,6 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("pinIn", el) == 0) {
             if (strcasecmp("destID", attr[i]) == 0) {
                 pinIn.tmpID = atoi(attr[i + 1]);
-                printf("pin in tmpid=%i\n",pinIn.tmpID);
             }
             if (strcasecmp("pin", attr[i]) == 0) {
                 pinIn.pin = atoi(attr[i + 1]);
@@ -49,7 +48,6 @@ static void XMLCALL start(void *data, const XML_Char *el, const XML_Char **attr)
         if (strcasecmp("pinOut", el) == 0) {
             if (strcasecmp("destID", attr[i]) == 0) {
                 pinOut.tmpID = atoi(attr[i + 1]);
-                printf("pin in tmpid=%i\n",pinOut.tmpID);
             }
             if (strcasecmp("pin", attr[i]) == 0) {
                 pinOut.pin = atoi(attr[i + 1]);

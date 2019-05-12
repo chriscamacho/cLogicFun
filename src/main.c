@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 {
     circuit = createCircuit();
 
-
     GtkBuilder      *builder;
     GtkWidget       *window;
     GtkWidget       *drawArea;
