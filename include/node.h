@@ -1,11 +1,11 @@
 
 extern vec2_t ioPoints[16];
 
-extern char typeNames[9][8];
-extern char invTypeNames[9][8];
+extern char typeNames[10][8];
+extern char invTypeNames[10][8];
 
-extern GdkPixbuf* typeImg[9];
-extern GdkPixbuf* invTypeImg[9];
+extern GdkPixbuf* typeImg[10];
+extern GdkPixbuf* invTypeImg[10];
 
 // each node can optionally invert its output
 enum nodeType {
@@ -17,7 +17,8 @@ enum nodeType {
     n_in,
     n_out,
     n_src,
-    n_dst
+    n_dst,
+    n_sub
 };
 
 
@@ -55,6 +56,8 @@ typedef struct node_s {
     char p_text[80]; //  p_ "private" do not change directly
     gboolean invert;
     int latency;
+
+    circuit_t* circuit; // only for n_sub
 } node_t;
 
 // adds a new node to a circuit

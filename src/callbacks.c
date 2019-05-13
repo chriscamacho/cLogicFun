@@ -31,7 +31,7 @@ gboolean wasMoved = FALSE;
 guint timerTag = 0;
 
 GtkWidget* timerOps[5];
-GtkWidget* addOps[9];
+GtkWidget* addOps[10];
 
 // this does a simulation "tick"
 gboolean timeOut(gpointer data)
@@ -57,6 +57,7 @@ void initCallbacks(GtkWidget* da, GtkBuilder* builder)
     addOps[n_out] = GTK_WIDGET(gtk_builder_get_object(builder, "addOutput"));
     addOps[n_src] = GTK_WIDGET(gtk_builder_get_object(builder, "addSource"));
     addOps[n_dst] = GTK_WIDGET(gtk_builder_get_object(builder, "addDestination"));
+    addOps[n_sub] = GTK_WIDGET(gtk_builder_get_object(builder, "addSub"));
 
 
     timerOps[0] = GTK_WIDGET(gtk_builder_get_object(builder, "speedStop"));
@@ -137,7 +138,7 @@ gboolean addNodeOp(GtkWidget *widget, gpointer data)
     (void)data;
     vec2_t v = centrePos(drawArea);
     guint type = 0;
-    for (int i=0; i<9; i++) {
+    for (int i=0; i<10; i++) {
         if (widget==addOps[i]) {
             type = i;
             break;

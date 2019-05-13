@@ -7,10 +7,10 @@
 #include "wire.h"
 
 
-GdkPixbuf* typeImg[9];
-GdkPixbuf* invTypeImg[9];
+GdkPixbuf* typeImg[10];
+GdkPixbuf* invTypeImg[10];
 
-char typeNames[9][8] = {
+char typeNames[10][8] = {
     "CONST 1",
     "NOT",
     "AND",
@@ -19,11 +19,12 @@ char typeNames[9][8] = {
     "IN",
     "OUT",
     "SRC",
-    "DST"
+    "DST",
+    "SUB"
 };
 
 // pesky XNOR can't just prepend N !!!
-char invTypeNames[9][8] = {
+char invTypeNames[10][8] = {
     "CONST 0",
     "BUFFER",
     "NAND",
@@ -32,7 +33,8 @@ char invTypeNames[9][8] = {
     "IN",
     "OUT",
     "SRC",
-    "DST"
+    "DST",
+    "SUB"
 };
 
 /* TODO this needs looking at as width/height not fixed any more */
@@ -100,6 +102,11 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
         n->height = 24;
     }
 
+    if (tp== n_sub) {
+        n->maxInputs = 0;
+        n->maxOutputs = 0;
+    }
+
     cir->nodeList = g_list_append(cir->nodeList, n);
     return n;
 }
@@ -116,14 +123,21 @@ void freeNode(circuit_t* cir, node_t* n)
 
 void setNodeText(circuit_t* c, node_t* n, const char* tx)
 {
-    // remove old text from hash
-    if (strlen(n->p_text)!=0) {
-        g_hash_table_remove(c->txtHash, n->p_text);
+    // only track input and output nodes
+    if (n->type == n_in || n->type == n_out) {
+        // remove old text from hash
+        if (strlen(n->p_text)!=0) {
+            g_hash_table_remove(c->txtHash, n->p_text);
+        }
     }
+
     strcpy(n->p_text, tx);
-    // add new text to hash
-    if (strlen(n->p_text)!=0) {
-        g_hash_table_insert(c->txtHash, n->p_text, n);
+
+    if (n->type == n_in || n->type == n_out) {
+        // add new text to hash
+        if (strlen(n->p_text)!=0) {
+            g_hash_table_insert(c->txtHash, n->p_text, n);
+        }
     }
 }
 

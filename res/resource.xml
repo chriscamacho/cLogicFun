@@ -17,5 +17,6 @@
     <file>res/0.png</file>
     <file>res/src.png</file>
     <file>res/dst.png</file>
+    <file>res/sub.png</file>
   </gresource>
 </gresources>

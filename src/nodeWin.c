@@ -65,18 +65,20 @@ gboolean onNodeWinOK(GtkWidget *widget, gpointer data)
 
     setNodeText(currentCircuit, currentNode, gtk_entry_get_text((GtkEntry*)nodeWinText));
 
-    // have to make sure all node types have unique names for hash map txt > node
+    // have to make sure IO node types have unique names for hash map txt > node
 
-    for (it = currentCircuit->nodeList; it; it = it->next) {
-        node_t* n = (node_t*)it->data;
-        if (n==currentNode || strlen(n->p_text)==0) {
-            continue;
-        }
-        if (strcasecmp(n->p_text, currentNode->p_text) == 0) {
-            gtk_entry_set_text((GtkEntry*)nodeWinText,"");
-             setNodeText(currentCircuit, currentNode, "");
-            gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"Needs to be unique");
-            return FALSE;
+    if (currentNode->type == n_in || currentNode->type == n_out) {
+        for (it = currentCircuit->nodeList; it; it = it->next) {
+            node_t* n = (node_t*)it->data;
+            if (n==currentNode || strlen(n->p_text)==0) {
+                continue;
+            }
+            if (strcasecmp(n->p_text, currentNode->p_text) == 0) {
+                gtk_entry_set_text((GtkEntry*)nodeWinText,"");
+                setNodeText(currentCircuit, currentNode, "");
+                gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"Needs to be unique");
+                return FALSE;
+            }
         }
     }
 
@@ -123,7 +125,7 @@ void showNodeWindow(circuit_t* cir, node_t* n)
     gtk_entry_set_text((GtkEntry*)nodeWinText, n->p_text);
     gtk_spin_button_set_value((GtkSpinButton*)nodeWinLatency, n->latency+1);
     if (n->type == n_src || n->type == n_dst
-        || n->type == n_in || n->type == n_out) {
+        || n->type == n_in || n->type == n_out || n->type == n_sub) {
         gtk_widget_set_sensitive(nodeWinInvert, FALSE);
         gtk_widget_set_sensitive(nodeWinLatency, FALSE);
     } else {
