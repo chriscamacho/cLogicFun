@@ -4,6 +4,7 @@
 #include "circuit.h"
 #include "node.h"
 #include "wire.h"
+#include "pins.h"
 
 
 // TODO some consecutives are too close (dark), pick a better list of colours!
@@ -125,8 +126,19 @@ void propagateWires(circuit_t* cir)
         gboolean state = w->parent->state;
         w->target->inputs[w->inIndex].state = state;
         w->state=state;
+        if (w->parent->type == n_sub && w->parent->circuit != NULL) {
+            GList* pi = g_list_nth (w->parent->circuit->pinsOut,w->outIndex);
+            pins_t* p = (pins_t*)pi->data;
+            w->state = p->node->state;
+            w->target->inputs[w->inIndex].state = p->node->state;
+        }
         if (w->target->type == n_src) {
             propagateSrc(state, w);
+        }
+        if (w->target->type == n_sub && w->target->circuit != NULL) {
+            GList* pi = g_list_nth(w->target->circuit->pinsIn,w->inIndex);
+            pins_t* p = (pins_t*)pi->data;
+            p->node->state = w->state;
         }
     }
 
