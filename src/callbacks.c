@@ -346,6 +346,46 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
             if (panNode->type == n_in) {
                 panNode->state = !panNode->state;
             }
+            if (panNode->type == n_sub) {
+
+                GtkWidget *dialog;
+                GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+                gint res;
+
+                dialog = gtk_file_chooser_dialog_new ("Open File",
+                                                      (GtkWindow*)data,
+                                                      action,
+                                                      ("_Cancel"),
+                                                      GTK_RESPONSE_CANCEL,
+                                                      ("_Open"),
+                                                      GTK_RESPONSE_ACCEPT,
+                                                      NULL);
+                gtk_file_chooser_set_filename ((GtkFileChooser *)dialog, "./examples/*");
+                res = gtk_dialog_run (GTK_DIALOG (dialog));
+
+                if (res == GTK_RESPONSE_ACCEPT) {
+                    char *filename;
+                    GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+                    filename = gtk_file_chooser_get_filename (chooser);
+                    if (panNode->circuit == NULL) {
+                        panNode->circuit = createCircuit();
+                    }
+                    clearCircuit(panNode->circuit);
+                    loadCircuit(panNode->circuit, filename);
+                    char* f = g_strrstr(filename,"/");
+                    f++;
+                    setNodeText(circuit,panNode,f);
+                    g_free (filename);
+
+                    guint i = g_list_length(panNode->circuit->pinsIn);
+                    panNode->maxInputs = i;
+                    guint o = g_list_length(panNode->circuit->pinsOut);
+                    panNode->maxOutputs = o;
+                }
+
+                gtk_widget_destroy (dialog);
+
+            }
         }
     }
 

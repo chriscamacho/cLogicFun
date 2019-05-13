@@ -107,7 +107,7 @@
 </node>
 
 <node nodeID="18">
-  <pos x="-358.000000" y="-133.000000" rot="0.000000"/>
+  <pos x="-358.000000" y="-132.000000" rot="0.000000"/>
   <logic type="5" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="J" />

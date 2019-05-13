@@ -5,6 +5,7 @@
 #include "circuit.h"
 #include "node.h"
 #include "wire.h"
+#include "pins.h"
 
 
 GdkPixbuf* typeImg[10];
@@ -69,6 +70,7 @@ node_t* addNode(circuit_t* cir, enum nodeType tp, double x, double y)
     n->state = FALSE;
     n->p_text[0] = 0;
     n->outputList = NULL;
+    n->circuit = NULL;
     for (int i = 0; i < 8; i++) {
         n->outputs[i].highlight = FALSE;
         n->inputs[i].state = FALSE;
@@ -116,6 +118,12 @@ void freeNode(circuit_t* cir, node_t* n)
     cir->nodeList = g_list_remove(cir->nodeList, n);
     if (strlen(n->p_text)!=0) {
         g_hash_table_remove (cir->txtHash, n->p_text);
+    }
+    if (n->type == n_sub) {
+        if (n->circuit!=NULL) {
+            clearCircuit(n->circuit);
+            freeCircuit(n->circuit);
+        }
     }
 
     free(n);
@@ -195,6 +203,17 @@ void drawNode(cairo_t *cr, node_t* n)
             }
             cairo_arc(cr, ioPoints[i].x, ioPoints[i].y-((n->height-64)/2.0), 4, 0, 2 * PI);
             cairo_stroke(cr);
+
+            if (n->type == n_sub) {
+                cairo_text_extents_t ex;
+                cairo_set_source_rgb(cr, 0, 0, 0);
+                GList* pi = g_list_nth (n->circuit->pinsOut,i);
+                pins_t* p = (pins_t*)pi->data;
+                cairo_text_extents(cr, p->node->p_text, &ex);
+                cairo_move_to(cr, ioPoints[i].x+8, (ex.height/2.0)+ioPoints[i].y-((n->height-64)/2.0));
+                cairo_show_text (cr, p->node->p_text);
+                cairo_stroke(cr);
+            }
         }
 
         if (i < n->maxInputs) {
@@ -207,6 +226,18 @@ void drawNode(cairo_t *cr, node_t* n)
             }
             cairo_arc(cr, ioPoints[i + 8].x, ioPoints[i + 8].y-((n->height-64)/2.0), 4, 0, 2 * PI);
             cairo_stroke(cr);
+
+            if (n->type == n_sub) {
+                cairo_text_extents_t ex;
+                cairo_set_source_rgb(cr, 0, 0, 0);
+                GList* pi = g_list_nth (n->circuit->pinsIn,i);
+                pins_t* p = (pins_t*)pi->data;
+                cairo_text_extents(cr, p->node->p_text, &ex);
+                cairo_move_to(cr, ioPoints[i + 8].x-(ex.width)-8, (ex.height/2.0)+ioPoints[i + 8].y-((n->height-64)/2.0));
+                cairo_show_text (cr, p->node->p_text);
+                cairo_stroke(cr);
+            }
+
         }
     }
 
