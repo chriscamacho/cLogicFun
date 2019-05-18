@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <strings.h>
 
+int relpath (const char *can_fname, const char *can_reldir, char *buf, size_t len);
 
 #define BUFFSIZE        8192
 
@@ -176,6 +177,7 @@ end(void *data, const XML_Char *el)
             strcpy(n->circuit->filename, nd->tmpFilename);
             free(nd->tmpFilename);
             nd->tmpFilename = 0;
+
         }
 
 
@@ -215,6 +217,7 @@ end(void *data, const XML_Char *el)
 // presents a gtk file dialog for loading
 void loadCircuit(circuit_t* c, const char* fileName)
 {
+    //printf("load circuit %s\n",fileName);
     clearCircuit(c);
 
     c->idHash = g_hash_table_new(g_direct_hash, g_direct_equal);
@@ -281,6 +284,8 @@ void loadCircuit(circuit_t* c, const char* fileName)
     c->path = malloc(strlen(path)+1);
     strcpy(c->path, path);
 
+
+
     GList* i;
     c->nIns = 0;
     for (i = c->pinsIn; i!=NULL; i = i->next) {
@@ -307,10 +312,17 @@ void loadCircuit(circuit_t* c, const char* fileName)
             //    n->circuit = createCircuit();
             //}
             n->circuit->path = malloc(strlen(c->path)+1);
+            //printf("path %s filename %s\n",c->path,n->circuit->filename);
             strcpy(n->circuit->path, c->path);
             char fullpath[1024];
+            char tmp[1024];
             sprintf(fullpath,"%s/%s",n->circuit->path,n->circuit->filename);
+            strcpy(tmp,n->circuit->filename);
             loadCircuit(n->circuit, fullpath);
+            // restore reletive filename
+            free(n->circuit->filename);
+            n->circuit->filename = malloc(strlen(tmp)+1);
+            strcpy(n->circuit->filename, tmp);
         }
     }
 

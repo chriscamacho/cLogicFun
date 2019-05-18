@@ -3,161 +3,161 @@
 
 
 <node nodeID="0">
-  <pos x="-41.000000" y="-206.000000" rot="0.000000" filename="/home/chris/development/cLogicFun/examples/components/msLatchSubTest.xml"/>
+  <pos x="-41.000000" y="-206.000000" rot="0.000000" filename="components/msLatchSubTest.xml"/>
   <logic type="9" inv="0" latency="0" state="0" />
   <io maxIn="4" maxOut="2" />
   <label text="msLatchSubTest" />
 </node>
 
 <node nodeID="1">
-  <pos x="603.228394" y="-211.436249" rot="0.000000"/>
+  <pos x="603.000000" y="-211.000000" rot="0.000000"/>
   <logic type="6" inv="0" latency="0" state="1" />
   <io maxIn="1" maxOut="0" />
   <label text="" />
 </node>
 
 <node nodeID="6">
-  <pos x="-507.126373" y="91.011780" rot="0.000000"/>
+  <pos x="-507.000000" y="91.000000" rot="0.000000"/>
   <logic type="5" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="3">
-  <pos x="-453.870026" y="-96.989716" rot="0.000000"/>
+  <pos x="-453.000000" y="-96.000000" rot="0.000000"/>
   <logic type="1" inv="0" latency="5" state="1" />
   <io maxIn="1" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="4">
-  <pos x="-312.871399" y="-225.834625" rot="0.000000"/>
+  <pos x="-312.000000" y="-225.000000" rot="0.000000"/>
   <logic type="0" inv="0" latency="0" state="1" />
   <io maxIn="0" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="2">
-  <pos x="48.014771" y="-114.482971" rot="0.000000" filename="/home/chris/development/cLogicFun/examples/components/msLatchSubTest.xml"/>
+  <pos x="48.000000" y="-114.000000" rot="0.000000" filename="components/msLatchSubTest.xml"/>
   <logic type="9" inv="0" latency="0" state="0" />
   <io maxIn="4" maxOut="2" />
   <label text="msLatchSubTest" />
 </node>
 
 <node nodeID="15">
-  <pos x="612.001343" y="-111.189636" rot="0.000000"/>
-  <logic type="6" inv="0" latency="0" state="0" />
+  <pos x="612.000000" y="-111.000000" rot="0.000000"/>
+  <logic type="6" inv="0" latency="0" state="1" />
   <io maxIn="1" maxOut="0" />
   <label text="" />
 </node>
 
 <node nodeID="17">
-  <pos x="258.237148" y="16.685739" rot="0.000000" filename="/home/chris/development/cLogicFun/examples/components/msLatchSubTest.xml"/>
+  <pos x="258.000000" y="16.000000" rot="0.000000" filename="components/msLatchSubTest.xml"/>
   <logic type="9" inv="0" latency="0" state="0" />
   <io maxIn="4" maxOut="2" />
   <label text="msLatchSubTest" />
 </node>
 
 <node nodeID="20">
-  <pos x="616.429932" y="14.204590" rot="0.000000"/>
-  <logic type="6" inv="0" latency="0" state="1" />
+  <pos x="616.000000" y="14.000000" rot="0.000000"/>
+  <logic type="6" inv="0" latency="0" state="0" />
   <io maxIn="1" maxOut="0" />
   <label text="" />
 </node>
 
 <node nodeID="18">
-  <pos x="191.345886" y="-102.863678" rot="0.000000"/>
-  <logic type="2" inv="0" latency="0" state="0" />
+  <pos x="191.000000" y="-102.000000" rot="0.000000"/>
+  <logic type="2" inv="0" latency="0" state="1" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="28">
-  <pos x="394.232143" y="42.994860" rot="0.000000"/>
+  <pos x="394.000000" y="42.000000" rot="0.000000"/>
   <logic type="2" inv="0" latency="0" state="0" />
   <io maxIn="8" maxOut="1" />
   <label text="" />
 </node>
 
 <node nodeID="31">
-  <pos x="460.454407" y="169.176544" rot="0.000000" filename="components/msLatchSubTest.xml"/>
+  <pos x="460.000000" y="169.000000" rot="0.000000" filename="components/msLatchSubTest.xml"/>
   <logic type="9" inv="0" latency="0" state="0" />
   <io maxIn="4" maxOut="2" />
   <label text="msLatchSubTest" />
 </node>
 
 <node nodeID="36">
-  <pos x="609.991211" y="159.979584" rot="0.000000"/>
-  <logic type="6" inv="0" latency="0" state="1" />
+  <pos x="609.000000" y="159.000000" rot="0.000000"/>
+  <logic type="6" inv="0" latency="0" state="0" />
   <io maxIn="1" maxOut="0" />
   <label text="" />
 </node>
 
 <node nodeID="8">
-  <pos x="-366.978455" y="-155.530853" rot="0.000000"/>
+  <pos x="-366.000000" y="-155.000000" rot="0.000000"/>
   <logic type="7" inv="0" latency="0" state="1" />
   <io maxIn="1" maxOut="0" />
   <label text="CLK" />
 </node>
 
 <node nodeID="39">
-  <pos x="-156.735413" y="-284.173553" rot="0.000000"/>
+  <pos x="-156.000000" y="-284.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="1" />
   <io maxIn="0" maxOut="1" />
   <label text="CLK" />
 </node>
 
 <node nodeID="41">
-  <pos x="-119.197815" y="-131.208099" rot="0.000000"/>
+  <pos x="-119.000000" y="-131.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="1" />
   <io maxIn="0" maxOut="1" />
   <label text="CLK" />
 </node>
 
 <node nodeID="42">
-  <pos x="5.098999" y="-19.375275" rot="0.000000"/>
+  <pos x="5.000000" y="-19.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="1" />
   <io maxIn="0" maxOut="1" />
   <label text="CLK" />
 </node>
 
 <node nodeID="43">
-  <pos x="137.401550" y="116.364410" rot="0.000000"/>
+  <pos x="137.000000" y="116.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="1" />
   <io maxIn="0" maxOut="1" />
   <label text="CLK" />
 </node>
 
 <node nodeID="44">
-  <pos x="-372.920227" y="47.408478" rot="0.000000"/>
+  <pos x="-372.000000" y="47.000000" rot="0.000000"/>
   <logic type="7" inv="0" latency="0" state="0" />
   <io maxIn="1" maxOut="0" />
   <label text="RST" />
 </node>
 
 <node nodeID="46">
-  <pos x="-172.376160" y="-196.337769" rot="0.000000"/>
+  <pos x="-172.000000" y="-196.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="RST" />
 </node>
 
 <node nodeID="47">
-  <pos x="-93.436829" y="-72.626251" rot="0.000000"/>
+  <pos x="-93.000000" y="-72.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="RST" />
 </node>
 
 <node nodeID="48">
-  <pos x="41.531494" y="41.761749" rot="0.000000"/>
+  <pos x="41.000000" y="41.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="RST" />
 </node>
 
 <node nodeID="49">
-  <pos x="199.041077" y="190.743317" rot="0.000000"/>
+  <pos x="199.000000" y="190.000000" rot="0.000000"/>
   <logic type="8" inv="0" latency="0" state="0" />
   <io maxIn="0" maxOut="1" />
   <label text="RST" />
