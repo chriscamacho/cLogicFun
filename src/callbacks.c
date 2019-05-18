@@ -394,6 +394,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
 
 
 
+
                     guint i = g_list_length(panNode->circuit->pinsIn);
                     panNode->maxInputs = i;
                     guint o = g_list_length(panNode->circuit->pinsOut);
@@ -404,11 +405,17 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
                     // TODO scrappy - needs tidy!
                     char buf[1024];
                     char path[1024];
-                    //strcpy(path,circuit->filename);
-                    strcpy(path, filename);
+                    strcpy(path,circuit->filename);
                     f = g_strrstr(path,"/");
                     f[0]='\0';
                     relpath(filename,path,buf,1024);
+
+
+                    printf("cir filename %s\n", circuit->filename);
+                    printf("path %s\n", path);
+                    printf("buf %s\n", buf);
+
+
                     g_free (filename);
 
                     if (panNode->circuit->filename !=0) {
@@ -421,6 +428,7 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
                     strcpy(panNode->circuit->filename,buf);
                     panNode->circuit->path = malloc(strlen(path)+1);
                     strcpy(panNode->circuit->path,path);
+
                 }
 
                 gtk_widget_destroy (dialog);
