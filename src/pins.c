@@ -305,7 +305,7 @@ void addRow(GtkListStore* store, GtkTreeIter* iter, const char* name, int pin)
 // and new out/inputs
 void showPinsWindow(circuit_t* cir)
 {
-
+    currentCircuit = cir;
     GtkListStore* inStore;
     GtkListStore* outStore;
     GtkTreeIter iter;

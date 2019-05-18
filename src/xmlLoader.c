@@ -282,17 +282,22 @@ void loadCircuit(circuit_t* c, const char* fileName)
     strcpy(c->path, path);
 
     GList* i;
+    c->nIns = 0;
     for (i = c->pinsIn; i!=NULL; i = i->next) {
         pins_t* p = (pins_t*)i->data;
         node_t* n = g_hash_table_lookup(c->idHash, GINT_TO_POINTER(p->tmpID));
         p->node = n;
+        c->nIns++;
     }
 
+    c->nOuts = 0;
     for (i = c->pinsOut; i!=NULL; i = i->next) {
         pins_t* p = (pins_t*)i->data;
         node_t* n = g_hash_table_lookup(c->idHash, GINT_TO_POINTER(p->tmpID));
         p->node = n;
+        c->nOuts++;
     }
+
 
     // load up all sub circuits
     for (GList* it = c->nodeList; it; it = it->next) {
