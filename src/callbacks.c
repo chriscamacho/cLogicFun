@@ -404,7 +404,8 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
                     // TODO scrappy - needs tidy!
                     char buf[1024];
                     char path[1024];
-                    strcpy(path,circuit->filename);
+                    //strcpy(path,circuit->filename);
+                    strcpy(path, filename);
                     f = g_strrstr(path,"/");
                     f[0]='\0';
                     relpath(filename,path,buf,1024);
