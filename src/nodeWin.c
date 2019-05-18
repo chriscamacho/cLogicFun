@@ -134,8 +134,5 @@ void showNodeWindow(circuit_t* cir, node_t* n)
         gtk_entry_set_placeholder_text((GtkEntry*)nodeWinText,"");
     }
     gtk_widget_show(nodeWindow);
-    // test of getNodeFromText
-    //if (strlen(n->p_text)!=0) {
-    //    printf("node text %s txt to node->p_text %s\n", n->p_text, getNodeFromText(cir,n->p_text)->p_text);
-    //}
+
 }

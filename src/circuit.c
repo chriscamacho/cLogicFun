@@ -17,6 +17,8 @@ circuit_t* createCircuit() {
     c->nIns = 0;
     c->nOuts = 0;
     c->txtHash = g_hash_table_new(g_str_hash, g_str_equal);
+    c->filename = 0;
+    c->path = 0;
     return c;
 }
 
@@ -43,6 +45,14 @@ void clearCircuit(circuit_t* cir)
         pins_t* p = (pins_t*)cir->pinsOut->data;
         cir->pinsOut = g_list_remove(cir->pinsOut, cir->pinsOut->data);
         freePin(p);
+    }
+    if (cir->filename) {
+        free(cir->filename);
+        cir->filename = 0;
+    }
+    if (cir->path) {
+        free(cir->path);
+        cir->path = 0;
     }
 
 }

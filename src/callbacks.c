@@ -10,6 +10,8 @@
 #include "pins.h"
 
 char *repl_str(const char *str, const char *from, const char *to);
+int relpath (const char *can_fname, const char *can_reldir, char *buf, size_t len);
+
 
 GtkWidget* drawArea;
 extern circuit_t* circuit; // from main.c as callbacks only deal with the main circuit
@@ -180,6 +182,11 @@ gboolean on_open_activate(GtkWidget *widget, gpointer data)
         filename = gtk_file_chooser_get_filename (chooser);
 
         loadCircuit(circuit, filename);
+        if (circuit->filename != 0) {
+            free(circuit->filename);
+        }
+        circuit->filename = malloc(strlen(filename)+1);
+        strcpy(circuit->filename, filename);
         char title[1024];
         char* f = g_strrstr(filename,"/");
         f++;
@@ -245,8 +252,12 @@ gboolean onSave(GtkWidget *widget, gpointer data)
         for (it = circuit->nodeList; it; it = it->next) {
             node_t* n = (node_t*)it->data;
             fprintf(fp, "<node nodeID=\"%i\">\n", n->id);
-            fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"/>\n",
+            fprintf(fp, "  <pos x=\"%f\" y=\"%f\" rot=\"%f\"",
                             n->pos.x,n->pos.y, n->rotation);
+            if (n->type == n_sub) {
+                fprintf(fp, " filename=\"%s\"",n->circuit->filename);
+            }
+            fprintf(fp, "/>\n");
             fprintf(fp, "  <logic type=\"%i\" inv=\"%i\" latency=\"%i\" state=\"%i\" />\n",
                             n->type, n->invert, n->latency, n->state);
             fprintf(fp, "  <io maxIn=\"%i\" maxOut=\"%i\" />\n",
@@ -372,15 +383,43 @@ gboolean eventBox_button_release_event_cb( GtkWidget *widget, GdkEventButton *ev
                     }
                     clearCircuit(panNode->circuit);
                     loadCircuit(panNode->circuit, filename);
+
+
                     char* f = g_strrstr(filename,"/");
+                    char* l = g_strrstr(filename,".");
+                    l[0] = '\0';
                     f++;
                     setNodeText(circuit,panNode,f);
-                    g_free (filename);
+                    l[0] = '.';
+
+
 
                     guint i = g_list_length(panNode->circuit->pinsIn);
                     panNode->maxInputs = i;
                     guint o = g_list_length(panNode->circuit->pinsOut);
                     panNode->maxOutputs = o;
+
+                    // uses relpath and the path of the parent circuit
+                    // to save the relative path in the sub nodes filename
+                    // TODO scrappy - needs tidy!
+                    char buf[1024];
+                    char path[1024];
+                    strcpy(path,circuit->filename);
+                    f = g_strrstr(path,"/");
+                    f[0]='\0';
+                    relpath(filename,path,buf,1024);
+                    g_free (filename);
+
+                    if (panNode->circuit->filename !=0) {
+                        free(panNode->circuit->filename);
+                    }
+                    if (panNode->circuit->path !=0) {
+                        free(panNode->circuit->path);
+                    }
+                    panNode->circuit->filename = malloc(strlen(buf)+1);
+                    strcpy(panNode->circuit->filename,buf);
+                    panNode->circuit->path = malloc(strlen(path)+1);
+                    strcpy(panNode->circuit->path,path);
                 }
 
                 gtk_widget_destroy (dialog);

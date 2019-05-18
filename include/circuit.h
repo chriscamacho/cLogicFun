@@ -9,6 +9,9 @@ typedef struct circuit_s {
     guint nIns; // number of input pins
     guint nOuts; // number of output pins
     GHashTable* txtHash; // lookup a node pointer from its label (text)
+    char* filename;
+    char* path;
+    GHashTable* idHash;
 } circuit_t;
 
 // allocates memory for a circuit struct
