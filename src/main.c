@@ -14,6 +14,7 @@
 void initCallbacks(GtkWidget* da, GtkBuilder* builder);
 
 circuit_t* circuit;
+circuit_t* currentCircuit;
 
 GdkPixbuf* loadPb(const char* fn)
 {

@@ -209,7 +209,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <signal name="clicked" handler="onNodeWinCancel" swapped="no"/>
               </object>
               <packing>
@@ -225,7 +224,6 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <property name="image_position">right</property>
                 <signal name="clicked" handler="onNodeWinOK" swapped="no"/>
               </object>
@@ -242,7 +240,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <signal name="clicked" handler="onDelete" object="nodeWindow" swapped="no"/>
               </object>
               <packing>
@@ -277,7 +274,6 @@
         <property name="visible">True</property>
         <property name="app_paintable">True</property>
         <property name="can_focus">False</property>
-        <property name="double_buffered">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar">
@@ -299,7 +295,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_new_activate" object="drawArea" swapped="no"/>
                       </object>
                     </child>
@@ -309,7 +304,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_open_activate" object="window_main" swapped="no"/>
                       </object>
                     </child>
@@ -319,7 +313,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="onSave" swapped="no"/>
                       </object>
                     </child>
@@ -335,7 +328,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="image">__glade_unnamed_8</property>
-                        <property name="use_stock">False</property>
                         <signal name="activate" handler="on_chartOuputs_activate" swapped="no"/>
                       </object>
                     </child>
@@ -344,7 +336,6 @@
                         <property name="label">assign pins</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_stock">False</property>
                         <signal name="activate" handler="onPinAssign" swapped="no"/>
                       </object>
                     </child>
@@ -360,7 +351,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="gtk_main_quit" swapped="no"/>
                       </object>
                     </child>
@@ -631,7 +621,6 @@
             <property name="receives_default">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="use_stock">True</property>
             <signal name="clicked" handler="onOK" swapped="no"/>
           </object>
           <packing>
@@ -647,7 +636,6 @@
             <property name="receives_default">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="use_stock">True</property>
             <signal name="clicked" handler="onPinCancel" swapped="no"/>
           </object>
           <packing>

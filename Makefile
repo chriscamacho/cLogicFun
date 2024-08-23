@@ -1,9 +1,15 @@
 
 LDFLAGS:=`pkg-config gtk+-3.0 --libs` -rdynamic -lexpat -lm
-
 CFLAGS:=`pkg-config gtk+-3.0 --cflags`
-CFLAGS+= -Wfatal-errors -pedantic -Wall -Wextra -Werror
+CFLAGS+=-DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED
+
+#LDFLAGS:=`pkg-config gtk4 --libs` -rdynamic -lexpat -lm
+#CFLAGS:=`pkg-config gtk4 --cflags`
+
+#CFLAGS+= -Wfatal-errors -pedantic -Wall -Wextra -Werror
+CFLAGS+= -Wfatal-errors -Wall -Wextra -Werror
 CFLAGS+= -std=c99 -Iinclude
+
 # because glib-compile-resources don't play nice...
 CFLAGS+=  -Wno-overlength-strings
 

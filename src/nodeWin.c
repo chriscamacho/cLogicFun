@@ -15,7 +15,7 @@ GtkWidget* nodeWinText;
 GtkWidget* nodeWinLatency;
 
 node_t* currentNode;
-circuit_t* currentCircuit;
+extern circuit_t* currentCircuit;
 
 gboolean onDelete(GtkWidget *widget, gpointer data)
 {

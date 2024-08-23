@@ -96,7 +96,7 @@ GtkWidget* outputTreeView;
 GtkWidget* pinMapWindow;
 GtkWidget* inputSpin;
 GtkWidget* outputSpin;
-circuit_t* currentCircuit;
+extern circuit_t* currentCircuit;
 
 int nInputs;    // number of inputs
 int nOutputs;
